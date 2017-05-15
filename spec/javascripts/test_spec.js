@@ -1,7 +1,5 @@
 /* jshint node: true */
 /*global BlurredLocation */
-// var basic = require("../../src/object.js");
-// waits(10000);
 describe("Basic suite", function() {
   "use strict";
   var object = new BlurredLocation({
