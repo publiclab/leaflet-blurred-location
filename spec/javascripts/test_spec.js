@@ -1,4 +1,3 @@
-
 var basic = require("../../src/object.js");
 describe("Basic suite", function() {
   var object = new basic.BlurredLocation({
