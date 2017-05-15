@@ -42,7 +42,7 @@ module.exports = function(grunt) {
           src: "src/client/js/*.js",
           options: {
             specs: "spec/javascripts/*spec.js",
-            template: require('grunt-template-jasmine-requirejs')
+            vendor: ['node_modules/jquery/dist/jquery.js','node_modules/leaflet/dist/leaflet.js','src/*.js',],
           }
         },
 
