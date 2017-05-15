@@ -5,10 +5,9 @@
     <title>PublicLab.Map</title>
 
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE"></script>
-    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="../node_modules/leaflet/dist/leaflet.js"></script>
     <link href="../node_modules/leaflet/dist/leaflet.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="../dist/PublicLab.Map.css" rel="stylesheet">
     <!-- <script src="../dist/PublicLab.Map.js"></script> -->
   </head>
   <body>
@@ -56,9 +55,6 @@
         <div class="col-md-4">
           <h3 class="font-size-small">On a map : </h3>
           <br />
-          <script src="../src/locationForm.js"></script>
-          <script src="../src/location_tags.js"></script>
-          <link href="../dist/PublicLab.Map.css" rel="stylesheet">
           <div id="map" class="leaflet-map"></div>
           <br/>
           <h3 class="font-size-small">In Text:</h3><br/>
@@ -68,5 +64,10 @@
     </div>
     <!-- END OF EXAMPLE -->
   </body>
+  <script src="../node_modules/leaflet/dist/leaflet.js"></script>
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="../src/locationForm.js"></script>
+  <script src="../src/location_tags.js"></script>
   <script src="../src/main.js"></script>
+  <script src="../src/object.js"></script>
 </html>
