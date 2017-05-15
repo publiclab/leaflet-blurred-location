@@ -1,11 +1,14 @@
-describe("A suite is just a function", function() {
-  var a;
 
-  it("and so is a spec", function() {
-    a = true;
-
-    expect(a).toBe(true);
+var basic = require("../../src/object.js");
+describe("Basic suite", function() {
+  var object = new basic.BlurredLocation({
+    lat: 41.01,
+    lon: -85.66
   });
+  it("lat spec", function() {
+    expect(object.getLat()).toBe(41.01);
+    });
+  it("lon spec", function() {
+    expect(object.getLon()).toBe(-85.66);
+  })
 });
-    
-

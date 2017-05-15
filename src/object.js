@@ -6,3 +6,5 @@ function BlurredLocation(location) {
     return location.lon;
   }
 }
+
+exports.BlurredLocation = BlurredLocation;
