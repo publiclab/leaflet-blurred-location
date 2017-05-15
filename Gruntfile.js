@@ -1,8 +1,7 @@
+/* jshint node: true */
 module.exports = function(grunt) {
 
-    grunt.loadNpmTasks('grunt-browserify');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-
+    "use strict";
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
     grunt.initConfig({
@@ -34,16 +33,75 @@ module.exports = function(grunt) {
         uglify: {
           my_target: {
             files: {
-              'dist/PublicLab.Map.js': ['src/location_tags.js', 'src/locationForm.js', 'main.js']
+              'dist/dist/Leaflet.BlurredLocation.js': ['src/location_tags.js', 'src/locationForm.js', 'main.js']
             }
           }
         },
+
+        jasmine: {
+          src: "src/client/js/*.js",
+          options: {
+            specs: "spec/javascripts/*spec.js",
+            template: require('grunt-template-jasmine-requirejs')
+          }
+        },
+
+        jshint: {
+        all: [
+            "Gruntfile.js",
+            "dsit/*.js",
+            "spec/**/*.js",
+        ],
+        options: {
+          jshintrc: '.jshintrc'
+        },
+}
+
     });
 
     /* Default (development): Watch files and build on change. */
-    grunt.registerTask('default', ['watch']);
-
     grunt.registerTask('build', [
         'browserify:dist'
     ]);
+    grunt.registerTask('test', ['jshint', 'jasmine']);
 };
+
+
+//
+//
+// module.exports = function(grunt) {
+//   grunt.initConfig({
+//     pkg: grunt.file.readJSON("package.json"),
+//     watch: {
+//       grunt: {
+//         files: ["Gruntfile.js", "package.json"],
+//         tasks: "default"
+//       },
+//       javascript: {
+//         files: ["src/client/**/*.js", "specs/**/*Spec.js"],
+//         tasks: "test"
+//       }
+//     },
+//     jasmine: {
+//       src: "src/client/js/*.js",
+//       options: {
+//         specs: "specs/client/*Spec.js"
+//       }
+//     },
+//     jshint: {
+//       all: [
+//         "Gruntfile.js",
+//         "src/**/*.js",
+//         "spec/**/*.js"
+//       ],
+//       options: {
+//         jshintrc: ".jshintrc"
+//       }
+//     }
+//   });
+//   grunt.loadNpmTasks("grunt-contrib-watch");
+//   grunt.loadNpmTasks("grunt-contrib-jshint");
+//   grunt.loadNpmTasks("grunt-contrib-jasmine");
+//   grunt.registerTask("test", ["jshint", "jasmine"]);
+//   grunt.registerTask("default", ["test"]);
+// };
