@@ -1,6 +1,8 @@
 leaflet-blurred-location
 ====
 
+**This is a working draft; the project will be working towards an initial v0.0.1 release in coming weeks**
+
 leaflet-blurred-location provides friendly interfaces for:
 
 * Marking your location on a map
@@ -14,14 +16,14 @@ To set up the library first clone this repo to your local after that run 'npm in
 
 To create a new object just call the constructor 'BlurredLocation' as shown in the following example:
 
-'// this "constructs" an instance of the library:
+// this "constructs" an instance of the library:
 var object = new BlurredLocation({
   lat: 41.01,
   lon: -85.66
 });
 
 object.getLat(); // should return 41.01
-object.getLon(); // should return -85.66'
+object.getLon(); // should return -85.66
 
 ## Design process
 
