@@ -74,7 +74,7 @@
     "jquery"        : true,    // jQuery
     "mocha"         : true,     // Mocha
     "mootools"      : false,    // MooTools
-    "node"          : false,    // Node.js
+    "node"          : true,    // Node.js
     "nonstandard"   : false,    // Widely adopted globals (escape, unescape, etc)
     "phantom"       : true,    // PhantomJS
     "prototypejs"   : true,    // Prototype and Scriptaculous

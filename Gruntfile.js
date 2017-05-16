@@ -1,4 +1,3 @@
-/* jshint node: true */
 module.exports = function(grunt) {
 
     "use strict";
@@ -65,43 +64,3 @@ module.exports = function(grunt) {
     ]);
     grunt.registerTask('test', ['jshint', 'jasmine']);
 };
-
-
-//
-//
-// module.exports = function(grunt) {
-//   grunt.initConfig({
-//     pkg: grunt.file.readJSON("package.json"),
-//     watch: {
-//       grunt: {
-//         files: ["Gruntfile.js", "package.json"],
-//         tasks: "default"
-//       },
-//       javascript: {
-//         files: ["src/client/**/*.js", "specs/**/*Spec.js"],
-//         tasks: "test"
-//       }
-//     },
-//     jasmine: {
-//       src: "src/client/js/*.js",
-//       options: {
-//         specs: "specs/client/*Spec.js"
-//       }
-//     },
-//     jshint: {
-//       all: [
-//         "Gruntfile.js",
-//         "src/**/*.js",
-//         "spec/**/*.js"
-//       ],
-//       options: {
-//         jshintrc: ".jshintrc"
-//       }
-//     }
-//   });
-//   grunt.loadNpmTasks("grunt-contrib-watch");
-//   grunt.loadNpmTasks("grunt-contrib-jshint");
-//   grunt.loadNpmTasks("grunt-contrib-jasmine");
-//   grunt.registerTask("test", ["jshint", "jasmine"]);
-//   grunt.registerTask("default", ["test"]);
-// };

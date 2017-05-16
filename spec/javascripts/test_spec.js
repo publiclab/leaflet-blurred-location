@@ -1,4 +1,3 @@
-/* jshint node: true */
 /*global BlurredLocation */
 describe("Basic suite", function() {
   "use strict";
