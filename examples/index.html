@@ -2,13 +2,13 @@
 <html lang="en">
   <head>
 
-    <title>PublicLab.Map</title>
+    <title>Leaflet.BlurredLocation</title>
 
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE"></script>
     <link href="../node_modules/leaflet/dist/leaflet.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link href="../dist/PublicLab.Map.css" rel="stylesheet">
-    <!-- <script src="../dist/PublicLab.Map.js"></script> -->
+    <!-- <link href="../dist/Leaflet.BlurredLocation.css" rel="stylesheet"> -->
+    <!-- <script src="../dist/Leaflet.BlurredLocation.js"></script> -->
   </head>
   <body>
   <style>
@@ -55,7 +55,7 @@
         <div class="col-md-4">
           <h3 class="font-size-small">On a map : </h3>
           <br />
-          <div id="map" class="leaflet-map"></div>
+          <div id="map" class="leaflet-map" style="width: 400px; height: 400px;"></div>
           <br/>
           <h3 class="font-size-small">In Text:</h3><br/>
           <input id="location" type="text" class="form-control"><br/>

@@ -5,7 +5,7 @@
     "Public Lab"
   ],
   "description": "Test for PublicLab maps",
-  "main": "dist/dist/Leaflet.BlurredLocation.js",
+  "main": "dist/Leaflet.BlurredLocation.js",
   "keywords": [
     "publiclab"
   ],
