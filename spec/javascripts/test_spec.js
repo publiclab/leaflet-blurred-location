@@ -27,12 +27,12 @@ describe("Basic testing", function() {
     expect(blurredLocation.getLon()).toBe(-0.09);
   });
 
-  it("geocode spec", function() {
-    var geometry = blurredLocation.geocode("Buenos Aires");
-    console.log(blurredLocation.getLat());
-    console.log(map.getCenter().lat);
-    expect(blurredLocation.getLat()).toBe(-34.6036844);
-    expect(blurredLocation.getLon()).toBe(-58.3815591);
-  });
+  // it("geocode spec", function() {
+  //   var geometry = blurredLocation.geocode("Buenos Aires");
+  //   console.log(blurredLocation.getLat());
+  //   console.log(map.getCenter().lat);
+  //   expect(blurredLocation.getLat()).toBe(-34.6036844);
+  //   expect(blurredLocation.getLon()).toBe(-58.3815591);
+  // });
 
 });
