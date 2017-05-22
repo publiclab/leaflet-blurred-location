@@ -1,0 +1,38 @@
+{
+  "name": "map_module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mridulnagpal/map_module.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mridulnagpal/map_module/issues"
+  },
+  "homepage": "https://github.com/mridulnagpal/map_module#readme",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-browserify": "^5.0.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-jasmine": "^1.1.0",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-uglify": "^2.2.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-template-jasmine-requirejs": "^0.2.3",
+    "jasmine": "^2.5.3",
+    "jasmine-ajax": "^3.3.1",
+    "jasmine-jquery": "^2.1.1",
+    "matchdep": "^1.0.1",
+    "phantom-jasmine": "^0.3.0"
+  },
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "leaflet": "^1.0.3"
+  }
+}
