@@ -17,6 +17,7 @@ To set up the library first clone this repo to your local after that run 'npm in
 ## Creating a map object
 
 To create a new object just call the constructor 'BlurredLocation' as shown in the following example:
+(There must a div with id="map" in your html to hold the object)
 
 // this "constructs" an instance of the library:
 var object = new BlurredLocation({
