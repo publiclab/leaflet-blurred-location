@@ -3,7 +3,6 @@ function BlurredLocation(location) {
        var map = L.map('map');
        L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map);
     }
-    console.log(blurredLocation.getSize().equals(size);
     map.setView([location.lat, location.lon], 10);
     this.getLat = function () {
       return map.getCenter().lat;
