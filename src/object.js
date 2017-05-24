@@ -1,8 +1,9 @@
 function BlurredLocation(location) {
     if(!map) {
-      var map = L.map('map');
-      L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map);
+       var map = L.map('map');
+       L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map);
     }
+    console.log(blurredLocation.getSize().equals(size);
     map.setView([location.lat, location.lon], 10);
     this.getLat = function () {
       return map.getCenter().lat;
@@ -24,7 +25,7 @@ function BlurredLocation(location) {
 
       var geometry = Blurred.responseJSON.results[0].geometry.location;
       var default_zoom = 13;
-      console.log(geometry.lat);
+      // console.log(geometry.lat);
       map.setView([geometry.lat, geometry.lng],default_zoom);
       return geometry;
     }
