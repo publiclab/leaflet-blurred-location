@@ -54,7 +54,17 @@ module.exports = function(grunt) {
         options: {
           jshintrc: '.jshintrc'
         },
-}
+      },
+
+      concat: {
+          options: {
+            separator: ';',
+          },
+          dist: {
+            src: ['node_modules/jquery/dist/jquery.min.js', 'node_modules/leaflet/dist/leaflet.js', 'src/object.js'],
+            dest: 'dist/built.js',
+          },
+     },
 
     });
 
@@ -63,4 +73,5 @@ module.exports = function(grunt) {
         'browserify:dist'
     ]);
     grunt.registerTask('test', ['jshint', 'jasmine']);
+    grunt.registerTask('build', ['concat']);
 };
