@@ -24,12 +24,6 @@ describe("Basic testing", function() {
     expect(blurredLocation.getLon()).toBe(-0.09);
   });
 
-  it("getSize spec", function() {
-    var size = L.point(400,400);
-    expect(blurredLocation.getSize().equals(size)).toBe(true);
-  });
-
-
 
   // it("geocode spec", function() {
   //   var geometry = blurredLocation.geocode("Buenos Aires");
