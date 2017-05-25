@@ -53,4 +53,3 @@ To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`.
 |getLon|Used to get the current latitude of the center of the map|blurredLocation.getLon() //This would return the value in numerics|
 |goTo   |Takes in three parameters, namely latitude, longitude and zoom. Will set the center of map to co-ordinates input.|blurredLocation.goTo(44.51, -89.99, 13) //Will set center of map to (44.51,-89.99) with zoom set as 13|
 |getSize   |Used to get the current size of the map, namely the width and height.| blurredLocation.getSize() //This would return the size of the map|
-|setSize   |Takes in two parameters namely width and height, and resizes the map according to the parameters | blurredLocation.setSize(300,300)  //This would set map size = 300px*300px |
