@@ -1,17 +1,20 @@
-function BlurredLocation(location) {
-    if(!map) {
-       var map = L.map('map');
-       L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map);
-    }
-    map.setView([location.lat, location.lon], 10);
+function BlurredLocation(options) {
+    options = options || {};
+    options.map = options.map || L.map('map');
+    options.location = options.location || {
+      lat: 41.01,
+      lon: -85.66
+    };
+    options.zoom = options.zoom || 13;
+    options.map.setView([options.location.lat, options.location.lon], options.zoom);
     this.getLat = function () {
-      return map.getCenter().lat;
+      return options.map.getCenter().lat;
     }
     this.getLon = function() {
-      return map.getCenter().lng;
+      return options.map.getCenter().lng;
     }
     this.goTo = function(lat, lon, zoom) {
-      map.setView([lat, lon], zoom);
+      options.map.setView([lat, lon], zoom);
     }
     this.geocode = function(string) {
       var url = "https://maps.googleapis.com/maps/api/geocode/json?address="+string.split(" ").join("+");
@@ -23,13 +26,12 @@ function BlurredLocation(location) {
       // console.log(Blurred.readyState);
 
       var geometry = Blurred.responseJSON.results[0].geometry.location;
-      var default_zoom = 13;
       // console.log(geometry.lat);
-      map.setView([geometry.lat, geometry.lng],default_zoom);
+      options.map.setView([geometry.lat, geometry.lng],options.zoom);
       return geometry;
     }
     this.getSize = function() {
-      return map.getSize();
+      return options.map.getSize();
     }
 }
 exports.BlurredLocation = BlurredLocation;
