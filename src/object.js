@@ -48,7 +48,7 @@ function BlurredLocation(options) {
         function create_cell_style(fill) {
             return {
                 stroke: true,
-                color: '#3ac1f0',
+                color: ' #ff0000 ',
                 dashArray: null,
                 lineCap: null,
                 lineJoin: null,
@@ -66,7 +66,7 @@ function BlurredLocation(options) {
             include: L.Mixin.Events,
             options: {
                 cellSize: 64,
-                delayFactor: 2.5,
+                delayFactor: 0.5,
             },
             initialize: function(options) {
                 L.Util.setOptions(this, options);
@@ -92,7 +92,7 @@ function BlurredLocation(options) {
                 this._cells = [];
             },
             _moveHandler: function(e) {
-                this.clearLayers();
+                this._cells = [];
                 this._renderCells(e.target.getBounds());
             },
             _zoomHandler: function(e) {
@@ -195,9 +195,11 @@ function geoLocateFromInput(selector) {
       var str = input.value;
       var loc = str.split(' ').join('+');
       $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?address=" + loc + "&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE", function(data){
-        var lat = data.results[0].geometry.location.lat;
-        var lng = data.results[0].geometry.location.lng;
-        panMap(lat, lng);
+        if(data.results[0]) {
+            var lat = data.results[0].geometry.location.lat;
+            var lng = data.results[0].geometry.location.lng;
+            panMap(lat, lng);
+        }
       });
     }, 10);
   });
@@ -226,7 +228,7 @@ function geoLocateFromInput(selector) {
 
   function getLocationFromMap(lat, lng) {
     $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng, function(data) {
-      if (data.status) {
+      if (data.results[0]) {
         var address = data.results[0].formatted_address;
               $("#location").val(address);
       }
