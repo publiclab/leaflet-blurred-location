@@ -34,4 +34,5 @@ function BlurredLocation(options) {
       return options.map.getSize();
     }
 }
+
 exports.BlurredLocation = BlurredLocation;
