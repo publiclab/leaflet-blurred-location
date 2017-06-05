@@ -26,7 +26,9 @@ describe("Basic testing", function() {
     expect(blurredLocation.getLon()).toBe(-0.09);
   });
 
-
+  it("addGrid spec", function() {
+    expect(blurredLocation.hasOwnProperty("addGrid")).toBe(true);
+  });
   // it("geocode spec", function() {
   //   var geometry = blurredLocation.geocode("Buenos Aires");
   //   console.log(blurredLocation.getLat());
