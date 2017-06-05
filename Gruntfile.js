@@ -32,7 +32,7 @@ module.exports = function(grunt) {
         uglify: {
           my_target: {
             files: {
-              'dist/Leaflet.BlurredLocation.js': ['src/location_tags.js', 'src/locationForm.js', 'main.js']
+              'dist/Leaflet.BlurredLocation.js': ['src/location_tags.js', 'main.js']
             }
           }
         },
