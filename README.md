@@ -18,6 +18,7 @@ To set up the library first clone this repo to your local after that run 'npm in
 
 To create a new object just call the constructor 'BlurredLocation' as shown in the following example:
 
+```js
 // this "constructs" an instance of the library:
 var object = new BlurredLocation({
   lat: 41.01,
@@ -26,6 +27,7 @@ var object = new BlurredLocation({
 
 object.getLat(); // should return 41.01
 object.getLon(); // should return -85.66
+```
 
 ## Design process
 
