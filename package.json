@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/mridulnagpal/map_module#readme",
   "devDependencies": {
+    "bootstrap": "^3.3.7",
     "grunt": "^1.0.1",
     "grunt-browserify": "^5.0.0",
     "grunt-contrib-concat": "^1.0.1",
@@ -29,7 +30,9 @@
     "jasmine-ajax": "^3.3.1",
     "jasmine-jquery": "^2.1.1",
     "matchdep": "^1.0.1",
-    "phantom-jasmine": "^0.3.0"
+    "phantom-jasmine": "^0.3.0",
+    "require": "^2.4.20",
+    "resig-class": "^1.0.0"
   },
   "dependencies": {
     "jquery": "^3.2.1",

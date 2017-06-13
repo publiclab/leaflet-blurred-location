@@ -22,19 +22,19 @@ module.exports = function(grunt) {
 
         browserify: {
             dist: {
-                src: [
-                    'src/Leaflet.BlurredLocation.js'
-                ],
-                dest: 'dist/Leaflet.BlurredLocation.js'
+                src: ['node_modules/jquery/dist/jquery.min.js', 'node_modules/leaflet/dist/leaflet.js', 'src/object.js'],
+                dest: 'dist/built.js'
             }
         },
 
-        uglify: {
-          my_target: {
-            files: {
-              'dist/Leaflet.BlurredLocation.js': ['src/location_tags.js', 'main.js']
-            }
-          }
+        concat: {
+          options: {
+            separator: ';',
+          },
+          dist: {
+            src: ['node_modules/jquery/dist/jquery.min.js', 'node_modules/leaflet/dist/leaflet.js', 'src/object.js'],
+            dest: 'dist/built.js',
+          },
         },
 
         jasmine: {
@@ -56,15 +56,6 @@ module.exports = function(grunt) {
         },
       },
 
-      concat: {
-          options: {
-            separator: ';',
-          },
-          dist: {
-            src: ['node_modules/jquery/dist/jquery.min.js', 'node_modules/leaflet/dist/leaflet.js', 'src/object.js'],
-            dest: 'dist/built.js',
-          },
-     },
 
     });
 
@@ -73,5 +64,5 @@ module.exports = function(grunt) {
         'browserify:dist'
     ]);
     grunt.registerTask('test', ['jshint', 'jasmine']);
-    grunt.registerTask('build', ['concat']);
+    grunt.registerTask('build', ['browserify']);
 };
