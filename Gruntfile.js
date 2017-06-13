@@ -27,16 +27,6 @@ module.exports = function(grunt) {
             }
         },
 
-        concat: {
-          options: {
-            separator: ';',
-          },
-          dist: {
-            src: ['node_modules/jquery/dist/jquery.min.js', 'node_modules/leaflet/dist/leaflet.js', 'src/object.js'],
-            dest: 'dist/built.js',
-          },
-        },
-
         jasmine: {
           src: "src/client/js/*.js",
           options: {
@@ -48,7 +38,7 @@ module.exports = function(grunt) {
         jshint: {
         all: [
             "Gruntfile.js",
-            "dsit/*.js",
+            "dist/*.js",
             "spec/**/*.js",
         ],
         options: {

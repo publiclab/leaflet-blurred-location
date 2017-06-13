@@ -1,9 +1,8 @@
-window.$ = window.jQuery = require('jquery')
-var bootstrap = require('../node_modules/bootstrap/dist/js/bootstrap.min.js', function() { });
-
-function BlurredLocation(options) {
+BlurredLocation = function BlurredLocation(options) {
     options = options || {};
     options.map = options.map || L.map('map');
+    options.addGrid = options.addGrid || require('./addGrid.js');
+
     L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
     options.location = options.location || {
       lat: 41.01,
@@ -43,7 +42,7 @@ function BlurredLocation(options) {
       return options.map.getSize();
     }
 
-    this.addGrid = require('./addGrid.js');
+    this.addGrid = options.addGrid;
 }
 
 function geoLocateFromInput(selector) {

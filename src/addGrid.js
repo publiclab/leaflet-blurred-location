@@ -1,5 +1,5 @@
-addGrid = function() {
-    var map = options.map;
+module.exports = function addGrid(map) {
+    var map = map || document.getElementById("map") || L.map('map');
     // A function to return the style of a cell
     function create_cell_style(fill) {
         return {
