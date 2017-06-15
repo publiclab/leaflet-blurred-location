@@ -57,9 +57,9 @@ function panMapToGeocodedLocation(selector) {
   });
 };
 
-  function geoLocateFromLatLng(lat,lng) {
-    var lat = document.getElementById(lat);
-    var lng = document.getElementById(lng);
+  function panMapWhenInputsChange(latId, lngId) {
+    var lat = document.getElementById(latId);
+    var lng = document.getElementById(lngId);
 
     lat.addEventListener('change blur input', function() {
         if(lat.value && lng.value) {
