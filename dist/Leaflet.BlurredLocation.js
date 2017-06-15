@@ -218,19 +218,21 @@ function panMapToGeocodedLocation(selector) {
   });
 };
 
-  function geoLocateFromLatLng(lat,lng) {
-    var lat = document.getElementById(lat);
-    var lng = document.getElementById(lng);
+  function panMapWhenInputsChange(latId, lngId) {
+    var lat = document.getElementById(latId);
+    var lng = document.getElementById(lngId);
+
+    function panIfValue() {
+      if(lat.value && lng.value) {
+        panMap(lat.value, lng.value);
+      };
+    }
 
     lat.addEventListener('change blur input', function() {
-        if(lat.value && lng.value) {
-          panMap(lat.value, lng.value);
-        };
+      panIfValue();
     });
     lng.addEventListener('change blur input', function() {
-        if(lat.value && lng.value) {
-          panMap(lat.value, lng.value);
-        };
+      panIfValue();
     });
   }
 
@@ -239,13 +241,16 @@ function panMapToGeocodedLocation(selector) {
     map.panTo(new L.LatLng(lat, lng));
   }
 
-  function getLocationFromMap(lat, lng) {
+  function getPlacenameFromCoordinates(lat, lng) {
+    var loc = "Location not found";
+
     $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng, function(data) {
       if (data.results[0]) {
-        var address = data.results[0].formatted_address;
-              $("#location").val(address);
+        loc = data.results[0].formatted_address;
       }
     });
+
+    return loc;
   }
 
   function getLocation(checkbox) {

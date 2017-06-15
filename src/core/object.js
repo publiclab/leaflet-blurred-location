@@ -80,16 +80,18 @@ function panMapToGeocodedLocation(selector) {
     map.panTo(new L.LatLng(lat, lng));
   }
 
-  function getLocationFromMap(lat, lng) {
+  function getPlacenameFromCoordinates(lat, lng) {
+    var loc = "Location not found";
+
     $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng, function(data) {
       if (data.results[0]) {
-        var address = data.results[0].formatted_address;
-              $("#location").val(address);
+        loc = data.results[0].formatted_address;
       }
     });
+    return loc;
   }
 
-  function getLocation(checkbox) {
+  function panMapByBrowserGeocode()(checkbox) {
     var x = document.getElementById("location");
       if(checkbox.checked == true) {
         if (navigator.geolocation) {
