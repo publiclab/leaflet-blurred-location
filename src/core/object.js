@@ -45,21 +45,14 @@ BlurredLocation = function BlurredLocation(options) {
     this.addGrid = options.addGrid;
 }
 
-function geoLocateFromInput(selector) {
+function panMapToGeocodedLocation(selector) {
   var input = document.getElementById(selector);
 
   var autocomplete = new google.maps.places.Autocomplete(input);
   autocomplete.addListener('place_changed', function() {
     setTimeout(function () {
       var str = input.value;
-      var loc = str.split(' ').join('+');
-      $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?address=" + loc + "&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE", function(data){
-        if(data.results[0]) {
-            var lat = data.results[0].geometry.location.lat;
-            var lng = data.results[0].geometry.location.lng;
-            panMap(lat, lng);
-        }
-      });
+      blurredLocation.geocode(str);
     }, 10);
   });
 };
