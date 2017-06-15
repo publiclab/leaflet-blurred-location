@@ -61,15 +61,17 @@ function panMapToGeocodedLocation(selector) {
     var lat = document.getElementById(latId);
     var lng = document.getElementById(lngId);
 
+    function panIfValue() {
+      if(lat.value && lng.value) {
+        panMap(lat.value, lng.value);
+      };
+    }
+
     lat.addEventListener('change blur input', function() {
-        if(lat.value && lng.value) {
-          panMap(lat.value, lng.value);
-        };
+      panIfValue();
     });
     lng.addEventListener('change blur input', function() {
-        if(lat.value && lng.value) {
-          panMap(lat.value, lng.value);
-        };
+      panIfValue();
     });
   }
 
