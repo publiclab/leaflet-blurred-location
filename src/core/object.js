@@ -91,7 +91,7 @@ function panMapToGeocodedLocation(selector) {
     return loc;
   }
 
-  function panMapByBrowserGeocode()(checkbox) {
+  function panMapByBrowserGeocode(checkbox) {
     var x = document.getElementById("location");
       if(checkbox.checked == true) {
         if (navigator.geolocation) {

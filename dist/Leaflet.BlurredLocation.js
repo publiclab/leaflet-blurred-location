@@ -249,11 +249,10 @@ function panMapToGeocodedLocation(selector) {
         loc = data.results[0].formatted_address;
       }
     });
-
     return loc;
   }
 
-  function getLocation(checkbox) {
+  function panMapByBrowserGeocode(checkbox) {
     var x = document.getElementById("location");
       if(checkbox.checked == true) {
         if (navigator.geolocation) {
