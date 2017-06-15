@@ -1,7 +1,7 @@
-BlurredLocation = function BlurredLocation(options) {
+function BlurredLocation(options) {
     options = options || {};
     options.map = options.map || L.map('map');
-    options.addGrid = options.addGrid || require('./addGrid.js');
+    options.addGrid = require('')
 
     L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
     options.location = options.location || {
@@ -42,7 +42,7 @@ BlurredLocation = function BlurredLocation(options) {
       return options.map.getSize();
     }
 
-    this.addGrid = options.addGrid;
+    this.addGrid = require('./addGrid.js');
 }
 
 function geoLocateFromInput(selector) {

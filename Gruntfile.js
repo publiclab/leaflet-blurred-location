@@ -31,7 +31,7 @@ module.exports = function(grunt) {
           src: "src/client/js/*.js",
           options: {
             specs: "spec/javascripts/*spec.js",
-            vendor: ['node_modules/jquery/dist/jquery.js','node_modules/leaflet/dist/leaflet-src.js','src/*.js','node_modules/jasmine-jquery/lib/jasmine-jquery.js'],
+            vendor: ['node_modules/jquery/dist/jquery.js','node_modules/leaflet/dist/leaflet-src.js','dist/built.js','node_modules/jasmine-jquery/lib/jasmine-jquery.js'],
           }
         },
 
