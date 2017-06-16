@@ -22,39 +22,30 @@ module.exports = function(grunt) {
 
         browserify: {
             dist: {
-                src: [
-                    'src/Leaflet.BlurredLocation.js'
-                ],
+                src: ['node_modules/jquery/dist/jquery.min.js', 'node_modules/leaflet/dist/leaflet.js', 'src/core/object.js'],
                 dest: 'dist/Leaflet.BlurredLocation.js'
             }
-        },
-
-        uglify: {
-          my_target: {
-            files: {
-              'dist/Leaflet.BlurredLocation.js': ['src/location_tags.js', 'src/locationForm.js', 'main.js']
-            }
-          }
         },
 
         jasmine: {
           src: "src/client/js/*.js",
           options: {
             specs: "spec/javascripts/*spec.js",
-            vendor: ['node_modules/jquery/dist/jquery.js','node_modules/leaflet/dist/leaflet-src.js','src/*.js','node_modules/jasmine-jquery/lib/jasmine-jquery.js'],
+            vendor: ['node_modules/jquery/dist/jquery.js','node_modules/leaflet/dist/leaflet-src.js','dist/Leaflet.BlurredLocation.js','node_modules/jasmine-jquery/lib/jasmine-jquery.js'],
           }
         },
 
         jshint: {
         all: [
             "Gruntfile.js",
-            "dsit/*.js",
+            "dist/*.js",
             "spec/**/*.js",
         ],
         options: {
           jshintrc: '.jshintrc'
         },
-}
+      },
+
 
     });
 
@@ -63,4 +54,5 @@ module.exports = function(grunt) {
         'browserify:dist'
     ]);
     grunt.registerTask('test', ['jshint', 'jasmine']);
+    grunt.registerTask('build', ['browserify']);
 };
