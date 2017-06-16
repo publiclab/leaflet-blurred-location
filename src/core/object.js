@@ -11,50 +11,46 @@ BlurredLocation = function BlurredLocation(options) {
     options.zoom = options.zoom || 13;
     options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
-    this.getLat = function () {
+    function getLat() {
       return options.map.getCenter().lat;
     }
 
-    this.getLon = function() {
+    function getLon() {
       return options.map.getCenter().lng;
     }
 
-    this.goTo = function(lat, lon, zoom) {
+    function goTo(lat, lon, zoom) {
       options.map.setView([lat, lon], zoom);
     }
 
-    this.geocode = function(string) {
+    function geocode(string) {
       var url = "https://maps.googleapis.com/maps/api/geocode/json?address="+string.split(" ").join("+");
       var Blurred = $.ajax({
           async: false,
           url: url
       });
-      // console.log(Object.getOwnPropertyNames(Blurred));
-      // console.log(Blurred.readyState);
-
       var geometry = Blurred.responseJSON.results[0].geometry.location;
-      // console.log(geometry.lat);
       options.map.setView([geometry.lat, geometry.lng],options.zoom);
       return geometry;
     }
 
-    this.getSize = function() {
+    function getSize() {
       return options.map.getSize();
     }
 
-    this.addGrid = options.addGrid;
+    addGrid = options.addGrid;
 
-function panMapToGeocodedLocation(selector) {
-  var input = document.getElementById(selector);
+  function panMapToGeocodedLocation(selector) {
+    var input = document.getElementById(selector);
 
-  var autocomplete = new google.maps.places.Autocomplete(input);
-  autocomplete.addListener('place_changed', function() {
-    setTimeout(function () {
-      var str = input.value;
-      blurredLocation.geocode(str);
-    }, 10);
-  });
-};
+    var autocomplete = new google.maps.places.Autocomplete(input);
+    autocomplete.addListener('place_changed', function() {
+      setTimeout(function () {
+        var str = input.value;
+        blurredLocation.geocode(str);
+      }, 10);
+    });
+  };
 
   function panMapWhenInputsChange(latId, lngId) {
     var lat = document.getElementById(latId);
@@ -105,15 +101,19 @@ function panMapToGeocodedLocation(selector) {
     }
   }
 
-return {
-  panMapToGeocodedLocation: panMapToGeocodedLocation,
-  getPlacenameFromCoordinates: getPlacenameFromCoordinates,
-  panMapWhenInputsChange: panMapWhenInputsChange,
-  panMap: panMap,
-  panMapByBrowserGeocode: panMapByBrowserGeocode,  
-}
-
-
+  return {
+    getLat: getLat,
+    getLon: getLon,
+    goTo: goTo,
+    geocode: geocode,
+    getSize: getSize,
+    addGrid: addGrid,
+    panMapToGeocodedLocation: panMapToGeocodedLocation,
+    getPlacenameFromCoordinates: getPlacenameFromCoordinates,
+    panMapWhenInputsChange: panMapWhenInputsChange,
+    panMap: panMap,
+    panMapByBrowserGeocode: panMapByBrowserGeocode,
+  }
 }
 
 exports.BlurredLocation = BlurredLocation;
