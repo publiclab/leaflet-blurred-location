@@ -1,15 +1,14 @@
-var map;
-
 describe("Basic testing", function() {
   "use strict";
 
   var fixture = loadFixtures('index.html');
-  map = L.map('map');
-
-  var blurredLocation = new BlurredLocation({
+  var options = {};
+  options.location = {
     lat: 41.01,
     lon: -85.66
-  });
+  };
+
+  var blurredLocation = new BlurredLocation(options);
 
   it("getLat spec", function () {
     expect(blurredLocation.getLat()).toBe(41.01);
@@ -27,6 +26,9 @@ describe("Basic testing", function() {
     expect(blurredLocation.getLon()).toBe(-0.09);
   });
 
+  it("addGrid spec", function() {
+    expect(blurredLocation.hasOwnProperty("addGrid")).toBe(true);
+  });
   // it("geocode spec", function() {
   //   var geometry = blurredLocation.geocode("Buenos Aires");
   //   console.log(blurredLocation.getLat());
