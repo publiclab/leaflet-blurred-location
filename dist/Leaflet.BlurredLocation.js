@@ -204,7 +204,6 @@ BlurredLocation = function BlurredLocation(options) {
     }
 
     this.addGrid = options.addGrid;
-}
 
 function panMapToGeocodedLocation(selector) {
   var input = document.getElementById(selector);
@@ -266,6 +265,17 @@ function panMapToGeocodedLocation(selector) {
         }
     }
   }
+
+return {
+  panMapToGeocodedLocation: panMapToGeocodedLocation,
+  getPlacenameFromCoordinates: getPlacenameFromCoordinates,
+  panMapWhenInputsChange: panMapWhenInputsChange,
+  panMap: panMap,
+  panMapByBrowserGeocode: panMapByBrowserGeocode,  
+}
+
+
+}
 
 exports.BlurredLocation = BlurredLocation;
 
