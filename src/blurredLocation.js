@@ -46,6 +46,12 @@ BlurredLocation = function BlurredLocation(options) {
     return options.map.getSize();
   }
 
+  function getPrecision() {
+    var lat = getLat();
+    var precision = (lat + "").split(".")[1].length;
+    return precision;
+  }
+
   addGrid = options.addGrid;
 
   function panMapToGeocodedLocation(selector) {
@@ -121,6 +127,7 @@ BlurredLocation = function BlurredLocation(options) {
     panMapWhenInputsChange: panMapWhenInputsChange,
     panMap: panMap,
     panMapByBrowserGeocode: panMapByBrowserGeocode,
+    getPrecision: getPrecision,
   }
 }
 
