@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 
         browserify: {
             dist: {
-                src: ['node_modules/jquery/dist/jquery.min.js', 'node_modules/leaflet/dist/leaflet.js', 'src/blurredLocation.js'],
+                src: ['src/blurredLocation.js'],
                 dest: 'dist/Leaflet.BlurredLocation.js'
             }
         },
