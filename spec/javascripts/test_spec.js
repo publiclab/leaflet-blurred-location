@@ -1,14 +1,16 @@
+var fixture = loadFixtures('index.html');
+var options = {};
+options.location = {
+  lat: 41.01,
+  lon: -85.66
+};
+
+var blurredLocation = new BlurredLocation(options);
+
+
 describe("Basic testing", function() {
   "use strict";
 
-  var fixture = loadFixtures('index.html');
-  var options = {};
-  options.location = {
-    lat: 41.01,
-    lon: -85.66
-  };
-
-  var blurredLocation = new BlurredLocation(options);
 
   it("Checks if getLat returns the correct latitude", function () {
     expect(blurredLocation.getLat()).toBe(41.01);
@@ -37,4 +39,23 @@ describe("Basic testing", function() {
   //   expect(blurredLocation.getLon()).toBe(-58.3815591);
   // });
 
+});
+
+
+
+describe("Asynchronous spec for getPlacenameFromCoordinates", function() {
+
+  var asyncSetThing,
+  asyncWrapper = function(callback) {
+   asyncSetThing = true;
+   blurredLocation.getPlacenameFromCoordinates(45,52,callback());
+  };
+
+  beforeEach(function(done) {
+    asyncWrapper(done);
+ });
+
+ it("Checks if the callback of getPlacenameFromCoordinates method is called", function() {
+   expect(asyncSetThing).toBeTruthy();
+ });
 });
