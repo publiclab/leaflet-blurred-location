@@ -6,7 +6,7 @@ BlurredLocation = function BlurredLocation(options) {
   options = options || {};
   options.map = options.map || L.map('map');
 
-  options.addGrid = options.addGrid || require('./addGrid.js');
+  options.addGrid = options.addGrid || require('./core/addGrid.js');
   options.addGrid(options.map);
 
   L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
@@ -70,17 +70,17 @@ BlurredLocation = function BlurredLocation(options) {
       };
     }
 
-    lat.addEventListener('change blur input', function() {
+    lat.addEventListener('change', function() {
       panIfValue();
     });
-    lng.addEventListener('change blur input', function() {
+    lng.addEventListener('change', function() {
       panIfValue();
     });
   }
 
 
   function panMap(lat, lng) {
-    map.panTo(new L.LatLng(lat, lng));
+    options.map.panTo(new L.LatLng(lat, lng));
   }
 
   function getPlacenameFromCoordinates(lat, lng) {
