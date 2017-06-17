@@ -40,9 +40,14 @@ BlurredLocation = function BlurredLocation(options) {
 
     addGrid = options.addGrid;
 
+<<<<<<< HEAD:src/blurredLocation.js
+=======
+  addGrid = options.addGrid;
+
+>>>>>>> ffa5e59979815c390f73c0baaee02eec03799517:src/core/object.js
   function panMapToGeocodedLocation(selector) {
     var input = document.getElementById(selector);
-
+  
     var autocomplete = new google.maps.places.Autocomplete(input);
     autocomplete.addListener('place_changed', function() {
       setTimeout(function () {
