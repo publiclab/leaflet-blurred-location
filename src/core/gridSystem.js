@@ -1,6 +1,6 @@
-module.exports = function addGrid(map, onChangeLocation) {
+module.exports = function addGrid(options) {
 
-  var map = map || document.getElementById("map") || L.map('map');
+  var map = options.map || document.getElementById("map") || L.map('map');
 
   // A function to return the style of a cell
   function create_cell_style(fill) {
@@ -23,7 +23,7 @@ module.exports = function addGrid(map, onChangeLocation) {
     include: L.Mixin.Events,
 
     options: {
-      cellSize: 64,
+      cellSize: options.cellSize || 40,
       delayFactor: 0.5,
     },
 
