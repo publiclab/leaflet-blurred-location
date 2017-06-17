@@ -13352,11 +13352,9 @@ BlurredLocation = function BlurredLocation(options) {
     options.map.panTo(new L.LatLng(lat, lng));
   }
 
-  function getPlacenameFromCoordinates(lat, lng, onResponse = function(result) {console.log(result);}) {
-
+  function getPlacenameFromCoordinates(lat, lng, onResponse) {
       $.ajax({
       url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
-      async: false,
       success: function(result) {
         onResponse(result);
       }
