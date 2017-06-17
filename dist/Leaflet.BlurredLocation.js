@@ -13275,11 +13275,11 @@ BlurredLocation = function BlurredLocation(options) {
   options = options || {};
   options.map = options.map || L.map('map');
 
-  options.addGrid = options.addGrid || require('./core/addGrid.js');
+  options.gridSystem = options.gridSystem || require('./core/gridSystem.js');
 
-  addGridOptions = options.addGridOptions || {};
-  addGridOptions.map = options.map
-  options.addGrid(addGridOptions);
+  gridSystemOptions = options.gridSystemOptions || {};
+  gridSystemOptions.map = options.map
+  options.gridSystem(gridSystemOptions);
 
   L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
 
@@ -13318,7 +13318,7 @@ BlurredLocation = function BlurredLocation(options) {
     return options.map.getSize();
   }
 
-  addGrid = options.addGrid;
+  gridSystem = options.gridSystem;
 
   function panMapToGeocodedLocation(selector) {
     var input = document.getElementById(selector);
@@ -13382,8 +13382,8 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function gridWidthInPixels(degrees) {
-    var p1 = L.latLng(1,1);
-    var p2 = L.latLng(1+degrees, 1+degrees);
+    var p1 = L.latLng(getLat(),getLon());
+    var p2 = L.latLng(getLat()+degrees, getLon()+degrees);
     var l1 = options.map.latLngToContainerPoint(p1);
     var l2 = options.map.latLngToContainerPoint(p2);
     return {
@@ -13401,6 +13401,14 @@ BlurredLocation = function BlurredLocation(options) {
     return precision;
   }
 
+  function truncateToPrecision(number, digits) {
+    var multiplier = Math.pow(10, digits),
+        adjustedNum = number * multiplier,
+        truncatedNum = Math[adjustedNum < 0 ? 'ceil' : 'floor'](adjustedNum);
+
+    return truncatedNum / multiplier;
+  }
+
 
   return {
     getLat: getLat,
@@ -13408,20 +13416,18 @@ BlurredLocation = function BlurredLocation(options) {
     goTo: goTo,
     geocode: geocode,
     getSize: getSize,
-    addGrid: addGrid,
+    gridSystem: gridSystem,
     panMapToGeocodedLocation: panMapToGeocodedLocation,
     getPlacenameFromCoordinates: getPlacenameFromCoordinates,
     panMapWhenInputsChange: panMapWhenInputsChange,
     panMap: panMap,
     panMapByBrowserGeocode: panMapByBrowserGeocode,
-    gridWidthInPixels: gridWidthInPixels,
-    findPrecisionForMinimumGridWidth: findPrecisionForMinimumGridWidth,
   }
 }
 
 exports.BlurredLocation = BlurredLocation;
 
-},{"./core/addGrid.js":5,"leaflet":2}],5:[function(require,module,exports){
+},{"./core/gridSystem.js":5,"leaflet":2}],5:[function(require,module,exports){
 module.exports = function addGrid(options) {
 
   var map = options.map || document.getElementById("map") || L.map('map');
