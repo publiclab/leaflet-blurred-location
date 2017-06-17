@@ -12,13 +12,14 @@ leaflet-blurred-location provides friendly interfaces for:
 
 ## Setting up leaflet-blurred-location
 
-To set up the library first clone this repo to your local after that run 'npm install' to install all the neccessary packages required. Then open examples/index.html to look at the preview of the library.
+To set up the library first clone this repo to your local after that run 'npm install' to install all the neccessary packages required. Then open `examples/index.html` to look at the preview of the library.
 
 ## Creating a map object
 
 To create a new object just call the constructor 'BlurredLocation' as shown in the following example:
 (There must a div with id="map" in your html to hold the object)
 
+```js
 // this "constructs" an instance of the library:
 var object = new BlurredLocation({
   lat: 41.01,
@@ -27,6 +28,7 @@ var object = new BlurredLocation({
 
 object.getLat(); // should return 41.01
 object.getLon(); // should return -85.66
+```
 
 ## Design process
 
@@ -48,7 +50,7 @@ To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`.
 ## Options
 
 | Methods | Use | Usage (Example)|
-|---|---|---|---|---|
+|---------|-----|----------------|
 |getLat   |Used to get the current latitude of the center of the map.|  blurredLocation.getLat() //This would return the value in numerics|
 |getLon|Used to get the current latitude of the center of the map|blurredLocation.getLon() //This would return the value in numerics|
 |goTo   |Takes in three parameters, namely latitude, longitude and zoom. Will set the center of map to co-ordinates input.|blurredLocation.goTo(44.51, -89.99, 13) //Will set center of map to (44.51,-89.99) with zoom set as 13|
