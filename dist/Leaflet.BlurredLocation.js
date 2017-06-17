@@ -201,19 +201,20 @@ BlurredLocation = function BlurredLocation(options) {
 
     addGrid = options.addGrid;
 
-  function panMapToGeocodedLocation(selector) {
-    var input = document.getElementById(selector);
-
-    var autocomplete = new google.maps.places.Autocomplete(input);
-    autocomplete.addListener('place_changed', function() {
-      setTimeout(function () {
-        var str = input.value;
-        blurredLocation.geocode(str);
-      }, 10);
-    });
-  };
+  // function panMapToGeocodedLocation(selector) {
+  //   var input = document.getElementById(selector);
+  //
+  //   var autocomplete = new google.maps.places.Autocomplete(input);
+  //   autocomplete.addListener('place_changed', function() {
+  //     setTimeout(function () {
+  //       var str = input.value;
+  //       blurredLocation.geocode(str);
+  //     }, 10);
+  //   });
+  // };
 
   function panMapWhenInputsChange(latId, lngId) {
+
     var lat = document.getElementById(latId);
     var lng = document.getElementById(lngId);
 
@@ -221,19 +222,20 @@ BlurredLocation = function BlurredLocation(options) {
       if(lat.value && lng.value) {
         panMap(lat.value, lng.value);
       };
-    }
+    };
 
-    lat.addEventListener('change blur input', function() {
+    lat.addEventListener('change', function() {
       panIfValue();
     });
-    lng.addEventListener('change blur input', function() {
+
+    lng.addEventListener('change', function() {
       panIfValue();
     });
   }
 
 
   function panMap(lat, lng) {
-    map.panTo(new L.LatLng(lat, lng));
+    options.map.panTo(new L.LatLng(lat, lng));
   }
 
   function getPlacenameFromCoordinates(lat, lng) {
@@ -269,7 +271,7 @@ BlurredLocation = function BlurredLocation(options) {
     geocode: geocode,
     getSize: getSize,
     addGrid: addGrid,
-    panMapToGeocodedLocation: panMapToGeocodedLocation,
+    // panMapToGeocodedLocation: panMapToGeocodedLocation,
     getPlacenameFromCoordinates: getPlacenameFromCoordinates,
     panMapWhenInputsChange: panMapWhenInputsChange,
     panMap: panMap,
