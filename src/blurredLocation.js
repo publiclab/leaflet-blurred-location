@@ -6,7 +6,7 @@ BlurredLocation = function BlurredLocation(options) {
   options = options || {};
   options.map = options.map || L.map('map');
 
-  options.addGrid = options.addGrid || require('./addGrid.js');
+  options.addGrid = options.addGrid || require('./core/addGrid.js');
   options.addGrid(options.map);
 
   L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
@@ -84,14 +84,17 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function getPlacenameFromCoordinates(lat, lng) {
-    var loc = "Location not found";
 
-    $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng, function(data) {
-      if (data.results[0]) {
-        loc = data.results[0].formatted_address;
+      var loc = "location not found";
+      $.ajax({
+      url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
+      async: false,
+      success: function(result) {
+        loc = result;
       }
     });
-    return loc;
+
+    return loc.results[0].formatted_address;
   }
 
   function panMapByBrowserGeocode(checkbox) {
