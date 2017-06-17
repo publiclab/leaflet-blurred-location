@@ -13353,14 +13353,17 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function getPlacenameFromCoordinates(lat, lng) {
-    var loc = "Location not found";
 
-    $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng, function(data) {
-      if (data.results[0]) {
-        loc = data.results[0].formatted_address;
+      var loc = "location not found";
+      $.ajax({
+      url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
+      async: false,
+      success: function(result) {
+        loc = result;
       }
     });
-    return loc;
+
+    return loc.results[0].formatted_address;
   }
 
   function panMapByBrowserGeocode(checkbox) {
