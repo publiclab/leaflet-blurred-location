@@ -13339,31 +13339,28 @@ BlurredLocation = function BlurredLocation(options) {
       };
     }
 
-    lat.addEventListener('change blur input', function() {
+    lat.addEventListener('change', function() {
       panIfValue();
     });
-    lng.addEventListener('change blur input', function() {
+    lng.addEventListener('change', function() {
       panIfValue();
     });
   }
 
 
   function panMap(lat, lng) {
-    map.panTo(new L.LatLng(lat, lng));
+    options.map.panTo(new L.LatLng(lat, lng));
   }
 
   function getPlacenameFromCoordinates(lat, lng) {
+    var loc = "Location not found";
 
-      var loc = "location not found";
-      $.ajax({
-      url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
-      async: false,
-      success: function(result) {
-        loc = result;
+    $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng, function(data) {
+      if (data.results[0]) {
+        loc = data.results[0].formatted_address;
       }
     });
-
-    return loc.results[0].formatted_address;
+    return loc;
   }
 
   function panMapByBrowserGeocode(checkbox) {

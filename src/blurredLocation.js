@@ -70,17 +70,17 @@ BlurredLocation = function BlurredLocation(options) {
       };
     }
 
-    lat.addEventListener('change blur input', function() {
+    lat.addEventListener('change', function() {
       panIfValue();
     });
-    lng.addEventListener('change blur input', function() {
+    lng.addEventListener('change', function() {
       panIfValue();
     });
   }
 
 
   function panMap(lat, lng) {
-    map.panTo(new L.LatLng(lat, lng));
+    options.map.panTo(new L.LatLng(lat, lng));
   }
 
   function getPlacenameFromCoordinates(lat, lng) {
