@@ -34,7 +34,7 @@ object.getLon(); // should return -85.66
 
 You can try a very early, rough prototype here:
 
-https://mridulnagpal.github.io/leaflet-blurred-location/examples/
+https://publiclab.github.io/leaflet-blurred-location/examples/
 
 
 ## Testing
