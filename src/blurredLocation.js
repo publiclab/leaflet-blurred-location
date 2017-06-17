@@ -80,7 +80,7 @@ BlurredLocation = function BlurredLocation(options) {
 
 
   function panMap(lat, lng) {
-    map.panTo(new L.LatLng(lat, lng));
+    options.map.panTo(new L.LatLng(lat, lng));
   }
 
   function getPlacenameFromCoordinates(lat, lng) {
