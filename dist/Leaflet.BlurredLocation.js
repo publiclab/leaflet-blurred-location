@@ -13318,8 +13318,6 @@ BlurredLocation = function BlurredLocation(options) {
     return options.map.getSize();
   }
 
-  gridSystem = options.gridSystem;
-
   function panMapToGeocodedLocation(selector) {
     var input = document.getElementById(selector);
 
@@ -13416,7 +13414,7 @@ BlurredLocation = function BlurredLocation(options) {
     goTo: goTo,
     geocode: geocode,
     getSize: getSize,
-    gridSystem: gridSystem,
+    gridSystem: options.gridSystem,
     panMapToGeocodedLocation: panMapToGeocodedLocation,
     getPlacenameFromCoordinates: getPlacenameFromCoordinates,
     panMapWhenInputsChange: panMapWhenInputsChange,
@@ -13428,7 +13426,7 @@ BlurredLocation = function BlurredLocation(options) {
 exports.BlurredLocation = BlurredLocation;
 
 },{"./core/gridSystem.js":5,"leaflet":2}],5:[function(require,module,exports){
-module.exports = function addGrid(options) {
+module.exports = function gridSystem(options) {
 
   var map = options.map || document.getElementById("map") || L.map('map');
 

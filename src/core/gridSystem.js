@@ -1,4 +1,4 @@
-module.exports = function addGrid(options) {
+module.exports = function gridSystem(options) {
 
   var map = options.map || document.getElementById("map") || L.map('map');
 
