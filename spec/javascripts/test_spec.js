@@ -39,23 +39,15 @@ describe("Basic testing", function() {
   //   expect(blurredLocation.getLon()).toBe(-58.3815591);
   // });
 
-});
+  it("Checks if the callback of getPlacenameFromCoordinates method is called", function(done) {
+    blurredLocation.getPlacenameFromCoordinates(45, 52, function onResponse(result) {
+ 
+      expect(blurredLocation.getLat()).toBe(45);
+      expect(blurredLocation.getLon()).toBe(45);
+      expect(result).not.toBeUndefined();
+      done();
+ 
+    });
+  });
 
-
-
-describe("Asynchronous spec for getPlacenameFromCoordinates", function() {
-
-  var asyncSetThing,
-  asyncWrapper = function(callback) {
-   asyncSetThing = true;
-   blurredLocation.getPlacenameFromCoordinates(45,52,callback());
-  };
-
-  beforeEach(function(done) {
-    asyncWrapper(done);
- });
-
- it("Checks if the callback of getPlacenameFromCoordinates method is called", function() {
-   expect(asyncSetThing).toBeTruthy();
- });
 });
