@@ -48,17 +48,17 @@ BlurredLocation = function BlurredLocation(options) {
 
   addGrid = options.addGrid;
 
-  // function panMapToGeocodedLocation(selector) {
-  //   var input = document.getElementById(selector);
-  //
-  //   var autocomplete = new google.maps.places.Autocomplete(input);
-  //   autocomplete.addListener('place_changed', function() {
-  //     setTimeout(function () {
-  //       var str = input.value;
-  //       blurredLocation.geocode(str);
-  //     }, 10);
-  //   });
-  // };
+  function panMapToGeocodedLocation(selector) {
+    var input = document.getElementById(selector);
+  
+    var autocomplete = new google.maps.places.Autocomplete(input);
+    autocomplete.addListener('place_changed', function() {
+      setTimeout(function () {
+        var str = input.value;
+        blurredLocation.geocode(str);
+      }, 10);
+    });
+  };
 
   function panMapWhenInputsChange(latId, lngId) {
 
@@ -118,7 +118,7 @@ BlurredLocation = function BlurredLocation(options) {
     geocode: geocode,
     getSize: getSize,
     addGrid: addGrid,
-    // panMapToGeocodedLocation: panMapToGeocodedLocation,
+    panMapToGeocodedLocation: panMapToGeocodedLocation,
     getPlacenameFromCoordinates: getPlacenameFromCoordinates,
     panMapWhenInputsChange: panMapWhenInputsChange,
     panMap: panMap,
