@@ -49,8 +49,6 @@ BlurredLocation = function BlurredLocation(options) {
     return options.map.getSize();
   }
 
-  gridSystem = options.gridSystem;
-
   function panMapToGeocodedLocation(selector) {
     var input = document.getElementById(selector);
 
@@ -147,7 +145,7 @@ BlurredLocation = function BlurredLocation(options) {
     goTo: goTo,
     geocode: geocode,
     getSize: getSize,
-    gridSystem: gridSystem,
+    gridSystem: options.gridSystem,
     panMapToGeocodedLocation: panMapToGeocodedLocation,
     getPlacenameFromCoordinates: getPlacenameFromCoordinates,
     panMapWhenInputsChange: panMapWhenInputsChange,
