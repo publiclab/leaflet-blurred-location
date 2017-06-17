@@ -13352,18 +13352,15 @@ BlurredLocation = function BlurredLocation(options) {
     options.map.panTo(new L.LatLng(lat, lng));
   }
 
-  function getPlacenameFromCoordinates(lat, lng) {
+  function getPlacenameFromCoordinates(lat, lng, onResponse = function(result) {console.log(result);}) {
 
-      var loc = "location not found";
       $.ajax({
       url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
       async: false,
       success: function(result) {
-        loc = result;
+        onResponse(result);
       }
     });
-
-    return loc.results[0].formatted_address;
   }
 
   function panMapByBrowserGeocode(checkbox) {
