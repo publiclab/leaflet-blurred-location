@@ -23,7 +23,7 @@ module.exports = function addGrid(options) {
     include: L.Mixin.Events,
 
     options: {
-      cellSize: 40,
+      cellSize: options.cellSize || 40,
       delayFactor: 0.5,
     },
 
