@@ -26,8 +26,8 @@ describe("Basic testing", function() {
     expect(blurredLocation.getLon()).toBe(-0.09);
   });
 
-  it("Checks if blurredLocation has a property named addGrid", function() {
-    expect(blurredLocation.hasOwnProperty("addGrid")).toBe(true);
+  it("Checks if blurredLocation has a property named gridSystem", function() {
+    expect(blurredLocation.hasOwnProperty("gridSystem")).toBe(true);
   });
   // it("geocode spec", function() {
   //   var geometry = blurredLocation.geocode("Buenos Aires");
