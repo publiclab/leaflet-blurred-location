@@ -13340,7 +13340,6 @@ BlurredLocation = function BlurredLocation(options) {
     }
 
     lat.addEventListener('change', function() {
-      console.log("hello");
       panIfValue();
     });
     lng.addEventListener('change', function() {
