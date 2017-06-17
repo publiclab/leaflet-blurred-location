@@ -10,15 +10,15 @@ describe("Basic testing", function() {
 
   var blurredLocation = new BlurredLocation(options);
 
-  it("getLat spec", function () {
+  it("Checks if getLat returns the correct latitude", function () {
     expect(blurredLocation.getLat()).toBe(41.01);
   });
 
-  it("getLon spec", function () {
+  it("Checks if getLon returns the correct longitude", function () {
     expect(blurredLocation.getLon()).toBe(-85.66);
   });
 
-  it("goTo spec", function() {
+  it("Checks if goTo changes the map location to given parameters", function() {
     expect(blurredLocation.getLat()).toBe(41.01);
     expect(blurredLocation.getLon()).toBe(-85.66);
     blurredLocation.goTo(51.50, -0.09, 13);
@@ -26,7 +26,7 @@ describe("Basic testing", function() {
     expect(blurredLocation.getLon()).toBe(-0.09);
   });
 
-  it("addGrid spec", function() {
+  it("Checks if blurredLocation has a property named addGrid", function() {
     expect(blurredLocation.hasOwnProperty("addGrid")).toBe(true);
   });
   // it("geocode spec", function() {
