@@ -1,7 +1,7 @@
 BlurredLocation = function BlurredLocation(options) {
     options = options || {};
     options.map = options.map || L.map('map');
-    options.addGrid = options.addGrid || require('./addGrid.js');
+    options.addGrid = options.addGrid || require('./core/addGrid.js');
 
     L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
     options.location = options.location || {
