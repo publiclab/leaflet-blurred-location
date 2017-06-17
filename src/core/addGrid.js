@@ -23,7 +23,7 @@ module.exports = function addGrid(map, onChangeLocation) {
     include: L.Mixin.Events,
 
     options: {
-      cellSize: 64,
+      cellSize: 40,
       delayFactor: 0.5,
     },
 

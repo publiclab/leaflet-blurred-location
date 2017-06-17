@@ -13340,7 +13340,6 @@ BlurredLocation = function BlurredLocation(options) {
     }
 
     lat.addEventListener('change', function() {
-      console.log("hello");
       panIfValue();
     });
     lng.addEventListener('change', function() {
@@ -13379,6 +13378,27 @@ BlurredLocation = function BlurredLocation(options) {
     }
   }
 
+  function gridWidthInPixels(degrees) {
+    var p1 = L.latLng(1,1);
+    var p2 = L.latLng(1+degrees, 1+degrees);
+    var l1 = options.map.latLngToContainerPoint(p1);
+    var l2 = options.map.latLngToContainerPoint(p2);
+    return {
+      x: Math.abs(l2.x - l1.x),
+      y: Math.abs(l2.y - l1.y),
+    }
+  }
+
+  function findPrecisionForMinimumGridWidth(width) {
+    var degrees = 1, precision = 1;
+    while(gridWidthInPixels(degrees).x > width) {
+      degrees/= 10;
+      precision+= 1;
+    }
+    return precision;
+  }
+
+
   return {
     getLat: getLat,
     getLon: getLon,
@@ -13391,6 +13411,8 @@ BlurredLocation = function BlurredLocation(options) {
     panMapWhenInputsChange: panMapWhenInputsChange,
     panMap: panMap,
     panMapByBrowserGeocode: panMapByBrowserGeocode,
+    gridWidthInPixels: gridWidthInPixels,
+    findPrecisionForMinimumGridWidth: findPrecisionForMinimumGridWidth,
   }
 }
 
@@ -13422,7 +13444,7 @@ module.exports = function addGrid(map, onChangeLocation) {
     include: L.Mixin.Events,
 
     options: {
-      cellSize: 64,
+      cellSize: 40,
       delayFactor: 0.5,
     },
 
