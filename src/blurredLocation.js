@@ -70,10 +70,10 @@ BlurredLocation = function BlurredLocation(options) {
       };
     }
 
-    lat.addEventListener('change blur input', function() {
+    lat.addEventListener('change', function() {
       panIfValue();
     });
-    lng.addEventListener('change blur input', function() {
+    lng.addEventListener('change', function() {
       panIfValue();
     });
   }
