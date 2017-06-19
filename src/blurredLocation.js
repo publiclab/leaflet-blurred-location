@@ -5,6 +5,7 @@ BlurredLocation = function BlurredLocation(options) {
 
   options = options || {};
   options.map = options.map || L.map('map');
+  options.pixels = options.pixels || 400;
 
   options.gridSystem = options.gridSystem || require('./core/gridSystem.js');
 
@@ -141,6 +142,10 @@ BlurredLocation = function BlurredLocation(options) {
         truncatedNum = Math[adjustedNum < 0 ? 'ceil' : 'floor'](adjustedNum);
 
     return truncatedNum / multiplier;
+  };
+
+  function getPrecision() {
+    return getMinimumGridWidth(options.pixels).precision;
   }
 
 
@@ -158,6 +163,7 @@ BlurredLocation = function BlurredLocation(options) {
     panMapByBrowserGeocode: panMapByBrowserGeocode,
     getMinimumGridWidth: getMinimumGridWidth,
     gridWidthInPixels: gridWidthInPixels,
+    getPrecision: getPrecision,
   }
 }
 

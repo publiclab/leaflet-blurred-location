@@ -34,7 +34,14 @@ describe("Basic testing", function() {
     expect(blurredLocation.gridSystem.getCellSize()).toBe(100);
     blurredLocation.goTo(blurredLocation.getLat(), blurredLocation.getLon(),10);
     expect(blurredLocation.gridSystem.getCellSize()).toBe(73);
-  })
+  });
+
+  it("Checks if getPrecision works and changes on zoom", function() {
+    blurredLocation.goTo(blurredLocation.getLat(), blurredLocation.getLon(),13);
+    expect(blurredLocation.getPrecision()).toBe(3);
+    blurredLocation.goTo(blurredLocation.getLat(), blurredLocation.getLon(),10);
+    expect(blurredLocation.getPrecision()).toBe(2);
+  });
   // it("geocode spec", function() {
   //   var geometry = blurredLocation.geocode("Buenos Aires");
   //   console.log(blurredLocation.getLat());
