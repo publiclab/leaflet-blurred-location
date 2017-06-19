@@ -31,9 +31,14 @@ describe("Basic testing", function() {
   });
 
   it("Checks if cellSize changes with change in zoom", function() {
-    expect(blurredLocation.gridSystem.getCellSize()).toBe(100);
+    expect(blurredLocation.gridSystem.getCellSize().rows).toBe(100);
+    expect(blurredLocation.gridSystem.getCellSize().cols).toBe(100);
+
     blurredLocation.goTo(blurredLocation.getLat(), blurredLocation.getLon(),10);
-    expect(blurredLocation.gridSystem.getCellSize()).toBe(73);
+
+    expect(blurredLocation.gridSystem.getCellSize().rows).toBe(73);
+    expect(blurredLocation.gridSystem.getCellSize().cols).toBe(117);
+
   });
 
   it("Checks if getPrecision works and changes on zoom", function() {

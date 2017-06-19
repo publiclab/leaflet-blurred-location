@@ -13394,7 +13394,7 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function getMinimumGridWidth(pixels) {
-    var degrees = 1.0, precision = 1;
+    var degrees = 100.0, precision = -1;
     while(gridWidthInPixels(degrees).x > pixels) {
       degrees/= 10;
       precision+= 1;
@@ -13442,7 +13442,7 @@ exports.BlurredLocation = BlurredLocation;
 module.exports = function gridSystem(options) {
 
   var map = options.map || document.getElementById("map") || L.map('map');
-  options.cellSize = options.cellSize || { rows:100, cols:50 };
+  options.cellSize = options.cellSize || { rows:100, cols:100 };
   // A function to return the style of a cell
   function create_cell_style(fill) {
     return {
@@ -13464,7 +13464,7 @@ module.exports = function gridSystem(options) {
     include: L.Mixin.Events,
 
     options: {
-      cellSize: options.cellSize || { rows:100, cols:50 },
+      cellSize: options.cellSize || { rows:100, cols:100 },
       delayFactor: 0.5,
     },
 
@@ -13602,7 +13602,7 @@ module.exports = function gridSystem(options) {
   };
 
   var layer = L.virtualGrid({
-                cellSize: { rows:100, cols:50 }
+                cellSize: { rows:100, cols:100 }
               }).addTo(map);
 
   function setCellSizeInDegrees(degrees) {
