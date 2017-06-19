@@ -13295,11 +13295,11 @@ BlurredLocation = function BlurredLocation(options) {
   options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
   function getLat() {
-    return options.map.getCenter().lat;
+    return truncateToPrecision(options.map.getCenter().lat, getPrecision())
   }
 
   function getLon() {
-    return options.map.getCenter().lng;
+    return truncateToPrecision(options.map.getCenter().lng, getPrecision())
   }
 
   function goTo(lat, lon, zoom) {
@@ -13383,8 +13383,8 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function gridWidthInPixels(degrees) {
-    var p1 = L.latLng(getLat(),getLon());
-    var p2 = L.latLng(getLat()+degrees, getLon()+degrees);
+    var p1 = L.latLng(options.map.getCenter().lat,options.map.getCenter().lng);
+    var p2 = L.latLng(p1.lat+degrees, p1.lng+degrees);
     var l1 = options.map.latLngToContainerPoint(p1);
     var l2 = options.map.latLngToContainerPoint(p2);
     return {
