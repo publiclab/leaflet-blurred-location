@@ -13287,8 +13287,8 @@ BlurredLocation = function BlurredLocation(options) {
   L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
 
   options.location = options.location || {
-    lat: 41.01,
-    lon: -85.66
+    lat: 41.011234567,
+    lon: -85.66123456789
   };
 
   options.zoom = options.zoom || 13;
@@ -13304,6 +13304,10 @@ BlurredLocation = function BlurredLocation(options) {
 
   function goTo(lat, lon, zoom) {
     options.map.setView([lat, lon], zoom);
+  }
+
+  function setZoom(zoom) {
+    options.map.setZoom(zoom);
   }
 
   function geocode(string) {
@@ -13433,6 +13437,7 @@ BlurredLocation = function BlurredLocation(options) {
     getMinimumGridWidth: getMinimumGridWidth,
     gridWidthInPixels: gridWidthInPixels,
     getPrecision: getPrecision,
+    setZoom: setZoom,
   }
 }
 
