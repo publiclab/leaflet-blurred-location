@@ -1,7 +1,7 @@
 module.exports = function gridSystem(options) {
 
   var map = options.map || document.getElementById("map") || L.map('map');
-
+  options.cellSize = options.cellSize || 100;
   // A function to return the style of a cell
   function create_cell_style(fill) {
     return {
@@ -62,6 +62,10 @@ module.exports = function gridSystem(options) {
     _zoomHandler: function(e) {
       this.clearLayers();
       this._renderCells(e.target.getBounds());
+
+      var pixels = options.pixels || 400;
+      var degrees = options.getMinimumGridWidth(pixels);
+      setCellSizeInDegrees(degrees.degrees);
     },
 
     _renderCells: function(bounds) {
@@ -152,12 +156,30 @@ module.exports = function gridSystem(options) {
     }
   });
 
-  L.virtualGrid = function(url, options) {
+  L.virtualGrid = function(options, url) {
     return new L.VirtualGrid(options);
   };
 
-  L.virtualGrid({
-    cellSize: 64
-  }).addTo(map);
+  var layer = L.virtualGrid({
+                cellSize: 100
+              }).addTo(map);
 
+  function setCellSizeInDegrees(degrees) {
+
+    layer.remove();
+    var pixels = options.gridWidthInPixels(degrees);
+    options.cellSize = pixels.x;
+    layer = L.virtualGrid({
+              cellSize: pixels.x
+            }).addTo(map);
+  }
+
+  function getCellSize() {
+    return options.cellSize;
+  }
+
+  return {
+    setCellSizeInDegrees: setCellSizeInDegrees,
+    getCellSize: getCellSize,
+  }
 }

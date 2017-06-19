@@ -9,8 +9,10 @@ BlurredLocation = function BlurredLocation(options) {
   options.gridSystem = options.gridSystem || require('./core/gridSystem.js');
 
   gridSystemOptions = options.gridSystemOptions || {};
-  gridSystemOptions.map = options.map
-  options.gridSystem(gridSystemOptions);
+  gridSystemOptions.map = options.map;
+  gridSystemOptions.gridWidthInPixels = gridWidthInPixels;
+  gridSystemOptions.getMinimumGridWidth = getMinimumGridWidth;
+  gridSystem = options.gridSystem(gridSystemOptions);
 
   L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
 
@@ -121,13 +123,16 @@ BlurredLocation = function BlurredLocation(options) {
     }
   }
 
-  function findPrecisionForMinimumGridWidth(width) {
-    var degrees = 1, precision = 1;
-    while(gridWidthInPixels(degrees).x > width) {
+  function getMinimumGridWidth(pixels) {
+    var degrees = 1.0, precision = 1;
+    while(gridWidthInPixels(degrees).x > pixels) {
       degrees/= 10;
       precision+= 1;
     }
-    return precision;
+    return {
+      precision: precision,
+      degrees: degrees,
+    }
   }
 
   function truncateToPrecision(number, digits) {
@@ -145,12 +150,14 @@ BlurredLocation = function BlurredLocation(options) {
     goTo: goTo,
     geocode: geocode,
     getSize: getSize,
-    gridSystem: options.gridSystem,
+    gridSystem: gridSystem,
     panMapToGeocodedLocation: panMapToGeocodedLocation,
     getPlacenameFromCoordinates: getPlacenameFromCoordinates,
     panMapWhenInputsChange: panMapWhenInputsChange,
     panMap: panMap,
     panMapByBrowserGeocode: panMapByBrowserGeocode,
+    getMinimumGridWidth: getMinimumGridWidth,
+    gridWidthInPixels: gridWidthInPixels,
   }
 }
 

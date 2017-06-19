@@ -29,6 +29,12 @@ describe("Basic testing", function() {
   it("Checks if blurredLocation has a property named gridSystem", function() {
     expect(blurredLocation.hasOwnProperty("gridSystem")).toBe(true);
   });
+
+  it("Checks if cellSize changes with change in zoom", function() {
+    expect(blurredLocation.gridSystem.getCellSize()).toBe(100);
+    blurredLocation.goTo(blurredLocation.getLat(), blurredLocation.getLon(),10);
+    expect(blurredLocation.gridSystem.getCellSize()).toBe(73);
+  })
   // it("geocode spec", function() {
   //   var geometry = blurredLocation.geocode("Buenos Aires");
   //   console.log(blurredLocation.getLat());

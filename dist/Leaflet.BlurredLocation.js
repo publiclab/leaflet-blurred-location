@@ -13278,8 +13278,10 @@ BlurredLocation = function BlurredLocation(options) {
   options.gridSystem = options.gridSystem || require('./core/gridSystem.js');
 
   gridSystemOptions = options.gridSystemOptions || {};
-  gridSystemOptions.map = options.map
-  options.gridSystem(gridSystemOptions);
+  gridSystemOptions.map = options.map;
+  gridSystemOptions.gridWidthInPixels = gridWidthInPixels;
+  gridSystemOptions.getMinimumGridWidth = getMinimumGridWidth;
+  gridSystem = options.gridSystem(gridSystemOptions);
 
   L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
 
@@ -13390,13 +13392,16 @@ BlurredLocation = function BlurredLocation(options) {
     }
   }
 
-  function findPrecisionForMinimumGridWidth(width) {
-    var degrees = 1, precision = 1;
-    while(gridWidthInPixels(degrees).x > width) {
+  function getMinimumGridWidth(pixels) {
+    var degrees = 1.0, precision = 1;
+    while(gridWidthInPixels(degrees).x > pixels) {
       degrees/= 10;
       precision+= 1;
     }
-    return precision;
+    return {
+      precision: precision,
+      degrees: degrees,
+    }
   }
 
   function truncateToPrecision(number, digits) {
@@ -13414,12 +13419,14 @@ BlurredLocation = function BlurredLocation(options) {
     goTo: goTo,
     geocode: geocode,
     getSize: getSize,
-    gridSystem: options.gridSystem,
+    gridSystem: gridSystem,
     panMapToGeocodedLocation: panMapToGeocodedLocation,
     getPlacenameFromCoordinates: getPlacenameFromCoordinates,
     panMapWhenInputsChange: panMapWhenInputsChange,
     panMap: panMap,
     panMapByBrowserGeocode: panMapByBrowserGeocode,
+    getMinimumGridWidth: getMinimumGridWidth,
+    gridWidthInPixels: gridWidthInPixels,
   }
 }
 
@@ -13429,7 +13436,7 @@ exports.BlurredLocation = BlurredLocation;
 module.exports = function gridSystem(options) {
 
   var map = options.map || document.getElementById("map") || L.map('map');
-
+  options.cellSize = options.cellSize || 100;
   // A function to return the style of a cell
   function create_cell_style(fill) {
     return {
@@ -13490,6 +13497,10 @@ module.exports = function gridSystem(options) {
     _zoomHandler: function(e) {
       this.clearLayers();
       this._renderCells(e.target.getBounds());
+
+      var pixels = options.pixels || 400;
+      var degrees = options.getMinimumGridWidth(pixels);
+      setCellSizeInDegrees(degrees.degrees);
     },
 
     _renderCells: function(bounds) {
@@ -13580,14 +13591,32 @@ module.exports = function gridSystem(options) {
     }
   });
 
-  L.virtualGrid = function(url, options) {
+  L.virtualGrid = function(options, url) {
     return new L.VirtualGrid(options);
   };
 
-  L.virtualGrid({
-    cellSize: 64
-  }).addTo(map);
+  var layer = L.virtualGrid({
+                cellSize: 100
+              }).addTo(map);
 
+  function setCellSizeInDegrees(degrees) {
+
+    layer.remove();
+    var pixels = options.gridWidthInPixels(degrees);
+    options.cellSize = pixels.x;
+    layer = L.virtualGrid({
+              cellSize: pixels.x
+            }).addTo(map);
+  }
+
+  function getCellSize() {
+    return options.cellSize;
+  }
+
+  return {
+    setCellSizeInDegrees: setCellSizeInDegrees,
+    getCellSize: getCellSize,
+  }
 }
 
 },{}]},{},[1,3,4]);
