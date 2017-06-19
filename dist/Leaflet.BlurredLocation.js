@@ -13442,7 +13442,7 @@ exports.BlurredLocation = BlurredLocation;
 module.exports = function gridSystem(options) {
 
   var map = options.map || document.getElementById("map") || L.map('map');
-  options.cellSize = options.cellSize || 100;
+  options.cellSize = options.cellSize || { rows:100, cols:50 };
   // A function to return the style of a cell
   function create_cell_style(fill) {
     return {
@@ -13464,7 +13464,7 @@ module.exports = function gridSystem(options) {
     include: L.Mixin.Events,
 
     options: {
-      cellSize: options.cellSize || 40,
+      cellSize: options.cellSize || { rows:100, cols:50 },
       delayFactor: 0.5,
     },
 
@@ -13542,8 +13542,8 @@ module.exports = function gridSystem(options) {
     },
 
     _setupSize: function() {
-      this._rows = Math.ceil(this._map.getSize().x / this._cellSize);
-      this._cols = Math.ceil(this._map.getSize().y / this._cellSize);
+      this._rows = Math.ceil(this._map.getSize().x / this._cellSize.rows);
+      this._cols = Math.ceil(this._map.getSize().y / this._cellSize.cols);
     },
 
     _setupGrid: function(bounds) {
@@ -13556,8 +13556,8 @@ module.exports = function gridSystem(options) {
     },
 
     _cellPoint: function(row, col) {
-      var x = this._origin.x + (row * this._cellSize);
-      var y = this._origin.y + (col * this._cellSize);
+      var x = this._origin.x + (row * this._cellSize.rows);
+      var y = this._origin.y + (col * this._cellSize.cols);
       return new L.Point(x, y);
     },
 
@@ -13574,8 +13574,8 @@ module.exports = function gridSystem(options) {
       var center = bounds.getCenter();
       var offsetX = this._origin.x - offset.x;
       var offsetY = this._origin.y - offset.y;
-      var offsetRows = Math.round(offsetX / this._cellSize);
-      var offsetCols = Math.round(offsetY / this._cellSize);
+      var offsetRows = Math.round(offsetX / this._cellSize.rows);
+      var offsetCols = Math.round(offsetY / this._cellSize.cols);
       var cells = [];
       for (var i = 0; i <= this._rows; i++) {
         for (var j = 0; j <= this._cols; j++) {
@@ -13602,16 +13602,16 @@ module.exports = function gridSystem(options) {
   };
 
   var layer = L.virtualGrid({
-                cellSize: 100
+                cellSize: { rows:100, cols:50 }
               }).addTo(map);
 
   function setCellSizeInDegrees(degrees) {
 
     layer.remove();
     var pixels = options.gridWidthInPixels(degrees);
-    options.cellSize = pixels.x;
+    options.cellSize = { rows:pixels.x, cols:pixels.y};
     layer = L.virtualGrid({
-              cellSize: pixels.x
+              cellSize: options.cellSize
             }).addTo(map);
   }
 
