@@ -5,33 +5,40 @@ BlurredLocation = function BlurredLocation(options) {
 
   options = options || {};
   options.map = options.map || L.map('map');
+  options.pixels = options.pixels || 400;
 
   options.gridSystem = options.gridSystem || require('./core/gridSystem.js');
 
   gridSystemOptions = options.gridSystemOptions || {};
-  gridSystemOptions.map = options.map
-  options.gridSystem(gridSystemOptions);
+  gridSystemOptions.map = options.map;
+  gridSystemOptions.gridWidthInPixels = gridWidthInPixels;
+  gridSystemOptions.getMinimumGridWidth = getMinimumGridWidth;
+  gridSystem = options.gridSystem(gridSystemOptions);
 
   L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
 
   options.location = options.location || {
-    lat: 41.01,
-    lon: -85.66
+    lat: 41.011234567,
+    lon: -85.66123456789
   };
 
   options.zoom = options.zoom || 13;
   options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
   function getLat() {
-    return options.map.getCenter().lat;
+    return truncateToPrecision(options.map.getCenter().lat, getPrecision())
   }
 
   function getLon() {
-    return options.map.getCenter().lng;
+    return truncateToPrecision(options.map.getCenter().lng, getPrecision())
   }
 
   function goTo(lat, lon, zoom) {
     options.map.setView([lat, lon], zoom);
+  }
+
+  function setZoom(zoom) {
+    options.map.setZoom(zoom);
   }
 
   function geocode(string) {
@@ -111,8 +118,8 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function gridWidthInPixels(degrees) {
-    var p1 = L.latLng(getLat(),getLon());
-    var p2 = L.latLng(getLat()+degrees, getLon()+degrees);
+    var p1 = L.latLng(options.map.getCenter().lat,options.map.getCenter().lng);
+    var p2 = L.latLng(p1.lat+degrees, p1.lng+degrees);
     var l1 = options.map.latLngToContainerPoint(p1);
     var l2 = options.map.latLngToContainerPoint(p2);
     return {
@@ -121,13 +128,16 @@ BlurredLocation = function BlurredLocation(options) {
     }
   }
 
-  function findPrecisionForMinimumGridWidth(width) {
-    var degrees = 1, precision = 1;
-    while(gridWidthInPixels(degrees).x > width) {
+  function getMinimumGridWidth(pixels) {
+    var degrees = 100.0, precision = -2;
+    while(gridWidthInPixels(degrees).x > pixels) {
       degrees/= 10;
       precision+= 1;
     }
-    return precision;
+    return {
+      precision: precision,
+      degrees: degrees,
+    }
   }
 
   function truncateToPrecision(number, digits) {
@@ -136,6 +146,10 @@ BlurredLocation = function BlurredLocation(options) {
         truncatedNum = Math[adjustedNum < 0 ? 'ceil' : 'floor'](adjustedNum);
 
     return truncatedNum / multiplier;
+  };
+
+  function getPrecision() {
+    return getMinimumGridWidth(options.pixels).precision;
   }
 
 
@@ -145,12 +159,16 @@ BlurredLocation = function BlurredLocation(options) {
     goTo: goTo,
     geocode: geocode,
     getSize: getSize,
-    gridSystem: options.gridSystem,
+    gridSystem: gridSystem,
     panMapToGeocodedLocation: panMapToGeocodedLocation,
     getPlacenameFromCoordinates: getPlacenameFromCoordinates,
     panMapWhenInputsChange: panMapWhenInputsChange,
     panMap: panMap,
     panMapByBrowserGeocode: panMapByBrowserGeocode,
+    getMinimumGridWidth: getMinimumGridWidth,
+    gridWidthInPixels: gridWidthInPixels,
+    getPrecision: getPrecision,
+    setZoom: setZoom,
   }
 }
 
