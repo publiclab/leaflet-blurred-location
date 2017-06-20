@@ -6,24 +6,24 @@ describe("Basic testing", function() {
 
   it("Checks if getLat returns the correct latitude with correct precision", function () {
     blurredLocation.setZoom(13);
-    expect(blurredLocation.getLat()).toBe(41.011);
-    blurredLocation.setZoom(10);
     expect(blurredLocation.getLat()).toBe(41.01);
+    blurredLocation.setZoom(10);
+    expect(blurredLocation.getLat()).toBe(41.0);
   });
 
   it("Checks if getLon returns the correct longitude with correct precision", function () {
     blurredLocation.setZoom(13);
-    expect(blurredLocation.getLon()).toBe(-85.661);
-    blurredLocation.setZoom(10);
     expect(blurredLocation.getLon()).toBe(-85.66);
+    blurredLocation.setZoom(10);
+    expect(blurredLocation.getLon()).toBe(-85.6);
   });
 
   it("Checks if goTo changes the map location to given parameters", function() {
-    expect(blurredLocation.getLat()).toBe(41.01);
-    expect(blurredLocation.getLon()).toBe(-85.66);
+    expect(blurredLocation.getLat()).toBe(41.0);
+    expect(blurredLocation.getLon()).toBe(-85.6);
     blurredLocation.goTo(51.50223, -0.09123213, 13);
-    expect(blurredLocation.getLat()).toBe(51.502);
-    expect(blurredLocation.getLon()).toBe(-0.091);
+    expect(blurredLocation.getLat()).toBe(51.50);
+    expect(blurredLocation.getLon()).toBe(-0.09);
   });
 
   it("Checks if blurredLocation has a property named gridSystem", function() {
@@ -46,9 +46,9 @@ describe("Basic testing", function() {
 
   it("Checks if getPrecision works and changes on zoom", function() {
     blurredLocation.goTo(blurredLocation.getLat(), blurredLocation.getLon(),13);
-    expect(blurredLocation.getPrecision()).toBe(3);
-    blurredLocation.goTo(blurredLocation.getLat(), blurredLocation.getLon(),10);
     expect(blurredLocation.getPrecision()).toBe(2);
+    blurredLocation.goTo(blurredLocation.getLat(), blurredLocation.getLon(),10);
+    expect(blurredLocation.getPrecision()).toBe(1);
   });
   // it("geocode spec", function() {
   //   var geometry = blurredLocation.geocode("Buenos Aires");

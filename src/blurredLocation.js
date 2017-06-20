@@ -129,7 +129,7 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function getMinimumGridWidth(pixels) {
-    var degrees = 100.0, precision = -1;
+    var degrees = 100.0, precision = -2;
     while(gridWidthInPixels(degrees).x > pixels) {
       degrees/= 10;
       precision+= 1;
