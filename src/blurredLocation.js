@@ -17,7 +17,6 @@ BlurredLocation = function BlurredLocation(options) {
   gridSystem = options.gridSystem(gridSystemOptions);
 
   InterfaceOptions = options.InterfaceOptions || {};
-  InterfaceOptions.Id = {latId: 'lat', lngId: 'lng'}
   InterfaceOptions.panMap = panMap;
 
   Interface = options.Interface(InterfaceOptions);
