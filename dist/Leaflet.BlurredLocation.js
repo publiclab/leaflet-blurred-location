@@ -13286,7 +13286,6 @@ BlurredLocation = function BlurredLocation(options) {
   gridSystem = options.gridSystem(gridSystemOptions);
 
   InterfaceOptions = options.InterfaceOptions || {};
-  InterfaceOptions.Id = {latId: 'lat', lngId: 'lng'}
   InterfaceOptions.panMap = panMap;
 
   Interface = options.Interface(InterfaceOptions);
@@ -13620,7 +13619,7 @@ module.exports = function gridSystem(options) {
 }
 
 },{}],6:[function(require,module,exports){
-module.exports = function UI (options) {
+module.exports = function Interface (options) {
 
     options.latId = options.latId || 'lat';
     options.lngId = options.lngId || 'lng';
