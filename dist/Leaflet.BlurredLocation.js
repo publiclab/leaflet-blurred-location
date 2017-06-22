@@ -13666,8 +13666,8 @@ module.exports = function Interface (options) {
     options.lngId = options.lngId || 'lng';
 
     function panMapWhenInputsChange() {
-    var lat = document.getElementById(options.Id.latId);
-    var lng = document.getElementById(options.Id.lngId);
+    var lat = document.getElementById(options.latId);
+    var lng = document.getElementById(options.lngId);
 
     function panIfValue() {
       if(lat.value && lng.value) {
