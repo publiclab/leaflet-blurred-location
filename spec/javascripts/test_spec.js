@@ -50,6 +50,20 @@ describe("Basic testing", function() {
     blurredLocation.goTo(blurredLocation.getLat(), blurredLocation.getLon(),10);
     expect(blurredLocation.getPrecision()).toBe(1);
   });
+
+  it("Checks if getFullLat returns the full latitude of the map", function() {
+    blurredLocation.goTo(45.324324234,-53.32423234234,13);
+    expect(blurredLocation.getFullLat()).toBe(45.324324234);
+  });
+
+  it("Checks if getFullLon returns the full latitude of the map", function() {
+    blurredLocation.goTo(45.324324234,-53.32423234234,13);
+    expect(blurredLocation.getFullLon()).toBe(-53.32423234234);
+  });
+
+
+
+
   // it("geocode spec", function() {
   //   var geometry = blurredLocation.geocode("Buenos Aires");
   //   console.log(blurredLocation.getLat());

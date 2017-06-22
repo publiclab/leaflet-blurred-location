@@ -13421,6 +13421,14 @@ BlurredLocation = function BlurredLocation(options) {
     return getMinimumGridWidth(options.pixels).precision;
   }
 
+  function getFullLat() {
+    return options.map.getCenter().lat;
+  }
+
+  function getFullLon() {
+    return options.map.getCenter().lng;
+  }
+
 
   return {
     getLat: getLat,
@@ -13438,6 +13446,8 @@ BlurredLocation = function BlurredLocation(options) {
     gridWidthInPixels: gridWidthInPixels,
     getPrecision: getPrecision,
     setZoom: setZoom,
+    getFullLon: getFullLon,
+    getFullLat: getFullLat,
   }
 }
 
