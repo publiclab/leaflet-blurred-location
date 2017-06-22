@@ -13277,12 +13277,20 @@ BlurredLocation = function BlurredLocation(options) {
   options.pixels = options.pixels || 400;
 
   options.gridSystem = options.gridSystem || require('./core/gridSystem.js');
+  options.Interface = options.Interface || require('./ui/Interface.js');
 
   gridSystemOptions = options.gridSystemOptions || {};
   gridSystemOptions.map = options.map;
   gridSystemOptions.gridWidthInPixels = gridWidthInPixels;
   gridSystemOptions.getMinimumGridWidth = getMinimumGridWidth;
   gridSystem = options.gridSystem(gridSystemOptions);
+
+  InterfaceOptions = options.InterfaceOptions || {};
+  InterfaceOptions.Id = {latId: 'lat', lngId: 'lng'}
+  InterfaceOptions.panMap = panMap;
+
+  Interface = options.Interface(InterfaceOptions);
+  Interface.panMapWhenInputsChange();
 
   L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
 
@@ -13336,25 +13344,6 @@ BlurredLocation = function BlurredLocation(options) {
       }, 10);
     });
   };
-
-  function panMapWhenInputsChange(latId, lngId) {
-    var lat = document.getElementById(latId);
-    var lng = document.getElementById(lngId);
-
-    function panIfValue() {
-      if(lat.value && lng.value) {
-        panMap(lat.value, lng.value);
-      };
-    }
-
-    lat.addEventListener('change', function() {
-      panIfValue();
-    });
-    lng.addEventListener('change', function() {
-      panIfValue();
-    });
-  }
-
 
   function panMap(lat, lng) {
     options.map.panTo(new L.LatLng(lat, lng));
@@ -13431,19 +13420,19 @@ BlurredLocation = function BlurredLocation(options) {
     gridSystem: gridSystem,
     panMapToGeocodedLocation: panMapToGeocodedLocation,
     getPlacenameFromCoordinates: getPlacenameFromCoordinates,
-    panMapWhenInputsChange: panMapWhenInputsChange,
     panMap: panMap,
     panMapByBrowserGeocode: panMapByBrowserGeocode,
     getMinimumGridWidth: getMinimumGridWidth,
     gridWidthInPixels: gridWidthInPixels,
     getPrecision: getPrecision,
     setZoom: setZoom,
+    Interface: Interface,
   }
 }
 
 exports.BlurredLocation = BlurredLocation;
 
-},{"./core/gridSystem.js":5,"leaflet":2}],5:[function(require,module,exports){
+},{"./core/gridSystem.js":5,"./ui/Interface.js":6,"leaflet":2}],5:[function(require,module,exports){
 module.exports = function gridSystem(options) {
 
   var map = options.map || document.getElementById("map") || L.map('map');
@@ -13627,6 +13616,35 @@ module.exports = function gridSystem(options) {
   return {
     setCellSizeInDegrees: setCellSizeInDegrees,
     getCellSize: getCellSize,
+  }
+}
+
+},{}],6:[function(require,module,exports){
+module.exports = function UI (options) {
+
+    options.latId = options.latId || 'lat';
+    options.lngId = options.lngId || 'lng';
+
+    function panMapWhenInputsChange() {
+    var lat = document.getElementById(options.Id.latId);
+    var lng = document.getElementById(options.Id.lngId);
+
+    function panIfValue() {
+      if(lat.value && lng.value) {
+        options.panMap(lat.value, lng.value);
+      };
+    }
+
+    lat.addEventListener('change', function() {
+      panIfValue();
+    });
+    lng.addEventListener('change', function() {
+      panIfValue();
+    });
+  }
+
+  return {
+    panMapWhenInputsChange: panMapWhenInputsChange,
   }
 }
 
