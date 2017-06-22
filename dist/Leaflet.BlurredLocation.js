@@ -13271,6 +13271,7 @@ BlurredLocation = function BlurredLocation(options) {
 
   var L = require('leaflet');
   var blurredLocation = this;
+  var blurred = true;
 
   options = options || {};
   options.map = options.map || L.map('map');
@@ -13295,11 +13296,17 @@ BlurredLocation = function BlurredLocation(options) {
   options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
   function getLat() {
-    return truncateToPrecision(options.map.getCenter().lat, getPrecision())
+    if(isBlurred())
+      return truncateToPrecision(options.map.getCenter().lat, getPrecision());
+    else
+      return options.map.getCenter().lat;
   }
 
   function getLon() {
-    return truncateToPrecision(options.map.getCenter().lng, getPrecision())
+    if(isBlurred())
+      return truncateToPrecision(options.map.getCenter().lng, getPrecision())
+    else
+      return options.map.getCenter().lat;
   }
 
   function goTo(lat, lon, zoom) {
@@ -13421,6 +13428,25 @@ BlurredLocation = function BlurredLocation(options) {
     return getMinimumGridWidth(options.pixels).precision;
   }
 
+  function setBlurred(boolean) {
+      if(boolean && !blurred) {
+        gridSystem.addGrid();
+        blurred = true;
+      }
+      else if(!boolean) {
+        blurred = false;
+        gridSystem.removeGrid();
+      }
+  }
+
+  function isBlurred() {
+    return blurred;
+  }
+
+  function obscureLocation() {
+    setBlurred(document.getElementById("obscureLocation").checked);
+  }
+
 
   return {
     getLat: getLat,
@@ -13438,6 +13464,9 @@ BlurredLocation = function BlurredLocation(options) {
     gridWidthInPixels: gridWidthInPixels,
     getPrecision: getPrecision,
     setZoom: setZoom,
+    isBlurred: isBlurred,
+    setBlurred: setBlurred,
+    obscureLocation: obscureLocation,
   }
 }
 
@@ -13624,9 +13653,21 @@ module.exports = function gridSystem(options) {
     return options.cellSize;
   }
 
+  function removeGrid() {
+    layer.remove();
+  }
+
+  function addGrid() {
+    layer = L.virtualGrid({
+              cellSize: options.cellSize
+            }).addTo(map);
+  }
+
   return {
     setCellSizeInDegrees: setCellSizeInDegrees,
     getCellSize: getCellSize,
+    removeGrid: removeGrid,
+    addGrid: addGrid
   }
 }
 
