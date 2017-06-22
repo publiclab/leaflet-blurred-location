@@ -51,7 +51,7 @@ To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`.
 
 | Methods | Use | Usage (Example)|
 |---------|-----|----------------|
-|getLat   |Used to get the current latitude of the center of the map.|  blurredLocation.getLat() //This would return the value in numerics|
-|getLon|Used to get the current latitude of the center of the map|blurredLocation.getLon() //This would return the value in numerics|
+|getLat   |Used to get the current latitude of the center of the map truncated to the precision the map has at current zoom.|  blurredLocation.getLat() //This would return the value in numerics|
+|getLon|Used to get the current latitude of the center of the map truncated to the precision the map has at current zoom|blurredLocation.getLon() //This would return the value in numerics|
 |goTo   |Takes in three parameters, namely latitude, longitude and zoom. Will set the center of map to co-ordinates input.|blurredLocation.goTo(44.51, -89.99, 13) //Will set center of map to (44.51,-89.99) with zoom set as 13|
 |addGrid  |Used to add a virtual grid to the map| blurredLocation.addGrid() //This would add a virtual grid to the map|
