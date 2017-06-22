@@ -2,6 +2,7 @@ BlurredLocation = function BlurredLocation(options) {
 
   var L = require('leaflet');
   var blurredLocation = this;
+  var blurred = true;
 
   options = options || {};
   options.map = options.map || L.map('map');
@@ -26,11 +27,17 @@ BlurredLocation = function BlurredLocation(options) {
   options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
   function getLat() {
-    return truncateToPrecision(options.map.getCenter().lat, getPrecision())
+    if(isBlurred())
+      return truncateToPrecision(options.map.getCenter().lat, getPrecision());
+    else
+      return options.map.getCenter().lat;
   }
 
   function getLon() {
-    return truncateToPrecision(options.map.getCenter().lng, getPrecision())
+    if(isBlurred())
+      return truncateToPrecision(options.map.getCenter().lng, getPrecision())
+    else
+      return options.map.getCenter().lat;
   }
 
   function goTo(lat, lon, zoom) {
@@ -158,6 +165,24 @@ BlurredLocation = function BlurredLocation(options) {
 
   function getFullLon() {
     return options.map.getCenter().lng;
+
+  function setBlurred(boolean) {
+      if(boolean && !blurred) {
+        gridSystem.addGrid();
+        blurred = true;
+      }
+      else if(!boolean) {
+        blurred = false;
+        gridSystem.removeGrid();
+      }
+  }
+
+  function isBlurred() {
+    return blurred;
+  }
+
+  function obscureLocation() {
+    setBlurred(document.getElementById("obscureLocation").checked);
   }
 
 
@@ -179,6 +204,9 @@ BlurredLocation = function BlurredLocation(options) {
     setZoom: setZoom,
     getFullLon: getFullLon,
     getFullLat: getFullLat,
+    isBlurred: isBlurred,
+    setBlurred: setBlurred,
+    obscureLocation: obscureLocation,
   }
 }
 
