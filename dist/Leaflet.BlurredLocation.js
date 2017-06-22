@@ -13296,11 +13296,17 @@ BlurredLocation = function BlurredLocation(options) {
   options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
   function getLat() {
-    return truncateToPrecision(options.map.getCenter().lat, getPrecision())
+    if(isBlurred())
+      return truncateToPrecision(options.map.getCenter().lat, getPrecision());
+    else
+      return options.map.getCenter().lat;
   }
 
   function getLon() {
-    return truncateToPrecision(options.map.getCenter().lng, getPrecision())
+    if(isBlurred())
+      return truncateToPrecision(options.map.getCenter().lng, getPrecision())
+    else
+      return options.map.getCenter().lat;
   }
 
   function goTo(lat, lon, zoom) {
