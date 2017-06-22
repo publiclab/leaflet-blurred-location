@@ -50,6 +50,13 @@ describe("Basic testing", function() {
     blurredLocation.goTo(blurredLocation.getLat(), blurredLocation.getLon(),10);
     expect(blurredLocation.getPrecision()).toBe(1);
   });
+
+  it("Checks if setBlurred toggles the grid on and off", function() {
+    blurredLocation.setBlurred(true);
+    expect(blurredLocation.isBlurred()).toBe(true);
+    blurredLocation.setBlurred(false);
+    expect(blurredLocation.isBlurred()).toBe(false);
+  });
   // it("geocode spec", function() {
   //   var geometry = blurredLocation.geocode("Buenos Aires");
   //   console.log(blurredLocation.getLat());

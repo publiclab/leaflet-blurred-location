@@ -178,8 +178,20 @@ module.exports = function gridSystem(options) {
     return options.cellSize;
   }
 
+  function removeGrid() {
+    layer.remove();
+  }
+
+  function addGrid() {
+    layer = L.virtualGrid({
+              cellSize: options.cellSize
+            }).addTo(map);
+  }
+
   return {
     setCellSizeInDegrees: setCellSizeInDegrees,
     getCellSize: getCellSize,
+    removeGrid: removeGrid,
+    addGrid: addGrid
   }
 }
