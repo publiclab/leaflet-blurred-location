@@ -60,8 +60,8 @@ describe("Basic testing", function() {
 
   it("Checks if input listeners change maps position to the entered latitude and longitude", function() {
 
-    var latE1 = $("#lat");
-    var lngE1 = $("#lng");
+    var latE1 = $("lat");
+    var lngE1 = $("lng");
 
     latE1.val(20);
     lngE1.val(15);
