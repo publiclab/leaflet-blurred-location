@@ -147,6 +147,14 @@ BlurredLocation = function BlurredLocation(options) {
     return getMinimumGridWidth(options.pixels).precision;
   }
 
+  function getFullLat() {
+    return options.map.getCenter().lat;
+  }
+
+  function getFullLon() {
+    return options.map.getCenter().lng;
+  }
+
   function setBlurred(boolean) {
       if(boolean && !blurred) {
         gridSystem.addGrid();
@@ -183,6 +191,8 @@ BlurredLocation = function BlurredLocation(options) {
     getPrecision: getPrecision,
     setZoom: setZoom,
     Interface: Interface,
+    getFullLon: getFullLon,
+    getFullLat: getFullLat,
     isBlurred: isBlurred,
     setBlurred: setBlurred,
     obscureLocation: obscureLocation,
