@@ -164,14 +164,11 @@ module.exports = function gridSystem(options) {
                 cellSize: { rows:100, cols:100 }
               }).addTo(map);
 
-  function setCellSizeInDegrees() {
+  function setCellSizeInDegrees(degrees) {
 
     layer.remove();
-    var pixels = options.gridWidthInPixels(1);
-    var precision = options.getMinimumGridWidth(400)
-    var div = (10**precision.precision)
-
-    options.cellSize = { rows:pixels.x/div, cols:pixels.y/div};
+    var pixels = options.gridWidthInPixels(degrees);
+    options.cellSize = { rows:pixels.x, cols:pixels.y};
     layer = L.virtualGrid({
               cellSize: options.cellSize
             }).addTo(map);
@@ -181,8 +178,20 @@ module.exports = function gridSystem(options) {
     return options.cellSize;
   }
 
+  function removeGrid() {
+    layer.remove();
+  }
+
+  function addGrid() {
+    layer = L.virtualGrid({
+              cellSize: options.cellSize
+            }).addTo(map);
+  }
+
   return {
     setCellSizeInDegrees: setCellSizeInDegrees,
     getCellSize: getCellSize,
+    removeGrid: removeGrid,
+    addGrid: addGrid
   }
 }
