@@ -54,11 +54,18 @@ describe("Basic testing", function() {
   it("Checks if getFullLat returns the full latitude of the map", function() {
     blurredLocation.goTo(45.324324234,-53.32423234234,13);
     expect(blurredLocation.getFullLat()).toBe(45.324324234);
+
+    blurredLocation.setZoom(10);
+    expect(blurredLocation.getFullLat()).not.toBe(blurredLocation.getLat());
+
   });
 
   it("Checks if getFullLon returns the full latitude of the map", function() {
     blurredLocation.goTo(45.324324234,-53.32423234234,13);
     expect(blurredLocation.getFullLon()).toBe(-53.32423234234);
+
+    blurredLocation.setZoom(10);
+    expect(blurredLocation.getFullLon()).not.toBe(blurredLocation.getLon());
   });
 
   it("Checks if setBlurred toggles the grid on and off", function() {

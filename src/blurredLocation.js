@@ -165,6 +165,7 @@ BlurredLocation = function BlurredLocation(options) {
 
   function getFullLon() {
     return options.map.getCenter().lng;
+  }
 
   function setBlurred(boolean) {
       if(boolean && !blurred) {

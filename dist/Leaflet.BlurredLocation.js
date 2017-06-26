@@ -13428,14 +13428,14 @@ BlurredLocation = function BlurredLocation(options) {
     return getMinimumGridWidth(options.pixels).precision;
   }
 
-<<<<<<< HEAD
   function getFullLat() {
     return options.map.getCenter().lat;
   }
 
   function getFullLon() {
     return options.map.getCenter().lng;
-=======
+  }
+
   function setBlurred(boolean) {
       if(boolean && !blurred) {
         gridSystem.addGrid();
@@ -13453,7 +13453,6 @@ BlurredLocation = function BlurredLocation(options) {
 
   function obscureLocation() {
     setBlurred(document.getElementById("obscureLocation").checked);
->>>>>>> b6b8ab197a546294db4676648720ea6e6d30b8b5
   }
 
 
@@ -13473,14 +13472,11 @@ BlurredLocation = function BlurredLocation(options) {
     gridWidthInPixels: gridWidthInPixels,
     getPrecision: getPrecision,
     setZoom: setZoom,
-<<<<<<< HEAD
     getFullLon: getFullLon,
     getFullLat: getFullLat,
-=======
     isBlurred: isBlurred,
     setBlurred: setBlurred,
     obscureLocation: obscureLocation,
->>>>>>> b6b8ab197a546294db4676648720ea6e6d30b8b5
   }
 }
 
