@@ -60,19 +60,19 @@ describe("Basic testing", function() {
 
   it("Checks if input listeners change maps position to the entered latitude and longitude", function() {
 
-    var lat = document.getElementById("lat");
-    var lng = document.getElementById("lng");
+    var latE1 = $("#lat");
+    var lngE1 = $("#lng");
 
-    lat.value = 20;
-    lng.value = 15;
+    latE1.val(20);
+    lngE1.val(15);
     var event = new Event('change');
 
-    lat.dispatchEvent(event);
+    latE1.trigger(event);
     expect(blurredLocation.getLat()).toBe(20);
     expect(blurredLocation.getLon()).toBe(15);
 
-    lng.value = 20;
-    lng.dispatchEvent(event);
+    lngE1.val(20);
+    lngE1.trigger(event);
 
     expect(blurredLocation.getLat()).toBe(20);
     expect(blurredLocation.getLon()).toBe(20);
