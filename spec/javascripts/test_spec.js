@@ -95,6 +95,12 @@ describe("Basic testing", function() {
     expect(blurredLocation.getLon()).toBe(20);
   });
 
+  it("Checks if panMap changes the map's center to provided latitude and longitude", function() {
+    blurredLocation.panMap(38.24, 34.55);
+    expect(blurredLocation.getFullLat()).toBe(38.24);
+    expect(blurredLocation.getFullLon()).toBe(34.55);
+  });
+
   // it("geocode spec", function() {
   //   var geometry = blurredLocation.geocode("Buenos Aires");
   //   console.log(blurredLocation.getLat());
