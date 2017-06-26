@@ -13652,11 +13652,12 @@ module.exports = function gridSystem(options) {
   function setCellSizeInDegrees(degrees) {
 
     layer.remove();
-    var pixels = options.gridWidthInPixels(degrees);
-    options.cellSize = { rows:pixels.x, cols:pixels.y};
+    var pixels = options.gridWidthInPixels(1);
+    var div = 1/degrees;
+    options.cellSize = { rows:pixels.x/div, cols:pixels.y/div};
     layer = L.virtualGrid({
-              cellSize: options.cellSize
-            }).addTo(map);
+          cellSize: options.cellSize
+        }).addTo(map);
   }
 
   function getCellSize() {
