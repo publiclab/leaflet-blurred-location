@@ -57,6 +57,27 @@ describe("Basic testing", function() {
     blurredLocation.setBlurred(false);
     expect(blurredLocation.isBlurred()).toBe(false);
   });
+
+  it("Checks if input listeners change maps position to the entered latitude and longitude", function() {
+
+    var lat = document.getElementById("lat");
+    var lng = document.getElementById("lng");
+
+    lat.value = 20;
+    lng.value = 15;
+    var event = new Event('change');
+
+    lat.dispatchEvent(event);
+    expect(blurredLocation.getLat()).toBe(20);
+    expect(blurredLocation.getLon()).toBe(15);
+
+    lng.value = 20;
+    lng.dispatchEvent(event);
+
+    expect(blurredLocation.getLat()).toBe(20);
+    expect(blurredLocation.getLon()).toBe(20);
+  });
+
   // it("geocode spec", function() {
   //   var geometry = blurredLocation.geocode("Buenos Aires");
   //   console.log(blurredLocation.getLat());
