@@ -75,26 +75,6 @@ describe("Basic testing", function() {
     expect(blurredLocation.isBlurred()).toBe(false);
   });
 
-  it("Checks if input listeners change maps position to the entered latitude and longitude", function() {
-
-    var latE1 = $("lat");
-    var lngE1 = $("lng");
-
-    latE1.val(20);
-    lngE1.val(15);
-    var event = new Event('change');
-
-    latE1.trigger(event);
-    expect(blurredLocation.getLat()).toBe(20);
-    expect(blurredLocation.getLon()).toBe(15);
-
-    lngE1.val(20);
-    lngE1.trigger(event);
-
-    expect(blurredLocation.getLat()).toBe(20);
-    expect(blurredLocation.getLon()).toBe(20);
-  });
-
   it("Checks if panMap changes the map's center to provided latitude and longitude", function() {
     blurredLocation.panMap(38.24, 34.55);
     expect(blurredLocation.getFullLat()).toBe(38.24);

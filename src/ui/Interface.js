@@ -13,15 +13,12 @@ module.exports = function Interface (options) {
       };
     }
 
-    lat.addEventListener('change', function() {
-      panIfValue();
-    });
-    lng.addEventListener('change', function() {
-      panIfValue();
-    });
+    $(lat).change(panIfValue);
+    $(lng).change(panIfValue);
   }
 
   return {
     panMapWhenInputsChange: panMapWhenInputsChange,
   }
+
 }
