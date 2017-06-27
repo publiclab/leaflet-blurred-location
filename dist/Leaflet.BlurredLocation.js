@@ -13591,7 +13591,7 @@ module.exports = function gridSystem(options) {
     },
 
     _setupGrid: function(bounds) {
-      this._origin = this._map.project(bounds.getNorthWest());
+      this._origin = this._map.project(L.latLng(0,0));
       this._cellSize = this.options.cellSize;
       this._setupSize();
       this._loadedCells = [];
@@ -13652,11 +13652,12 @@ module.exports = function gridSystem(options) {
   function setCellSizeInDegrees(degrees) {
 
     layer.remove();
-    var pixels = options.gridWidthInPixels(degrees);
-    options.cellSize = { rows:pixels.x, cols:pixels.y};
+    var pixels = options.gridWidthInPixels(1);
+    var div = 1/degrees;
+    options.cellSize = { rows:pixels.x/div, cols:pixels.y/div};
     layer = L.virtualGrid({
-              cellSize: options.cellSize
-            }).addTo(map);
+          cellSize: options.cellSize
+        }).addTo(map);
   }
 
   function getCellSize() {

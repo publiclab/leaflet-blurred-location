@@ -34,13 +34,13 @@ describe("Basic testing", function() {
 
     blurredLocation.setZoom(13);
 
-    expect(blurredLocation.gridSystem.getCellSize().rows).toBe(58);
-    expect(blurredLocation.gridSystem.getCellSize().cols).toBe(94);
+    expect(blurredLocation.gridSystem.getCellSize().rows).toBe(58.25);
+    expect(blurredLocation.gridSystem.getCellSize().cols).toBe(94.63);
 
     blurredLocation.setZoom(10);
 
-    expect(blurredLocation.gridSystem.getCellSize().rows).toBe(72);
-    expect(blurredLocation.gridSystem.getCellSize().cols).toBe(117);
+    expect(blurredLocation.gridSystem.getCellSize().rows).toBe(72.8);
+    expect(blurredLocation.gridSystem.getCellSize().cols).toBe(118.3);
 
   });
 
