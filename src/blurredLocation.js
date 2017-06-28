@@ -21,7 +21,6 @@ BlurredLocation = function BlurredLocation(options) {
   InterfaceOptions.panMap = panMap;
 
   Interface = options.Interface(InterfaceOptions);
-  Interface.panMapWhenInputsChange();
 
   L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
 

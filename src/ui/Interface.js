@@ -4,18 +4,20 @@ module.exports = function Interface (options) {
     options.lngId = options.lngId || 'lng';
 
     function panMapWhenInputsChange() {
-    var lat = document.getElementById(options.latId);
-    var lng = document.getElementById(options.lngId);
+      var lat = document.getElementById(options.latId);
+      var lng = document.getElementById(options.lngId);
 
-    function panIfValue() {
-      if(lat.value && lng.value) {
-        options.panMap(lat.value, lng.value);
-      };
-    }
+      function panIfValue() {
+        if(lat.value && lng.value) {
+          options.panMap(lat.value, lng.value);
+        };
+      }
 
-    $(lat).change(panIfValue);
-    $(lng).change(panIfValue);
+      $(lat).change(panIfValue);
+      $(lng).change(panIfValue);
   }
+
+  panMapWhenInputsChange();
 
   return {
     panMapWhenInputsChange: panMapWhenInputsChange,
