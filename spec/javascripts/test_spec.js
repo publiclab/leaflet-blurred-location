@@ -2,7 +2,6 @@ describe("Basic testing", function() {
   "use strict";
 
   var fixture = loadFixtures('index.html');
-  var blurredLocation = new BlurredLocation();
 
   it("Checks if getLat returns the correct latitude with correct precision", function () {
     blurredLocation.setZoom(13);
