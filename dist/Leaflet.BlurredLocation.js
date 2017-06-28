@@ -13278,12 +13278,18 @@ BlurredLocation = function BlurredLocation(options) {
   options.pixels = options.pixels || 400;
 
   options.gridSystem = options.gridSystem || require('./core/gridSystem.js');
+  options.Interface = options.Interface || require('./ui/Interface.js');
 
   gridSystemOptions = options.gridSystemOptions || {};
   gridSystemOptions.map = options.map;
   gridSystemOptions.gridWidthInPixels = gridWidthInPixels;
   gridSystemOptions.getMinimumGridWidth = getMinimumGridWidth;
   gridSystem = options.gridSystem(gridSystemOptions);
+
+  InterfaceOptions = options.InterfaceOptions || {};
+  InterfaceOptions.panMap = panMap;
+
+  Interface = options.Interface(InterfaceOptions);
 
   L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
 
@@ -13297,16 +13303,16 @@ BlurredLocation = function BlurredLocation(options) {
 
   function getLat() {
     if(isBlurred())
-      return truncateToPrecision(options.map.getCenter().lat, getPrecision());
+      return parseFloat(truncateToPrecision(options.map.getCenter().lat, getPrecision()));
     else
-      return options.map.getCenter().lat;
+      return parseFloat(options.map.getCenter().lat);
   }
 
   function getLon() {
     if(isBlurred())
-      return truncateToPrecision(options.map.getCenter().lng, getPrecision())
+      return parseFloat(truncateToPrecision(options.map.getCenter().lng, getPrecision()));
     else
-      return options.map.getCenter().lat;
+      return parseFloat(options.map.getCenter().lng);
   }
 
   function goTo(lat, lon, zoom) {
@@ -13343,25 +13349,6 @@ BlurredLocation = function BlurredLocation(options) {
       }, 10);
     });
   };
-
-  function panMapWhenInputsChange(latId, lngId) {
-    var lat = document.getElementById(latId);
-    var lng = document.getElementById(lngId);
-
-    function panIfValue() {
-      if(lat.value && lng.value) {
-        panMap(lat.value, lng.value);
-      };
-    }
-
-    lat.addEventListener('change', function() {
-      panIfValue();
-    });
-    lng.addEventListener('change', function() {
-      panIfValue();
-    });
-  }
-
 
   function panMap(lat, lng) {
     options.map.panTo(new L.LatLng(lat, lng));
@@ -13429,7 +13416,7 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function getFullLat() {
-    return options.map.getCenter().lat;
+    return parseFloat(options.map.getCenter().lat);
   }
 
   function getFullLon() {
@@ -13465,13 +13452,13 @@ BlurredLocation = function BlurredLocation(options) {
     gridSystem: gridSystem,
     panMapToGeocodedLocation: panMapToGeocodedLocation,
     getPlacenameFromCoordinates: getPlacenameFromCoordinates,
-    panMapWhenInputsChange: panMapWhenInputsChange,
     panMap: panMap,
     panMapByBrowserGeocode: panMapByBrowserGeocode,
     getMinimumGridWidth: getMinimumGridWidth,
     gridWidthInPixels: gridWidthInPixels,
     getPrecision: getPrecision,
     setZoom: setZoom,
+    Interface: Interface,
     getFullLon: getFullLon,
     getFullLat: getFullLat,
     isBlurred: isBlurred,
@@ -13482,7 +13469,7 @@ BlurredLocation = function BlurredLocation(options) {
 
 exports.BlurredLocation = BlurredLocation;
 
-},{"./core/gridSystem.js":5,"leaflet":2}],5:[function(require,module,exports){
+},{"./core/gridSystem.js":5,"./ui/Interface.js":6,"leaflet":2}],5:[function(require,module,exports){
 module.exports = function gridSystem(options) {
 
   var map = options.map || document.getElementById("map") || L.map('map');
@@ -13680,6 +13667,34 @@ module.exports = function gridSystem(options) {
     removeGrid: removeGrid,
     addGrid: addGrid
   }
+}
+
+},{}],6:[function(require,module,exports){
+module.exports = function Interface (options) {
+
+    options.latId = options.latId || 'lat';
+    options.lngId = options.lngId || 'lng';
+
+    function panMapWhenInputsChange() {
+      var lat = document.getElementById(options.latId);
+      var lng = document.getElementById(options.lngId);
+
+      function panIfValue() {
+        if(lat.value && lng.value) {
+          options.panMap(lat.value, lng.value);
+        };
+      }
+
+      $(lat).change(panIfValue);
+      $(lng).change(panIfValue);
+  }
+
+  panMapWhenInputsChange();
+
+  return {
+    panMapWhenInputsChange: panMapWhenInputsChange,
+  }
+
 }
 
 },{}]},{},[1,3,4]);

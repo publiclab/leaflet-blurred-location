@@ -2,7 +2,6 @@ describe("Basic testing", function() {
   "use strict";
 
   var fixture = loadFixtures('index.html');
-  var blurredLocation = new BlurredLocation();
 
   it("Checks if getLat returns the correct latitude with correct precision", function () {
     blurredLocation.setZoom(13);
@@ -74,6 +73,13 @@ describe("Basic testing", function() {
     blurredLocation.setBlurred(false);
     expect(blurredLocation.isBlurred()).toBe(false);
   });
+
+  it("Checks if panMap changes the map's center to provided latitude and longitude", function() {
+    blurredLocation.panMap(38.24, 34.55);
+    expect(blurredLocation.getFullLat()).toBe(38.24);
+    expect(blurredLocation.getFullLon()).toBe(34.55);
+  });
+
   // it("geocode spec", function() {
   //   var geometry = blurredLocation.geocode("Buenos Aires");
   //   console.log(blurredLocation.getLat());

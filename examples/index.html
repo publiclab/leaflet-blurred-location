@@ -46,9 +46,17 @@
     </div>
     <!-- END OF EXAMPLE -->
   <script>
-    var blurredLocation = new BlurredLocation();
+    options = {}
+
+  // We can add Interface Options as follows: 
+    InterfaceOptions = {};
+    InterfaceOptions.latId = 'lat';
+    InterfaceOptions.lngId = 'lng';
+
+    options.InterfaceOptions = InterfaceOptions;
+
+    var blurredLocation = new BlurredLocation(options);
     blurredLocation.panMapToGeocodedLocation('geo_location');
-    blurredLocation.panMapWhenInputsChange('lat', 'lng');
   </script>
   </body>
 </html>
