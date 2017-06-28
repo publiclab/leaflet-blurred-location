@@ -1,8 +1,6 @@
 describe("UI testing", function() {
   "use strict";
 
-  // var blurredLocation = new BlurredLocation();
-
   it("Checks if input listeners change maps position to the entered latitude and longitude", function() {
     var fixture = loadFixtures('index.html');
 
@@ -12,8 +10,8 @@ describe("UI testing", function() {
     latEl.val(20);
     lngEl.val(15);
 
-    expect(latEl.val()).toBe(20);
-    expect(lngEl.val()).toBe(15);
+    expect(parseFloat(latEl.val())).toBe(20);
+    expect(parseFloat(lngEl.val())).toBe(15);
 
     latEl.change();
 

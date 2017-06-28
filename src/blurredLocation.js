@@ -35,16 +35,16 @@ BlurredLocation = function BlurredLocation(options) {
 
   function getLat() {
     if(isBlurred())
-      return truncateToPrecision(options.map.getCenter().lat, getPrecision());
+      return parseFloat(truncateToPrecision(options.map.getCenter().lat, getPrecision()));
     else
-      return options.map.getCenter().lat;
+      return parseFloat(options.map.getCenter().lat);
   }
 
   function getLon() {
     if(isBlurred())
-      return truncateToPrecision(options.map.getCenter().lng, getPrecision())
+      return parseFloat(truncateToPrecision(options.map.getCenter().lng, getPrecision()));
     else
-      return options.map.getCenter().lat;
+      return parseFloat(options.map.getCenter().lng);
   }
 
   function goTo(lat, lon, zoom) {
@@ -148,7 +148,7 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function getFullLat() {
-    return options.map.getCenter().lat;
+    return parseFloat(options.map.getCenter().lat);
   }
 
   function getFullLon() {
