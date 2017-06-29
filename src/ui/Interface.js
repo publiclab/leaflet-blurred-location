@@ -19,14 +19,8 @@ module.exports = function Interface (options) {
 
   panMapWhenInputsChange();
 
-  function obscureLocation() {
-    setBlurred(document.getElementById("obscureLocation").checked);
-  }
-
-
   return {
     panMapWhenInputsChange: panMapWhenInputsChange,
-    obscureLocation: obscureLocation,
   }
 
 }
