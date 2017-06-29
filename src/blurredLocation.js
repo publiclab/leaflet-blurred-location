@@ -195,6 +195,7 @@ BlurredLocation = function BlurredLocation(options) {
     isBlurred: isBlurred,
     setBlurred: setBlurred,
     obscureLocation: obscureLocation,
+    truncateToPrecision: truncateToPrecision,
   }
 }
 
