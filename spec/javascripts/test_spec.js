@@ -80,6 +80,12 @@ describe("Basic testing", function() {
     expect(blurredLocation.getFullLon()).toBe(34.55);
   });
 
+  it("Checks if getPlacenameFromCoordinates returns the correct address", function() {
+    spyOn(blurredLocation, 'getPlacenameFromCoordinates').and.returnValue("Buenos Aires");
+    expect(blurredLocation.getPlacenameFromCoordinates(45,44)).toBe("Buenos Aires");
+    expect(blurredLocation.getPlacenameFromCoordinates).toHaveBeenCalled();
+  })
+
   // it("geocode spec", function() {
   //   var geometry = blurredLocation.geocode("Buenos Aires");
   //   console.log(blurredLocation.getLat());
