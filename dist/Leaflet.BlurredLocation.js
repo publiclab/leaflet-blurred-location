@@ -13271,33 +13271,56 @@ BlurredLocation = function BlurredLocation(options) {
 
   var L = require('leaflet');
   var blurredLocation = this;
+  var blurred = true;
 
   options = options || {};
   options.map = options.map || L.map('map');
+  options.pixels = options.pixels || 400;
 
-  options.addGrid = options.addGrid || require('./core/addGrid.js');
-  options.addGrid(options.map);
+  options.gridSystem = options.gridSystem || require('./core/gridSystem.js');
+  options.Interface = options.Interface || require('./ui/Interface.js');
+
+  gridSystemOptions = options.gridSystemOptions || {};
+  gridSystemOptions.map = options.map;
+  gridSystemOptions.gridWidthInPixels = gridWidthInPixels;
+  gridSystemOptions.getMinimumGridWidth = getMinimumGridWidth;
+  gridSystem = options.gridSystem(gridSystemOptions);
+
+  InterfaceOptions = options.InterfaceOptions || {};
+  InterfaceOptions.panMap = panMap;
+
+  Interface = options.Interface(InterfaceOptions);
 
   L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
 
   options.location = options.location || {
-    lat: 41.01,
-    lon: -85.66
+    lat: 41.011234567,
+    lon: -85.66123456789
   };
 
   options.zoom = options.zoom || 13;
   options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
   function getLat() {
-    return options.map.getCenter().lat;
+    if(isBlurred())
+      return parseFloat(truncateToPrecision(options.map.getCenter().lat, getPrecision()));
+    else
+      return parseFloat(options.map.getCenter().lat);
   }
 
   function getLon() {
-    return options.map.getCenter().lng;
+    if(isBlurred())
+      return parseFloat(truncateToPrecision(options.map.getCenter().lng, getPrecision()));
+    else
+      return parseFloat(options.map.getCenter().lng);
   }
 
   function goTo(lat, lon, zoom) {
     options.map.setView([lat, lon], zoom);
+  }
+
+  function setZoom(zoom) {
+    options.map.setZoom(zoom);
   }
 
   function geocode(string) {
@@ -13315,8 +13338,6 @@ BlurredLocation = function BlurredLocation(options) {
     return options.map.getSize();
   }
 
-  addGrid = options.addGrid;
-
   function panMapToGeocodedLocation(selector) {
     var input = document.getElementById(selector);
 
@@ -13328,25 +13349,6 @@ BlurredLocation = function BlurredLocation(options) {
       }, 10);
     });
   };
-
-  function panMapWhenInputsChange(latId, lngId) {
-    var lat = document.getElementById(latId);
-    var lng = document.getElementById(lngId);
-
-    function panIfValue() {
-      if(lat.value && lng.value) {
-        panMap(lat.value, lng.value);
-      };
-    }
-
-    lat.addEventListener('change', function() {
-      panIfValue();
-    });
-    lng.addEventListener('change', function() {
-      panIfValue();
-    });
-  }
-
 
   function panMap(lat, lng) {
     options.map.panTo(new L.LatLng(lat, lng));
@@ -13376,28 +13378,100 @@ BlurredLocation = function BlurredLocation(options) {
     }
   }
 
+  function gridWidthInPixels(degrees) {
+    var p1 = L.latLng(options.map.getCenter().lat,options.map.getCenter().lng);
+    var p2 = L.latLng(p1.lat+degrees, p1.lng+degrees);
+    var l1 = options.map.latLngToContainerPoint(p1);
+    var l2 = options.map.latLngToContainerPoint(p2);
+    return {
+      x: Math.abs(l2.x - l1.x),
+      y: Math.abs(l2.y - l1.y),
+    }
+  }
+
+  function getMinimumGridWidth(pixels) {
+    var degrees = 100.0, precision = -2;
+    while(gridWidthInPixels(degrees).x > pixels) {
+      degrees/= 10;
+      precision+= 1;
+    }
+    return {
+      precision: precision,
+      degrees: degrees,
+    }
+  }
+
+  function truncateToPrecision(number, digits) {
+    var multiplier = Math.pow(10, digits),
+        adjustedNum = number * multiplier,
+        truncatedNum = Math[adjustedNum < 0 ? 'ceil' : 'floor'](adjustedNum);
+
+    return truncatedNum / multiplier;
+  };
+
+  function getPrecision() {
+    return getMinimumGridWidth(options.pixels).precision;
+  }
+
+  function getFullLat() {
+    return parseFloat(options.map.getCenter().lat);
+  }
+
+  function getFullLon() {
+    return options.map.getCenter().lng;
+  }
+
+  function setBlurred(boolean) {
+      if(boolean && !blurred) {
+        gridSystem.addGrid();
+        blurred = true;
+      }
+      else if(!boolean) {
+        blurred = false;
+        gridSystem.removeGrid();
+      }
+  }
+
+  function isBlurred() {
+    return blurred;
+  }
+
+  function obscureLocation() {
+    setBlurred(document.getElementById("obscureLocation").checked);
+  }
+
+
   return {
     getLat: getLat,
     getLon: getLon,
     goTo: goTo,
     geocode: geocode,
     getSize: getSize,
-    addGrid: addGrid,
+    gridSystem: gridSystem,
     panMapToGeocodedLocation: panMapToGeocodedLocation,
     getPlacenameFromCoordinates: getPlacenameFromCoordinates,
-    panMapWhenInputsChange: panMapWhenInputsChange,
     panMap: panMap,
     panMapByBrowserGeocode: panMapByBrowserGeocode,
+    getMinimumGridWidth: getMinimumGridWidth,
+    gridWidthInPixels: gridWidthInPixels,
+    getPrecision: getPrecision,
+    setZoom: setZoom,
+    Interface: Interface,
+    getFullLon: getFullLon,
+    getFullLat: getFullLat,
+    isBlurred: isBlurred,
+    setBlurred: setBlurred,
+    obscureLocation: obscureLocation,
   }
 }
 
 exports.BlurredLocation = BlurredLocation;
 
-},{"./core/addGrid.js":5,"leaflet":2}],5:[function(require,module,exports){
-module.exports = function addGrid(map, onChangeLocation) {
+},{"./core/gridSystem.js":5,"./ui/Interface.js":6,"leaflet":2}],5:[function(require,module,exports){
+module.exports = function gridSystem(options) {
 
-  var map = map || document.getElementById("map") || L.map('map');
-
+  var map = options.map || document.getElementById("map") || L.map('map');
+  options.cellSize = options.cellSize || { rows:100, cols:100 };
   // A function to return the style of a cell
   function create_cell_style(fill) {
     return {
@@ -13419,7 +13493,7 @@ module.exports = function addGrid(map, onChangeLocation) {
     include: L.Mixin.Events,
 
     options: {
-      cellSize: 64,
+      cellSize: options.cellSize || { rows:100, cols:100 },
       delayFactor: 0.5,
     },
 
@@ -13458,6 +13532,10 @@ module.exports = function addGrid(map, onChangeLocation) {
     _zoomHandler: function(e) {
       this.clearLayers();
       this._renderCells(e.target.getBounds());
+
+      var pixels = options.pixels || 400;
+      var degrees = options.getMinimumGridWidth(pixels);
+      setCellSizeInDegrees(degrees.degrees);
     },
 
     _renderCells: function(bounds) {
@@ -13493,12 +13571,12 @@ module.exports = function addGrid(map, onChangeLocation) {
     },
 
     _setupSize: function() {
-      this._rows = Math.ceil(this._map.getSize().x / this._cellSize);
-      this._cols = Math.ceil(this._map.getSize().y / this._cellSize);
+      this._rows = Math.ceil(this._map.getSize().x / this._cellSize.rows);
+      this._cols = Math.ceil(this._map.getSize().y / this._cellSize.cols);
     },
 
     _setupGrid: function(bounds) {
-      this._origin = this._map.project(bounds.getNorthWest());
+      this._origin = this._map.project(L.latLng(0,0));
       this._cellSize = this.options.cellSize;
       this._setupSize();
       this._loadedCells = [];
@@ -13507,8 +13585,8 @@ module.exports = function addGrid(map, onChangeLocation) {
     },
 
     _cellPoint: function(row, col) {
-      var x = this._origin.x + (row * this._cellSize);
-      var y = this._origin.y + (col * this._cellSize);
+      var x = this._origin.x + (row * this._cellSize.rows);
+      var y = this._origin.y + (col * this._cellSize.cols);
       return new L.Point(x, y);
     },
 
@@ -13525,8 +13603,8 @@ module.exports = function addGrid(map, onChangeLocation) {
       var center = bounds.getCenter();
       var offsetX = this._origin.x - offset.x;
       var offsetY = this._origin.y - offset.y;
-      var offsetRows = Math.round(offsetX / this._cellSize);
-      var offsetCols = Math.round(offsetY / this._cellSize);
+      var offsetRows = Math.round(offsetX / this._cellSize.rows);
+      var offsetCols = Math.round(offsetY / this._cellSize.cols);
       var cells = [];
       for (var i = 0; i <= this._rows; i++) {
         for (var j = 0; j <= this._cols; j++) {
@@ -13548,13 +13626,72 @@ module.exports = function addGrid(map, onChangeLocation) {
     }
   });
 
-  L.virtualGrid = function(url, options) {
+  L.virtualGrid = function(options, url) {
     return new L.VirtualGrid(options);
   };
 
-  L.virtualGrid({
-    cellSize: 64
-  }).addTo(map);
+  var layer = L.virtualGrid({
+                cellSize: { rows:100, cols:100 }
+              }).addTo(map);
+
+  function setCellSizeInDegrees(degrees) {
+
+    layer.remove();
+    var pixels = options.gridWidthInPixels(1);
+    var div = 1/degrees;
+    options.cellSize = { rows:pixels.x/div, cols:pixels.y/div};
+    layer = L.virtualGrid({
+          cellSize: options.cellSize
+        }).addTo(map);
+  }
+
+  function getCellSize() {
+    return options.cellSize;
+  }
+
+  function removeGrid() {
+    layer.remove();
+  }
+
+  function addGrid() {
+    layer = L.virtualGrid({
+              cellSize: options.cellSize
+            }).addTo(map);
+  }
+
+  return {
+    setCellSizeInDegrees: setCellSizeInDegrees,
+    getCellSize: getCellSize,
+    removeGrid: removeGrid,
+    addGrid: addGrid
+  }
+}
+
+},{}],6:[function(require,module,exports){
+module.exports = function Interface (options) {
+
+    options.latId = options.latId || 'lat';
+    options.lngId = options.lngId || 'lng';
+
+    function panMapWhenInputsChange() {
+      var lat = document.getElementById(options.latId);
+      var lng = document.getElementById(options.lngId);
+
+      function panIfValue() {
+        if(lat.value && lng.value) {
+          options.panMap(lat.value, lng.value);
+        };
+      }
+
+      $(lat).change(panIfValue);
+      $(lng).change(panIfValue);
+  }
+
+  panMapWhenInputsChange();
+
+  return {
+    panMapWhenInputsChange: panMapWhenInputsChange,
+  }
 
 }
 

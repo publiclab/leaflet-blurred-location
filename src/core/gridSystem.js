@@ -1,7 +1,7 @@
-module.exports = function addGrid(map, onChangeLocation) {
+module.exports = function gridSystem(options) {
 
-  var map = map || document.getElementById("map") || L.map('map');
-
+  var map = options.map || document.getElementById("map") || L.map('map');
+  options.cellSize = options.cellSize || { rows:100, cols:100 };
   // A function to return the style of a cell
   function create_cell_style(fill) {
     return {
@@ -23,7 +23,7 @@ module.exports = function addGrid(map, onChangeLocation) {
     include: L.Mixin.Events,
 
     options: {
-      cellSize: 64,
+      cellSize: options.cellSize || { rows:100, cols:100 },
       delayFactor: 0.5,
     },
 
@@ -62,6 +62,10 @@ module.exports = function addGrid(map, onChangeLocation) {
     _zoomHandler: function(e) {
       this.clearLayers();
       this._renderCells(e.target.getBounds());
+
+      var pixels = options.pixels || 400;
+      var degrees = options.getMinimumGridWidth(pixels);
+      setCellSizeInDegrees(degrees.degrees);
     },
 
     _renderCells: function(bounds) {
@@ -97,12 +101,12 @@ module.exports = function addGrid(map, onChangeLocation) {
     },
 
     _setupSize: function() {
-      this._rows = Math.ceil(this._map.getSize().x / this._cellSize);
-      this._cols = Math.ceil(this._map.getSize().y / this._cellSize);
+      this._rows = Math.ceil(this._map.getSize().x / this._cellSize.rows);
+      this._cols = Math.ceil(this._map.getSize().y / this._cellSize.cols);
     },
 
     _setupGrid: function(bounds) {
-      this._origin = this._map.project(bounds.getNorthWest());
+      this._origin = this._map.project(L.latLng(0,0));
       this._cellSize = this.options.cellSize;
       this._setupSize();
       this._loadedCells = [];
@@ -111,8 +115,8 @@ module.exports = function addGrid(map, onChangeLocation) {
     },
 
     _cellPoint: function(row, col) {
-      var x = this._origin.x + (row * this._cellSize);
-      var y = this._origin.y + (col * this._cellSize);
+      var x = this._origin.x + (row * this._cellSize.rows);
+      var y = this._origin.y + (col * this._cellSize.cols);
       return new L.Point(x, y);
     },
 
@@ -129,8 +133,8 @@ module.exports = function addGrid(map, onChangeLocation) {
       var center = bounds.getCenter();
       var offsetX = this._origin.x - offset.x;
       var offsetY = this._origin.y - offset.y;
-      var offsetRows = Math.round(offsetX / this._cellSize);
-      var offsetCols = Math.round(offsetY / this._cellSize);
+      var offsetRows = Math.round(offsetX / this._cellSize.rows);
+      var offsetCols = Math.round(offsetY / this._cellSize.cols);
       var cells = [];
       for (var i = 0; i <= this._rows; i++) {
         for (var j = 0; j <= this._cols; j++) {
@@ -152,12 +156,43 @@ module.exports = function addGrid(map, onChangeLocation) {
     }
   });
 
-  L.virtualGrid = function(url, options) {
+  L.virtualGrid = function(options, url) {
     return new L.VirtualGrid(options);
   };
 
-  L.virtualGrid({
-    cellSize: 64
-  }).addTo(map);
+  var layer = L.virtualGrid({
+                cellSize: { rows:100, cols:100 }
+              }).addTo(map);
 
+  function setCellSizeInDegrees(degrees) {
+
+    layer.remove();
+    var pixels = options.gridWidthInPixels(1);
+    var div = 1/degrees;
+    options.cellSize = { rows:pixels.x/div, cols:pixels.y/div};
+    layer = L.virtualGrid({
+          cellSize: options.cellSize
+        }).addTo(map);
+  }
+
+  function getCellSize() {
+    return options.cellSize;
+  }
+
+  function removeGrid() {
+    layer.remove();
+  }
+
+  function addGrid() {
+    layer = L.virtualGrid({
+              cellSize: options.cellSize
+            }).addTo(map);
+  }
+
+  return {
+    setCellSizeInDegrees: setCellSizeInDegrees,
+    getCellSize: getCellSize,
+    removeGrid: removeGrid,
+    addGrid: addGrid
+  }
 }

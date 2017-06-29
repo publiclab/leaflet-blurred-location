@@ -32,7 +32,7 @@
           <div class="col-md-6">
             <input id="lng" type="text" class="form-control" placeholder="Longitude"><br/>
           </div>
-          <label class="h2 font-size-big"><input type="checkbox" onchange='getLocation(this);'>&nbsp;&nbsp;Obscure my exact location</label>
+          <label class="h2 font-size-big"><input id="obscureLocation" type="checkbox" checked onchange='blurredLocation.obscureLocation();'>&nbsp;&nbsp;Obscure my exact location</label>
         </div>
         <div class="col-md-4">
           <h3 class="font-size-small">On a map : </h3>
@@ -46,9 +46,17 @@
     </div>
     <!-- END OF EXAMPLE -->
   <script>
-    var blurredLocation = new BlurredLocation();
+    options = {}
+
+  // We can add Interface Options as follows: 
+    InterfaceOptions = {};
+    InterfaceOptions.latId = 'lat';
+    InterfaceOptions.lngId = 'lng';
+
+    options.InterfaceOptions = InterfaceOptions;
+
+    var blurredLocation = new BlurredLocation(options);
     blurredLocation.panMapToGeocodedLocation('geo_location');
-    blurredLocation.panMapWhenInputsChange('lat', 'lng');
   </script>
   </body>
 </html>

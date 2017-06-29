@@ -1,36 +1,85 @@
-var fixture = loadFixtures('index.html');
-var options = {};
-options.location = {
-  lat: 41.01,
-  lon: -85.66
-};
-
-var blurredLocation = new BlurredLocation(options);
-
-
 describe("Basic testing", function() {
   "use strict";
 
+  var fixture = loadFixtures('index.html');
 
-  it("Checks if getLat returns the correct latitude", function () {
+  it("Checks if getLat returns the correct latitude with correct precision", function () {
+    blurredLocation.setZoom(13);
     expect(blurredLocation.getLat()).toBe(41.01);
+    blurredLocation.setZoom(10);
+    expect(blurredLocation.getLat()).toBe(41.0);
   });
 
-  it("Checks if getLon returns the correct longitude", function () {
+  it("Checks if getLon returns the correct longitude with correct precision", function () {
+    blurredLocation.setZoom(13);
     expect(blurredLocation.getLon()).toBe(-85.66);
+    blurredLocation.setZoom(10);
+    expect(blurredLocation.getLon()).toBe(-85.6);
   });
 
   it("Checks if goTo changes the map location to given parameters", function() {
-    expect(blurredLocation.getLat()).toBe(41.01);
-    expect(blurredLocation.getLon()).toBe(-85.66);
-    blurredLocation.goTo(51.50, -0.09, 13);
+    expect(blurredLocation.getLat()).toBe(41.0);
+    expect(blurredLocation.getLon()).toBe(-85.6);
+    blurredLocation.goTo(51.50223, -0.09123213, 13);
     expect(blurredLocation.getLat()).toBe(51.50);
     expect(blurredLocation.getLon()).toBe(-0.09);
   });
 
-  it("Checks if blurredLocation has a property named addGrid", function() {
-    expect(blurredLocation.hasOwnProperty("addGrid")).toBe(true);
+  it("Checks if blurredLocation has a property named gridSystem", function() {
+    expect(blurredLocation.hasOwnProperty("gridSystem")).toBe(true);
   });
+
+  it("Checks if cellSize changes with change in zoom", function() {
+
+    blurredLocation.setZoom(13);
+
+    expect(blurredLocation.gridSystem.getCellSize().rows).toBe(58.25);
+    expect(blurredLocation.gridSystem.getCellSize().cols).toBe(94.63);
+
+    blurredLocation.setZoom(10);
+
+    expect(blurredLocation.gridSystem.getCellSize().rows).toBe(72.8);
+    expect(blurredLocation.gridSystem.getCellSize().cols).toBe(118.3);
+
+  });
+
+  it("Checks if getPrecision works and changes on zoom", function() {
+    blurredLocation.goTo(blurredLocation.getLat(), blurredLocation.getLon(),13);
+    expect(blurredLocation.getPrecision()).toBe(2);
+    blurredLocation.goTo(blurredLocation.getLat(), blurredLocation.getLon(),10);
+    expect(blurredLocation.getPrecision()).toBe(1);
+  });
+
+  it("Checks if getFullLat returns the full latitude of the map", function() {
+    blurredLocation.goTo(45.324324234,-53.32423234234,13);
+    expect(blurredLocation.getFullLat()).toBe(45.324324234);
+
+    blurredLocation.setZoom(10);
+    expect(blurredLocation.getFullLat()).not.toBe(blurredLocation.getLat());
+
+  });
+
+  it("Checks if getFullLon returns the full latitude of the map", function() {
+    blurredLocation.goTo(45.324324234,-53.32423234234,13);
+    expect(blurredLocation.getFullLon()).toBe(-53.32423234234);
+
+    blurredLocation.setZoom(10);
+    expect(blurredLocation.getFullLon()).not.toBe(blurredLocation.getLon());
+  });
+
+  it("Checks if setBlurred toggles the grid on and off", function() {
+    blurredLocation.setBlurred(true);
+    expect(blurredLocation.isBlurred()).toBe(true);
+    blurredLocation.setBlurred(false);
+    expect(blurredLocation.isBlurred()).toBe(false);
+  });
+
+  it("Checks if panMap changes the map's center to provided latitude and longitude", function() {
+    blurredLocation.panMap(38.24, 34.55);
+    expect(blurredLocation.getFullLat()).toBe(38.24);
+    expect(blurredLocation.getFullLon()).toBe(34.55);
+  });
+
   // it("geocode spec", function() {
   //   var geometry = blurredLocation.geocode("Buenos Aires");
   //   console.log(blurredLocation.getLat());
@@ -39,23 +88,4 @@ describe("Basic testing", function() {
   //   expect(blurredLocation.getLon()).toBe(-58.3815591);
   // });
 
-});
-
-
-
-describe("Asynchronous spec for getPlacenameFromCoordinates", function() {
-
-  var asyncSetThing,
-  asyncWrapper = function(callback) {
-   asyncSetThing = true;
-   blurredLocation.getPlacenameFromCoordinates(45,52,callback());
-  };
-
-  beforeEach(function(done) {
-    asyncWrapper(done);
- });
-
- it("Checks if the callback of getPlacenameFromCoordinates method is called", function() {
-   expect(asyncSetThing).toBeTruthy();
- });
 });
