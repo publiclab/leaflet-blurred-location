@@ -13440,10 +13440,6 @@ BlurredLocation = function BlurredLocation(options) {
     return blurred;
   }
 
-  function obscureLocation() {
-    setBlurred(document.getElementById("obscureLocation").checked);
-  }
-
   return {
     getLat: getLat,
     getLon: getLon,
@@ -13464,7 +13460,6 @@ BlurredLocation = function BlurredLocation(options) {
     getFullLat: getFullLat,
     isBlurred: isBlurred,
     setBlurred: setBlurred,
-    obscureLocation: obscureLocation,
     truncateToPrecision: truncateToPrecision,
     onDrag: onDrag,
   }
