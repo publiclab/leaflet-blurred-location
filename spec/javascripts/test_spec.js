@@ -80,6 +80,10 @@ describe("Basic testing", function() {
     expect(blurredLocation.getFullLon()).toBe(34.55);
   });
 
+  it("Checks if truncateToPrecision returns the correct output", function() {
+    expect(blurredLocation.truncateToPrecision(56.21414,3)).toBe(56.214);
+  });
+
   // it("geocode spec", function() {
   //   var geometry = blurredLocation.geocode("Buenos Aires");
   //   console.log(blurredLocation.getLat());

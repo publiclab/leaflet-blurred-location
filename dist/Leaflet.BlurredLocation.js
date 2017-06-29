@@ -13458,6 +13458,7 @@ BlurredLocation = function BlurredLocation(options) {
     getFullLat: getFullLat,
     isBlurred: isBlurred,
     setBlurred: setBlurred,
+    truncateToPrecision: truncateToPrecision,
   }
 }
 
