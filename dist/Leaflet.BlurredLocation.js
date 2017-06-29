@@ -13288,6 +13288,10 @@ BlurredLocation = function BlurredLocation(options) {
 
   InterfaceOptions = options.InterfaceOptions || {};
   InterfaceOptions.panMap = panMap;
+  InterfaceOptions.getPlacenameFromCoordinates = getPlacenameFromCoordinates;
+  InterfaceOptions.getLat = getLat;
+  InterfaceOptions.getLon = getLon;
+  InterfaceOptions.map = options.map;
 
   Interface = options.Interface(InterfaceOptions);
 
@@ -13354,15 +13358,13 @@ BlurredLocation = function BlurredLocation(options) {
     options.map.panTo(new L.LatLng(lat, lng));
   }
 
-  function getPlacenameFromCoordinates(lat, lng) {
-    var loc = "Location not found";
-
-    $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng, function(data) {
-      if (data.results[0]) {
-        loc = data.results[0].formatted_address;
+  function getPlacenameFromCoordinates(lat, lng, onResponse) {
+      $.ajax({
+      url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
+      success: function(result) {
+        onResponse(result);
       }
     });
-    return loc;
   }
 
   function panMapByBrowserGeocode(checkbox) {
@@ -13442,7 +13444,6 @@ BlurredLocation = function BlurredLocation(options) {
     setBlurred(document.getElementById("obscureLocation").checked);
   }
 
-
   return {
     getLat: getLat,
     getLon: getLon,
@@ -13465,6 +13466,7 @@ BlurredLocation = function BlurredLocation(options) {
     setBlurred: setBlurred,
     obscureLocation: obscureLocation,
     truncateToPrecision: truncateToPrecision,
+    onDrag: onDrag,
   }
 }
 
@@ -13692,8 +13694,20 @@ module.exports = function Interface (options) {
 
   panMapWhenInputsChange();
 
+  function onDrag() {
+    function changeVal(result) {
+      $("#location").val(result.results[0].formatted_address);
+    }
+    options.map.on('moveend', function(e) {
+     options.getPlacenameFromCoordinates(options.getLat(), options.getLon(), changeVal)
+   });
+  }
+
+  onDrag();
+
   return {
     panMapWhenInputsChange: panMapWhenInputsChange,
+    onDrag: onDrag,
   }
 
 }
