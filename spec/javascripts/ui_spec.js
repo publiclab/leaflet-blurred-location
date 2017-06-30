@@ -30,6 +30,8 @@ describe("UI testing", function() {
     var fixture = loadFixtures('index.html');
 
     blurredLocation.goTo(43,43,10);
+    expect(blurredLocation.getLat()).toBe(43);
+    expect(blurredLocation.getLon()).toBe(43);
     expect($("#location").val()).toBe("Zugdidi Jvari Mestia Lasdili, Georgia");
 
   })

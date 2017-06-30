@@ -13279,6 +13279,14 @@ BlurredLocation = function BlurredLocation(options) {
 
   options.gridSystem = options.gridSystem || require('./core/gridSystem.js');
   options.Interface = options.Interface || require('./ui/Interface.js');
+  options.onDrag = options.onDrag || function onDrag() {
+    function changeVal(result) {
+      $("#location").val(result.results[0].formatted_address);
+    }
+    options.map.on('moveend', function() {
+     getPlacenameFromCoordinates(getLat(), getLon(), changeVal)
+   });
+  }
 
   gridSystemOptions = options.gridSystemOptions || {};
   gridSystemOptions.map = options.map;
@@ -13294,6 +13302,8 @@ BlurredLocation = function BlurredLocation(options) {
   InterfaceOptions.map = options.map;
 
   Interface = options.Interface(InterfaceOptions);
+  options.onDrag();
+
 
   L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
 
@@ -13688,20 +13698,8 @@ module.exports = function Interface (options) {
 
   panMapWhenInputsChange();
 
-  function onDrag() {
-    function changeVal(result) {
-      $("#location").val(result.results[0].formatted_address);
-    }
-    options.map.on('moveend', function(e) {
-     options.getPlacenameFromCoordinates(options.getLat(), options.getLon(), changeVal)
-   });
-  }
-
-  onDrag();
-
   return {
     panMapWhenInputsChange: panMapWhenInputsChange,
-    onDrag: onDrag,
   }
 
 }
