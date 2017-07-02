@@ -25,15 +25,4 @@ describe("UI testing", function() {
     expect(blurredLocation.getLat()).toBe(20);
     expect(blurredLocation.getLon()).toBe(20);
   });
-
-  it("Checks if value of input box changes on change of map location", function () {
-    var fixture = loadFixtures('index.html');
-
-    blurredLocation.goTo(43,43,10);
-    expect(blurredLocation.getLat()).toBe(43);
-    expect(blurredLocation.getLon()).toBe(43);
-    expect($("#location").val()).toBe("Zugdidi Jvari Mestia Lasdili, Georgia");
-
-  })
-
 });
