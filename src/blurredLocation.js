@@ -152,7 +152,7 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function getFullLon() {
-    return options.map.getCenter().lng;
+    return parseFloat(options.map.getCenter().lng);
   }
 
   function setBlurred(boolean) {
