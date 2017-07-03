@@ -3,9 +3,10 @@ BlurredLocation = function BlurredLocation(options) {
   var L = require('leaflet');
   var blurredLocation = this;
   var blurred = true;
+  require('./core/Leaflet.Graticule.js');
 
   options = options || {};
-  options.map = options.map || L.map('map');
+  options.map = options.map || new L.Map('map',{zoomControl:false}).setView([24.0, 121], 6);
   options.pixels = options.pixels || 400;
 
   options.gridSystem = options.gridSystem || require('./core/gridSystem.js');
@@ -22,7 +23,7 @@ BlurredLocation = function BlurredLocation(options) {
 
   Interface = options.Interface(InterfaceOptions);
 
-  L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
+  var stamenTerrain = L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
 
   options.location = options.location || {
     lat: 41.011234567,
@@ -30,7 +31,7 @@ BlurredLocation = function BlurredLocation(options) {
   };
 
   options.zoom = options.zoom || 13;
-  options.map.setView([options.location.lat, options.location.lon], options.zoom);
+  // options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
   function getLat() {
     if(isBlurred())
