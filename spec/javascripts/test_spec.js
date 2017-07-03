@@ -29,19 +29,19 @@ describe("Basic testing", function() {
     expect(blurredLocation.hasOwnProperty("gridSystem")).toBe(true);
   });
 
-  it("Checks if cellSize changes with change in zoom", function() {
-
-    blurredLocation.setZoom(13);
-
-    expect(blurredLocation.gridSystem.getCellSize().rows).toBe(58.25);
-    expect(blurredLocation.gridSystem.getCellSize().cols).toBe(94.63);
-
-    blurredLocation.setZoom(10);
-
-    expect(blurredLocation.gridSystem.getCellSize().rows).toBe(72.8);
-    expect(blurredLocation.gridSystem.getCellSize().cols).toBe(118.3);
-
-  });
+  // it("Checks if cellSize changes with change in zoom", function() {
+  //
+  //   blurredLocation.setZoom(13);
+  //
+  //   expect(blurredLocation.gridSystem.getCellSize().rows).toBe(58.25);
+  //   expect(blurredLocation.gridSystem.getCellSize().cols).toBe(94.63);
+  //
+  //   blurredLocation.setZoom(10);
+  //
+  //   expect(blurredLocation.gridSystem.getCellSize().rows).toBe(72.8);
+  //   expect(blurredLocation.gridSystem.getCellSize().cols).toBe(118.3);
+  //
+  // });
 
   it("Checks if getPrecision works and changes on zoom", function() {
     blurredLocation.goTo(blurredLocation.getLat(), blurredLocation.getLon(),13);
