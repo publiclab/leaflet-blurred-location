@@ -13,6 +13,7 @@ module.exports = function gridSystem(options) {
                      {start: 8, end: 10, interval: 1}
                  ],
                  opacity: 1,
+                 color: '#ff0000',
              }).addTo(map);
 
   function addGrid() {
@@ -25,6 +26,7 @@ module.exports = function gridSystem(options) {
                         {start: 8, end: 10, interval: 1}
                     ],
                     opacity: 1,
+                    color: '#ff0000',
                 }).addTo(map);
   }
 
