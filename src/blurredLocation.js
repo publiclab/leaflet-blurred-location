@@ -191,6 +191,7 @@ BlurredLocation = function BlurredLocation(options) {
     isBlurred: isBlurred,
     setBlurred: setBlurred,
     truncateToPrecision: truncateToPrecision,
+    map: options.map,
   }
 }
 
