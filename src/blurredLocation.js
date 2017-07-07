@@ -7,6 +7,7 @@ BlurredLocation = function BlurredLocation(options) {
   options = options || {};
   options.map = options.map || L.map('map');
   options.pixels = options.pixels || 400;
+  options.selector = options.selector || 'geo_location';
 
   options.gridSystem = options.gridSystem || require('./core/gridSystem.js');
   options.Interface = options.Interface || require('./ui/Interface.js');
@@ -82,6 +83,8 @@ BlurredLocation = function BlurredLocation(options) {
       }, 10);
     });
   };
+
+  panMapToGeocodedLocation(options.selector);
 
   function panMap(lat, lng) {
     options.map.panTo(new L.LatLng(lat, lng));
