@@ -13618,7 +13618,6 @@ BlurredLocation = function BlurredLocation(options) {
 
   InterfaceOptions = options.InterfaceOptions || {};
   InterfaceOptions.panMap = panMap;
-  InterfaceOptions.geocode = geocode;
 
   Interface = options.Interface(InterfaceOptions);
 
@@ -13670,6 +13669,18 @@ BlurredLocation = function BlurredLocation(options) {
   function getSize() {
     return options.map.getSize();
   }
+
+  function panMapToGeocodedLocation(selector) {
+    var input = document.getElementById(selector);
+
+    var autocomplete = new google.maps.places.Autocomplete(input);
+    autocomplete.addListener('place_changed', function() {
+      setTimeout(function () {
+        var str = input.value;
+        geocode(str);
+      }, 10);
+    });
+  };
 
   function panMap(lat, lng) {
     options.map.panTo(new L.LatLng(lat, lng));
@@ -14008,23 +14019,8 @@ module.exports = function Interface (options) {
 
   panMapWhenInputsChange();
 
-  function panMapToGeocodedLocation() {
-    var input = document.getElementById(options.selector);
-
-    var autocomplete = new google.maps.places.Autocomplete(input);
-    autocomplete.addListener('place_changed', function() {
-      setTimeout(function () {
-        var str = input.value;
-        options.geocode(str);
-      }, 10);
-    });
-  };
-
-  panMapToGeocodedLocation();
-
   return {
     panMapWhenInputsChange: panMapWhenInputsChange,
-    panMapToGeocodedLocation: panMapToGeocodedLocation,
   }
 
 }

@@ -20,23 +20,8 @@ module.exports = function Interface (options) {
 
   panMapWhenInputsChange();
 
-  function panMapToGeocodedLocation() {
-    var input = document.getElementById(options.selector);
-
-    var autocomplete = new google.maps.places.Autocomplete(input);
-    autocomplete.addListener('place_changed', function() {
-      setTimeout(function () {
-        var str = input.value;
-        options.geocode(str);
-      }, 10);
-    });
-  };
-
-  panMapToGeocodedLocation();
-
   return {
     panMapWhenInputsChange: panMapWhenInputsChange,
-    panMapToGeocodedLocation: panMapToGeocodedLocation,
   }
 
 }
