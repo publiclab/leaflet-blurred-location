@@ -25,5 +25,4 @@ describe("UI testing", function() {
     expect(blurredLocation.getLat()).toBe(20);
     expect(blurredLocation.getLon()).toBe(20);
   });
-
 });
