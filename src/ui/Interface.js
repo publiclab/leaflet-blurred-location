@@ -19,8 +19,20 @@ module.exports = function Interface (options) {
 
   panMapWhenInputsChange();
 
+
+  options.onDrag = options.onDrag || function onDrag() {
+    function changeVal(result) {
+      $("#location").val(result.results[0].formatted_address);
+    }
+    options.getPlacenameFromCoordinates(options.getLat(), options.getLon(), changeVal);
+  }
+
+
+  options.map.on('moveend', options.onDrag);
+
   return {
     panMapWhenInputsChange: panMapWhenInputsChange,
+    onDrag: options.onDrag,
   }
 
 }
