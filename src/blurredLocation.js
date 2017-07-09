@@ -3,18 +3,29 @@ BlurredLocation = function BlurredLocation(options) {
   var L = require('leaflet');
   var blurredLocation = this;
   var blurred = true;
+  require('leaflet-graticule');
 
   options = options || {};
-  options.map = options.map || L.map('map');
+  options.location = options.location || {
+    lat: 41.011234567,
+    lon: -85.66123456789
+  };
+
+  options.zoom = options.zoom || 6;
+
+  options.map = options.map || new L.Map('map',{zoomControl:false}).setView([options.location.lat, options.location.lon], options.zoom);
+
   options.pixels = options.pixels || 400;
 
   options.gridSystem = options.gridSystem || require('./core/gridSystem.js');
+
   options.Interface = options.Interface || require('./ui/Interface.js');
 
   gridSystemOptions = options.gridSystemOptions || {};
   gridSystemOptions.map = options.map;
   gridSystemOptions.gridWidthInPixels = gridWidthInPixels;
   gridSystemOptions.getMinimumGridWidth = getMinimumGridWidth;
+
   gridSystem = options.gridSystem(gridSystemOptions);
 
   InterfaceOptions = options.InterfaceOptions || {};
@@ -26,15 +37,9 @@ BlurredLocation = function BlurredLocation(options) {
 
   Interface = options.Interface(InterfaceOptions);
 
-  L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
+  var tileLayer = L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
 
-  options.location = options.location || {
-    lat: 41.011234567,
-    lon: -85.66123456789
-  };
-
-  options.zoom = options.zoom || 13;
-  options.map.setView([options.location.lat, options.location.lon], options.zoom);
+  // options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
   function getLat() {
     if(isBlurred())
@@ -153,7 +158,7 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function getFullLon() {
-    return options.map.getCenter().lng;
+    return parseFloat(options.map.getCenter().lng);
   }
 
   function setBlurred(boolean) {
@@ -192,6 +197,7 @@ BlurredLocation = function BlurredLocation(options) {
     isBlurred: isBlurred,
     setBlurred: setBlurred,
     truncateToPrecision: truncateToPrecision,
+    map: options.map,
   }
 }
 

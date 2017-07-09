@@ -31,7 +31,8 @@
     "jasmine-jquery": "^2.1.1",
     "matchdep": "^1.0.1",
     "require": "^2.4.20",
-    "resig-class": "^1.0.0"
+    "resig-class": "^1.0.0",
+    "leaflet-graticule": "git://github.com/jywarren/Leaflet.Graticule.git#patch-1"
   },
   "dependencies": {
     "jquery": "^3.2.1",
