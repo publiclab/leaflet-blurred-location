@@ -13681,8 +13681,6 @@ BlurredLocation = function BlurredLocation(options) {
     });
   };
 
-  panMapToGeocodedLocation
-
   function panMap(lat, lng) {
     options.map.panTo(new L.LatLng(lat, lng));
   }
