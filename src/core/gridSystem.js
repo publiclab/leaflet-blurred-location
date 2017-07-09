@@ -3,7 +3,7 @@ module.exports = function gridSystem(options) {
   var map = options.map || document.getElementById("map") || L.map('map');
   options.cellSize = options.cellSize || { rows:100, cols:100 };
 
-  require('./Leaflet.Graticule.js')
+  require('leaflet-graticule');
   var layer = L.latlngGraticule({
                  showLabel: true,
                  zoomInterval: [

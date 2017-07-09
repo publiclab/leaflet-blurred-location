@@ -3,7 +3,7 @@ BlurredLocation = function BlurredLocation(options) {
   var L = require('leaflet');
   var blurredLocation = this;
   var blurred = true;
-  require('./core/Leaflet.Graticule.js');
+  require('leaflet-graticule');
 
   options = options || {};
   options.location = options.location || {
