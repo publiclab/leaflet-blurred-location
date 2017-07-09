@@ -2,6 +2,7 @@ module.exports = function Interface (options) {
 
     options.latId = options.latId || 'lat';
     options.lngId = options.lngId || 'lng';
+    options.selector = options.selector || 'geo_location'
 
     function panMapWhenInputsChange() {
       var lat = document.getElementById(options.latId);
