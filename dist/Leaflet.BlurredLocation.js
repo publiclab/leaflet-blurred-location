@@ -13606,7 +13606,6 @@ BlurredLocation = function BlurredLocation(options) {
   options = options || {};
   options.map = options.map || L.map('map');
   options.pixels = options.pixels || 400;
-  options.selector = options.selector || 'geo_location'
 
   options.gridSystem = options.gridSystem || require('./core/gridSystem.js');
   options.Interface = options.Interface || require('./ui/Interface.js');
@@ -13645,7 +13644,6 @@ BlurredLocation = function BlurredLocation(options) {
     else
       return parseFloat(options.map.getCenter().lng);
   }
-
   function goTo(lat, lon, zoom) {
     options.map.setView([lat, lon], zoom);
   }
@@ -13683,7 +13681,7 @@ BlurredLocation = function BlurredLocation(options) {
     });
   };
 
-  panMapToGeocodedLocation(options.selector);
+  panMapToGeocodedLocation
 
   function panMap(lat, lng) {
     options.map.panTo(new L.LatLng(lat, lng));
