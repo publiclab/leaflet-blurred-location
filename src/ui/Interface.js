@@ -20,7 +20,7 @@ module.exports = function Interface (options) {
   panMapWhenInputsChange();
 
 
-  onDrag = options.onDrag || function onDrag() {
+  options.onDrag = options.onDrag || function onDrag() {
     function changeVal(result) {
       $("#location").val(result.results[0].formatted_address);
     }
@@ -28,13 +28,11 @@ module.exports = function Interface (options) {
   }
 
 
-  options.map.on('moveend', function() {
-      onDrag();
-   });
+  options.map.on('moveend', options.onDrag);
 
   return {
     panMapWhenInputsChange: panMapWhenInputsChange,
-    onDrag: onDrag,
+    onDrag: options.onDrag,
   }
 
 }
