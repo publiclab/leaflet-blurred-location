@@ -8,11 +8,12 @@ module.exports = function gridSystem(options) {
   options.graticuleOptions = options.graticuleOptions || {
                  showLabel: true,
                  zoomInterval: [
-                     {start: 2, end: 3, interval: 30},
-                     {start: 4, end: 4, interval: 10},
-                     {start: 5, end: 7, interval: 5},
-                     {start: 8, end: 10, interval: 1}
-                 ],
+                    {start: 2, end: 2, interval: 40},
+                    {start: 3, end: 3, interval: 20},
+                    {start: 4, end: 4, interval: 10},
+                    {start: 5, end: 7, interval: 5},
+                    {start: 8, end: 20, interval: 1}
+                  ],
                  opacity: 1,
                  color: '#ff0000',
              }
