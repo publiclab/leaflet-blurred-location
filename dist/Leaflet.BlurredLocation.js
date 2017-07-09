@@ -13662,16 +13662,16 @@ BlurredLocation = function BlurredLocation(options) {
     options.map.setZoom(zoom);
   }
 
-  function geocode(string) {
+  function geocodeStringAndPan(string, onComplete) {
     var url = "https://maps.googleapis.com/maps/api/geocode/json?address="+string.split(" ").join("+");
     var Blurred = $.ajax({
         async: false,
         url: url
     });
-    var geometry = Blurred.responseJSON.results[0].geometry.location;
-    options.map.setView([geometry.lat, geometry.lng],options.zoom);
-    options.Geocode(geometry);
-    return geometry;
+    onComplete = onComplete || function onComplete(geometry) {
+      options.map.setView([geometry.lat, geometry.lng],options.zoom);
+    }
+    onComplete(Blurred.responseJSON.results[0].geometry.location);
   }
 
   function getSize() {
@@ -13685,7 +13685,7 @@ BlurredLocation = function BlurredLocation(options) {
     autocomplete.addListener('place_changed', function() {
       setTimeout(function () {
         var str = input.value;
-        geocode(str);
+        geocodeStringAndPan(str);
       }, 10);
     });
   };
@@ -13780,7 +13780,7 @@ BlurredLocation = function BlurredLocation(options) {
     getLat: getLat,
     getLon: getLon,
     goTo: goTo,
-    geocode: geocode,
+    geocodeStringAndPan: geocodeStringAndPan,
     getSize: getSize,
     gridSystem: gridSystem,
     panMapToGeocodedLocation: panMapToGeocodedLocation,
