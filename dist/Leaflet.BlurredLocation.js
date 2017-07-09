@@ -13610,12 +13610,6 @@ BlurredLocation = function BlurredLocation(options) {
   options.gridSystem = options.gridSystem || require('./core/gridSystem.js');
   options.Interface = options.Interface || require('./ui/Interface.js');
 
-  options.Geocode = options.Geocode || function Geocode(geometry) {
-    $("#lat").val(geometry.lat);
-    $("#lng").val(geometry.lng);
-  }
-
-
   gridSystemOptions = options.gridSystemOptions || {};
   gridSystemOptions.map = options.map;
   gridSystemOptions.gridWidthInPixels = gridWidthInPixels;
@@ -13669,6 +13663,9 @@ BlurredLocation = function BlurredLocation(options) {
         url: url
     });
     onComplete = onComplete || function onComplete(geometry) {
+      $("#lat").val(geometry.lat);
+      $("#lng").val(geometry.lng);
+
       options.map.setView([geometry.lat, geometry.lng],options.zoom);
     }
     onComplete(Blurred.responseJSON.results[0].geometry.location);
