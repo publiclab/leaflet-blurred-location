@@ -14389,7 +14389,7 @@ module.exports = function Interface (options) {
 
   options.onDrag = options.onDrag || function onDrag() {
     function changeVal(result) {
-      if(result.results[0].formatted_address)
+      if(result.results[0])
         $("#location").val(result.results[0].formatted_address);
     }
     options.getPlacenameFromCoordinates(options.getLat(), options.getLon(), changeVal);
