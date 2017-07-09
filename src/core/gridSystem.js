@@ -4,7 +4,8 @@ module.exports = function gridSystem(options) {
   options.cellSize = options.cellSize || { rows:100, cols:100 };
 
   require('leaflet-graticule');
-  var layer = L.latlngGraticule({
+
+  options.graticuleOptions = options.graticuleOptions || {
                  showLabel: true,
                  zoomInterval: [
                      {start: 2, end: 3, interval: 30},
@@ -14,35 +15,13 @@ module.exports = function gridSystem(options) {
                  ],
                  opacity: 1,
                  color: '#ff0000',
-             }).addTo(map);
+             }
+
+
+  var layer = L.latlngGraticule(options.graticuleOptions).addTo(map);
 
   function addGrid() {
-     layer = L.latlngGraticule({
-                    showLabel: true,
-                    zoomInterval: [
-                        {start: 2, end: 3, interval: 30},
-                        {start: 4, end: 4, interval: 10},
-                        {start: 5, end: 7, interval: 5},
-                        {start: 8, end: 10, interval: 1}
-                    ],
-                    opacity: 1,
-                    color: '#ff0000',
-                }).addTo(map);
-  }
-
-  function setCellSizeInDegrees(degrees) {
-
-    layer.remove();
-    var pixels = options.gridWidthInPixels(1);
-    var div = 1/degrees;
-    options.cellSize = { rows:pixels.x/div, cols:pixels.y/div};
-    layer = L.virtualGrid({
-          cellSize: options.cellSize
-        }).addTo(map);
-  }
-
-  function getCellSize() {
-    return options.cellSize;
+     layer = L.latlngGraticule(options.graticuleOptions).addTo(map);
   }
 
   function removeGrid() {
@@ -50,8 +29,6 @@ module.exports = function gridSystem(options) {
   }
 
   return {
-    setCellSizeInDegrees: setCellSizeInDegrees,
-    getCellSize: getCellSize,
     removeGrid: removeGrid,
     addGrid: addGrid,
   }

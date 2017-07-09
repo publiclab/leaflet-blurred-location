@@ -14131,16 +14131,20 @@ BlurredLocation = function BlurredLocation(options) {
   };
 
   options.zoom = options.zoom || 6;
+
   options.map = options.map || new L.Map('map',{zoomControl:false}).setView([options.location.lat, options.location.lon], options.zoom);
+
   options.pixels = options.pixels || 400;
 
   options.gridSystem = options.gridSystem || require('./core/gridSystem.js');
+
   options.Interface = options.Interface || require('./ui/Interface.js');
 
   gridSystemOptions = options.gridSystemOptions || {};
   gridSystemOptions.map = options.map;
   gridSystemOptions.gridWidthInPixels = gridWidthInPixels;
   gridSystemOptions.getMinimumGridWidth = getMinimumGridWidth;
+
   gridSystem = options.gridSystem(gridSystemOptions);
 
   InterfaceOptions = options.InterfaceOptions || {};
@@ -14152,7 +14156,7 @@ BlurredLocation = function BlurredLocation(options) {
 
   Interface = options.Interface(InterfaceOptions);
 
-  var stamenTerrain = L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
+  var tileLayer = L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
 
   // options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
@@ -14325,7 +14329,8 @@ module.exports = function gridSystem(options) {
   options.cellSize = options.cellSize || { rows:100, cols:100 };
 
   require('leaflet-graticule');
-  var layer = L.latlngGraticule({
+
+  options.graticuleOptions = options.graticuleOptions || {
                  showLabel: true,
                  zoomInterval: [
                      {start: 2, end: 3, interval: 30},
@@ -14335,35 +14340,13 @@ module.exports = function gridSystem(options) {
                  ],
                  opacity: 1,
                  color: '#ff0000',
-             }).addTo(map);
+             }
+
+
+  var layer = L.latlngGraticule(options.graticuleOptions).addTo(map);
 
   function addGrid() {
-     layer = L.latlngGraticule({
-                    showLabel: true,
-                    zoomInterval: [
-                        {start: 2, end: 3, interval: 30},
-                        {start: 4, end: 4, interval: 10},
-                        {start: 5, end: 7, interval: 5},
-                        {start: 8, end: 10, interval: 1}
-                    ],
-                    opacity: 1,
-                    color: '#ff0000',
-                }).addTo(map);
-  }
-
-  function setCellSizeInDegrees(degrees) {
-
-    layer.remove();
-    var pixels = options.gridWidthInPixels(1);
-    var div = 1/degrees;
-    options.cellSize = { rows:pixels.x/div, cols:pixels.y/div};
-    layer = L.virtualGrid({
-          cellSize: options.cellSize
-        }).addTo(map);
-  }
-
-  function getCellSize() {
-    return options.cellSize;
+     layer = L.latlngGraticule(options.graticuleOptions).addTo(map);
   }
 
   function removeGrid() {
@@ -14371,8 +14354,6 @@ module.exports = function gridSystem(options) {
   }
 
   return {
-    setCellSizeInDegrees: setCellSizeInDegrees,
-    getCellSize: getCellSize,
     removeGrid: removeGrid,
     addGrid: addGrid,
   }
