@@ -193,6 +193,11 @@ BlurredLocation = function BlurredLocation(options) {
   updateRectangleOnPan();
   options.map.on('moveend', updateRectangleOnPan);
 
+  function setZoomByPrecision(precision) {
+    var precisionTable = {'-2': 2, '-1': 3, '0':6, '1':10, '2':13, '3':16};
+    setZoom(precisionTable[precision]);
+  }
+
   return {
     getLat: getLat,
     getLon: getLon,
@@ -216,6 +221,7 @@ BlurredLocation = function BlurredLocation(options) {
     truncateToPrecision: truncateToPrecision,
     map: options.map,
     updateRectangleOnPan: updateRectangleOnPan,
+    setZoomByPrecision: setZoomByPrecision,
   }
 }
 
