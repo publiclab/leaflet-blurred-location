@@ -14351,6 +14351,7 @@ module.exports = function gridSystem(options) {
                             }
                             if (lat < 0) {
                                 lat = lat * -1;
+                                lat = lat.toString();
                                 if(lat.indexOf(".") != -1) lat = lat.split('.')[0] + '.' + lat.split('.')[1].slice(0,decimalPlacesAfterZero);
                                 return '' + lat + 'S';
                             }
