@@ -14307,7 +14307,6 @@ BlurredLocation = function BlurredLocation(options) {
     var bounds = [[getLat(), getLon()], [getLat() + (getLat()/Math.abs(getLat()))*interval, getLon() + (getLon()/Math.abs(getLon()))*interval]];
 
     drawCenterRectangle(bounds);
-    return bounds;
   }
 
   updateRectangleOnPan();
