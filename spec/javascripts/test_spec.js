@@ -84,6 +84,13 @@ describe("Basic testing", function() {
     expect(blurredLocation.truncateToPrecision(56.21414,3)).toBe(56.214);
   });
 
+  it("Checks if setZoomByPrecision pans the map to correct zoom", function() {
+    blurredLocation.setZoomByPrecision(2);
+    expect(blurredLocation.getPrecision()).toBe(2);
+    blurredLocation.setZoomByPrecision(1);
+    expect(blurredLocation.getPrecision()).toBe(1);
+  });
+
   // it("geocode spec", function() {
   //   var geometry = blurredLocation.geocode("Buenos Aires");
   //   console.log(blurredLocation.getLat());
