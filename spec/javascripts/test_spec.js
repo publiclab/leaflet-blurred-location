@@ -44,7 +44,7 @@ describe("Basic testing", function() {
   // });
 
   it("Checks if getPrecision works and changes on zoom", function() {
-    blurredLocation.goTo(blurredLocation.getLat(), blurredLocation.getLon(),13);
+    blurredLocation.goTo(54.232, 45.324,13);
     expect(blurredLocation.getPrecision()).toBe(2);
     blurredLocation.goTo(blurredLocation.getLat(), blurredLocation.getLon(),10);
     expect(blurredLocation.getPrecision()).toBe(1);
