@@ -184,9 +184,10 @@ BlurredLocation = function BlurredLocation(options) {
 
   function updateRectangleOnPan() {
     var precision = getPrecision();
-    var interval = 1 / 10**precision;
+    var interval = Math.pow(10,-precision);
     var bounds = [[getLat(), getLon()], [getLat() + Math.sign(getLat())*interval, getLon() + Math.sign(getLon())*interval]];
     drawCenterRectangle(bounds);
+    return interval;
   }
 
   updateRectangleOnPan();
