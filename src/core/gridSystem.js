@@ -4,6 +4,7 @@ module.exports = function gridSystem(options) {
   options.cellSize = options.cellSize || { rows:100, cols:100 };
 
   require('leaflet-graticule');
+  // require('../Leaflet.Graticule.js');
 
   options.graticuleOptions = options.graticuleOptions || {
                  showLabel: true,

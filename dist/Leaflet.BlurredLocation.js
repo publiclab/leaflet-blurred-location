@@ -14157,7 +14157,6 @@ BlurredLocation = function BlurredLocation(options) {
   Interface = options.Interface(InterfaceOptions);
 
   var tileLayer = L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
-
   // options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
   function getLat() {
@@ -14295,6 +14294,23 @@ BlurredLocation = function BlurredLocation(options) {
     return blurred;
   }
 
+  var rectangle;
+
+  function drawCenterRectangle(bounds) {
+    if(rectangle) rectangle.remove()
+    rectangle = L.rectangle(bounds, {color: "#ff0000", weight: 1}).addTo(options.map);
+  }
+
+  function updateRectangleOnPan() {
+    var precision = getPrecision();
+    var interval = 1 / 10**precision;
+    var bounds = [[getLat(), getLon()], [getLat() + Math.sign(getLat())*interval, getLon() + Math.sign(getLon())*interval]];
+    drawCenterRectangle(bounds);
+  }
+
+  updateRectangleOnPan();
+  options.map.on('moveend', updateRectangleOnPan);
+
   return {
     getLat: getLat,
     getLon: getLon,
@@ -14317,6 +14333,7 @@ BlurredLocation = function BlurredLocation(options) {
     setBlurred: setBlurred,
     truncateToPrecision: truncateToPrecision,
     map: options.map,
+    updateRectangleOnPan: updateRectangleOnPan,
   }
 }
 
@@ -14329,6 +14346,7 @@ module.exports = function gridSystem(options) {
   options.cellSize = options.cellSize || { rows:100, cols:100 };
 
   require('leaflet-graticule');
+  // require('../Leaflet.Graticule.js');
 
   options.graticuleOptions = options.graticuleOptions || {
                  showLabel: true,
