@@ -38,7 +38,6 @@ BlurredLocation = function BlurredLocation(options) {
   Interface = options.Interface(InterfaceOptions);
 
   var tileLayer = L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
-
   // options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
   function getLat() {
@@ -179,6 +178,29 @@ BlurredLocation = function BlurredLocation(options) {
     return blurred;
   }
 
+  var rectangle;
+
+  function drawCenterRectangle(bounds) {
+    if(rectangle) rectangle.remove()
+    rectangle = L.rectangle(bounds, {color: "#ff0000", weight: 1}).addTo(options.map);
+  }
+
+  function updateRectangleOnPan() {
+    var precision = getPrecision();
+    var interval = Math.pow(10,-precision);
+    var bounds = [[getLat(), getLon()], [getLat() + (getLat()/Math.abs(getLat()))*interval, getLon() + (getLon()/Math.abs(getLon()))*interval]];
+
+    drawCenterRectangle(bounds);
+  }
+
+  updateRectangleOnPan();
+  options.map.on('moveend', updateRectangleOnPan);
+
+  function setZoomByPrecision(precision) {
+    var precisionTable = {'-2': 2, '-1': 3, '0':6, '1':10, '2':13, '3':16};
+    setZoom(precisionTable[precision]);
+  }
+
   return {
     getLat: getLat,
     getLon: getLon,
@@ -201,6 +223,8 @@ BlurredLocation = function BlurredLocation(options) {
     setBlurred: setBlurred,
     truncateToPrecision: truncateToPrecision,
     map: options.map,
+    updateRectangleOnPan: updateRectangleOnPan,
+    setZoomByPrecision: setZoomByPrecision,
   }
 }
 

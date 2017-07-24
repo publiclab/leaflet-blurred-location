@@ -44,7 +44,7 @@ describe("Basic testing", function() {
   // });
 
   it("Checks if getPrecision works and changes on zoom", function() {
-    blurredLocation.goTo(blurredLocation.getLat(), blurredLocation.getLon(),13);
+    blurredLocation.goTo(54.232, 45.324,13);
     expect(blurredLocation.getPrecision()).toBe(2);
     blurredLocation.goTo(blurredLocation.getLat(), blurredLocation.getLon(),10);
     expect(blurredLocation.getPrecision()).toBe(1);
@@ -82,6 +82,13 @@ describe("Basic testing", function() {
 
   it("Checks if truncateToPrecision returns the correct output", function() {
     expect(blurredLocation.truncateToPrecision(56.21414,3)).toBe(56.214);
+  });
+
+  it("Checks if setZoomByPrecision pans the map to correct zoom", function() {
+    blurredLocation.setZoomByPrecision(2);
+    expect(blurredLocation.getPrecision()).toBe(2);
+    blurredLocation.setZoomByPrecision(1);
+    expect(blurredLocation.getPrecision()).toBe(1);
   });
 
   // it("geocode spec", function() {

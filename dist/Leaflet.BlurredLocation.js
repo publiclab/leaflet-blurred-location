@@ -14157,7 +14157,6 @@ BlurredLocation = function BlurredLocation(options) {
   Interface = options.Interface(InterfaceOptions);
 
   var tileLayer = L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
-
   // options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
   function getLat() {
@@ -14298,6 +14297,29 @@ BlurredLocation = function BlurredLocation(options) {
     return blurred;
   }
 
+  var rectangle;
+
+  function drawCenterRectangle(bounds) {
+    if(rectangle) rectangle.remove()
+    rectangle = L.rectangle(bounds, {color: "#ff0000", weight: 1}).addTo(options.map);
+  }
+
+  function updateRectangleOnPan() {
+    var precision = getPrecision();
+    var interval = Math.pow(10,-precision);
+    var bounds = [[getLat(), getLon()], [getLat() + (getLat()/Math.abs(getLat()))*interval, getLon() + (getLon()/Math.abs(getLon()))*interval]];
+
+    drawCenterRectangle(bounds);
+  }
+
+  updateRectangleOnPan();
+  options.map.on('moveend', updateRectangleOnPan);
+
+  function setZoomByPrecision(precision) {
+    var precisionTable = {'-2': 2, '-1': 3, '0':6, '1':10, '2':13, '3':16};
+    setZoom(precisionTable[precision]);
+  }
+
   return {
     getLat: getLat,
     getLon: getLon,
@@ -14320,6 +14342,8 @@ BlurredLocation = function BlurredLocation(options) {
     setBlurred: setBlurred,
     truncateToPrecision: truncateToPrecision,
     map: options.map,
+    updateRectangleOnPan: updateRectangleOnPan,
+    setZoomByPrecision: setZoomByPrecision,
   }
 }
 
@@ -14332,18 +14356,73 @@ module.exports = function gridSystem(options) {
   options.cellSize = options.cellSize || { rows:100, cols:100 };
 
   require('leaflet-graticule');
+  // require('../Leaflet.Graticule.js');
 
   options.graticuleOptions = options.graticuleOptions || {
                  showLabel: true,
                  zoomInterval: [
-                    {start: 2, end: 2, interval: 40},
-                    {start: 3, end: 3, interval: 20},
-                    {start: 4, end: 4, interval: 10},
-                    {start: 5, end: 7, interval: 5},
-                    {start: 8, end: 20, interval: 1}
-                  ],
+                   {start: 2, end: 2, interval: 100},
+                   {start: 2, end: 5, interval: 10},
+                   {start: 5, end: 9, interval: 1},
+                   {start: 9, end: 12, interval: 0.1},
+                   {start: 12, end: 15, interval: 0.01},
+                   {start: 15, end: 20, interval: 0.001},
+                 ],
                  opacity: 1,
                  color: '#ff0000',
+                 latFormatTickLabel: function(lat) {
+                            var decimalPlacesAfterZero = 0;
+                            lat = lat.toString();
+                            for(i in this.zoomInterval) {
+                              if(map.getZoom() >= this.zoomInterval[i].start && map.getZoom() <= this.zoomInterval[i].end && this.zoomInterval[i].interval < 1)
+                                decimalPlacesAfterZero = (this.zoomInterval[i].interval + '').split('.')[1].length;
+                            }
+                            if (lat < 0) {
+                                lat = lat * -1;
+                                lat = lat.toString();
+                                if(lat.indexOf(".") != -1) lat = lat.split('.')[0] + '.' + lat.split('.')[1].slice(0,decimalPlacesAfterZero);
+                                return '' + lat + 'S';
+                            }
+                            else if (lat > 0) {
+                                if(lat.indexOf(".") != -1) lat = lat.split('.')[0] + '.' + lat.split('.')[1].slice(0,decimalPlacesAfterZero)
+                                return '' + lat + 'N';
+                            }
+                            return '' + lat;
+                          },
+
+                lngFormatTickLabel: function(lng) {
+                           var decimalPlacesAfterZero = 0;
+                           lng = lng.toString();
+                           for(i in this.zoomInterval) {
+                             if(map.getZoom() >= this.zoomInterval[i].start && map.getZoom() <= this.zoomInterval[i].end && this.zoomInterval[i].interval < 1)
+                               decimalPlacesAfterZero = (this.zoomInterval[i].interval + '').split('.')[1].length;
+                           }
+                           if (lng > 180) {
+                               lng = 360 - lng;
+                               if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
+                               return '' + lng + 'W';
+                           }
+                           else if (lng > 0 && lng < 180) {
+                             if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
+                             return '' + lng + 'E';
+                           }
+                           else if (lng < 0 && lng > -180) {
+                               lng = lng * -1;
+                               lng = lng.toString();
+                               if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
+                               return '' + lng + 'W';
+                           }
+                           else if (lng == -180) {
+                               lng = lng*-1;
+                               if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
+                               return '' + lng;
+                           }
+                           else if (lng < -180) {
+                               lng  = 360 + lng;
+                               if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
+                               return '' + lng + 'W';
+                           }
+                         },
              }
 
 
