@@ -13,6 +13,7 @@ leaflet-blurred-location provides friendly interfaces for:
 ## Setting up leaflet-blurred-location
 
 To set up the library first clone this repo to your local after that run 'npm install' to install all the neccessary packages required. Then open `examples/index.html` to look at the preview of the library.
+There is a simpler version as well which is a simple location entry namely `examples/simple.html`, you can view all there files online using gh-pages of the repo.
 
 ## Creating a map object
 
