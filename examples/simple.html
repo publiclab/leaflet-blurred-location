@@ -45,11 +45,19 @@
     </div>
     <!-- END OF EXAMPLE -->
   <script>
+    options = {}
 
-  var map = new L.Map('map',{zoomControl:false}).setView([45, -85], 10);
-  var tileLayer = L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map);
+  // We can add Interface Options as follows:
+    InterfaceOptions = {};
+    InterfaceOptions.latId = 'lat';
+    InterfaceOptions.lngId = 'lng';
 
+    options.InterfaceOptions = InterfaceOptions;
 
+    var blurredLocation = new BlurredLocation(options);
+    blurredLocation.panMapToGeocodedLocation("geo_location");
+    blurredLocation.gridSystem.removeGrid();
+    blurredLocation.disableCenterShade();
 
   </script>
   </body>

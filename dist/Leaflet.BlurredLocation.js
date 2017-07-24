@@ -14300,7 +14300,7 @@ BlurredLocation = function BlurredLocation(options) {
   var rectangle;
 
   function drawCenterRectangle(bounds) {
-    if(rectangle) rectangle.remove()
+    if(rectangle) rectangle.remove();
     rectangle = L.rectangle(bounds, {color: "#ff0000", weight: 1}).addTo(options.map);
   }
 
@@ -14312,13 +14312,23 @@ BlurredLocation = function BlurredLocation(options) {
     drawCenterRectangle(bounds);
   }
 
-  updateRectangleOnPan();
-  options.map.on('moveend', updateRectangleOnPan);
 
   function setZoomByPrecision(precision) {
     var precisionTable = {'-2': 2, '-1': 3, '0':6, '1':10, '2':13, '3':16};
     setZoom(precisionTable[precision]);
   }
+
+  function enableCenterShade() {
+    updateRectangleOnPan();
+    options.map.on('moveend', updateRectangleOnPan);
+  }
+
+  function disableCenterShade() {
+    if(rectangle) rectangle.remove();
+    options.map.off('moveend',updateRectangleOnPan);
+  }
+
+  enableCenterShade();
 
   return {
     getLat: getLat,
@@ -14344,6 +14354,8 @@ BlurredLocation = function BlurredLocation(options) {
     map: options.map,
     updateRectangleOnPan: updateRectangleOnPan,
     setZoomByPrecision: setZoomByPrecision,
+    disableCenterShade: disableCenterShade,
+    enableCenterShade: enableCenterShade,
   }
 }
 
