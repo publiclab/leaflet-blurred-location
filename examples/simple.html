@@ -32,7 +32,6 @@
           <div class="col-md-6">
             <input id="lng" type="text" class="form-control" placeholder="Longitude"><br/>
           </div>
-          <label class="h2 font-size-big"><input id="obscureLocation" type="checkbox" checked onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>&nbsp;&nbsp;Obscure my exact location</label>
         </div>
         <div class="col-md-4">
           <h3 class="font-size-small">On a map : </h3>
@@ -57,6 +56,9 @@
 
     var blurredLocation = new BlurredLocation(options);
     blurredLocation.panMapToGeocodedLocation("geo_location");
+    blurredLocation.gridSystem.removeGrid();
+    blurredLocation.disableCenterShade();
+
   </script>
   </body>
 </html>
