@@ -23,10 +23,15 @@ module.exports = function Interface (options) {
 
   options.onDrag = options.onDrag || function onDrag() {
     function changeVal(result) {
-      if(result.results[0])
+
+      if($("#"+options.selector).val())
+        $("#location").val($("#"+options.selector).val());
+
+      else if(result.results[0])
         $("#location").val(result.results[0].formatted_address);
     }
-    options.getPlacenameFromCoordinates(options.getLat(), options.getLon(), changeVal);
+
+      options.getPlacenameFromCoordinates(options.getLat(), options.getLon(), changeVal);
   }
 
 
