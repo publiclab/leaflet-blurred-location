@@ -167,10 +167,12 @@ BlurredLocation = function BlurredLocation(options) {
       if(boolean && !blurred) {
         gridSystem.addGrid();
         blurred = true;
+        enableCenterShade();
       }
       else if(!boolean) {
         blurred = false;
         gridSystem.removeGrid();
+        disableCenterShade();
       }
   }
 
