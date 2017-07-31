@@ -15,48 +15,66 @@
 
   <body>
 
-    <!-- START OF EXAMPLE -->
     <div class="container" >
-      <div class="row" >
-        <div class="col-md-8">
-          <label class="h2 font-size-big"><input type="radio" />&nbsp;&nbsp;Add location to your content</label>
-          <br/><br/>
-          <h4 class="font-size-small">Option 1 : By Placename</h4>
-          </br>
-          <input id="geo_location" type="text" class="form-control"><br/>
-          <h4 class="font-size-small">Option 2 : By dragging the map</h4></br>
-          <h4 class="font-size-small">Option 3 : By giving co-ordinates</h4></br>
+
+      <h1>Leaflet BlurredLocation <small>| by <a href="">Public Lab</a></small></h1>
+
+      <p>This library is designed to allow locations to be input but with a degree of "blur" -- obscuring exact location in cases where some privacy is needed. Locations are represented as latitude and longitude, but truncated to a precision as indicated by the highlighted region on the map shown. <a href="https://github.com/publiclab/leaflet-blurred-location">Leaflet.BlurredLocation</a> is open source, and was created as part of a <a href="http://summerofcode.withgoogle.com">Google Summer of Code project</a> by <a href="https://github.com/mridulnagpal">Mridul Nagpal</a>.</p>
+
+      <hr />
+
+      <h3>Enter a location</h3>
+
+      <label>
+        <input id="obscureLocation" type="checkbox" checked onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
+        Blur my location
+      </label>
+
+      <hr />
+
+      <p><b>By place name</b></p>
+      <p><input id="geo_location" type="text" class="form-control" /></p>
+
+      <p>
+        <b>By entering co-ordinates</b>
+        <div class="row">
           <div class="col-md-6">
-            <input id="lat" type="text" class="form-control" placeholder="Latitude"><br/>
+            <p><input id="lat" type="text" class="form-control" placeholder="Latitude"></p>
           </div>
           <div class="col-md-6">
-            <input id="lng" type="text" class="form-control" placeholder="Longitude"><br/>
+            <p><input id="lng" type="text" class="form-control" placeholder="Longitude"></p>
           </div>
-          <label class="h2 font-size-big"><input id="obscureLocation" type="checkbox" checked onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>&nbsp;&nbsp;Obscure my exact location</label>
         </div>
-        <div class="col-md-4">
-          <h3 class="font-size-small">On a map : </h3>
-          <br />
-          <div id="map" class="leaflet-map" style="width: 400px; height: 400px;"></div>
-          <br/>
-          <h3 class="font-size-small">In Text:</h3><br/>
-          <input id="location" type="text" class="form-control"><br/>
-        </div>
-      </div>
+      </p>
+
+      <p><b>By dragging the map</b></p>
+
+      <div id="map" class="leaflet-map" style="width: 100%; height: 400px;"></div>
+
+      <br />
+      <input editable="false" id="location" type="text" class="form-control" />
+
     </div>
-    <!-- END OF EXAMPLE -->
-  <script>
-    options = {}
 
-  // We can add Interface Options as follows:
-    InterfaceOptions = {};
-    InterfaceOptions.latId = 'lat';
-    InterfaceOptions.lngId = 'lng';
+    <script>
 
-    options.InterfaceOptions = InterfaceOptions;
+      var options = {
+        InterfaceOptions: {
+          latId: 'lat',
+          lngId: 'lng'
+        }
+      }
+ 
+      var blurredLocation = new BlurredLocation(options);
+ 
+      blurredLocation.panMapToGeocodedLocation("geo_location");
 
-    var blurredLocation = new BlurredLocation(options);
-    blurredLocation.panMapToGeocodedLocation("geo_location");
-  </script>
+    </script>
+
+    <style>
+      html { background: #f8f8f8; margin-bottom: 100px;}
+      body { background: none; }
+    </style>
+
   </body>
 </html>
