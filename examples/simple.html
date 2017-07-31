@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+
     <title>Leaflet.BlurredLocation</title>
+
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE"></script>
-    <link href="../../../node_modules/leaflet/dist/leaflet.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link href="../dist/Leaflet.BlurredLocation.css" rel="stylesheet">
+    <link href="../node_modules/leaflet/dist/leaflet.css" rel="stylesheet">
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../dist/Leaflet.BlurredLocation.js"></script>
+
   </head>
+
   <body>
+
     <!-- START OF EXAMPLE -->
     <div class="container" >
       <div class="row" >
@@ -25,7 +32,6 @@
           <div class="col-md-6">
             <input id="lng" type="text" class="form-control" placeholder="Longitude"><br/>
           </div>
-          <label class="h2 font-size-big"><input type="checkbox" onchange='getLocation(this);'>&nbsp;&nbsp;Obscure my exact location</label>
         </div>
         <div class="col-md-4">
           <h3 class="font-size-small">On a map : </h3>
@@ -38,8 +44,21 @@
       </div>
     </div>
     <!-- END OF EXAMPLE -->
-  </body>
   <script>
-    var blurredLocation = new BlurredLocation();
+    options = {}
+
+  // We can add Interface Options as follows:
+    InterfaceOptions = {};
+    InterfaceOptions.latId = 'lat';
+    InterfaceOptions.lngId = 'lng';
+
+    options.InterfaceOptions = InterfaceOptions;
+
+    var blurredLocation = new BlurredLocation(options);
+    blurredLocation.panMapToGeocodedLocation("geo_location");
+    blurredLocation.gridSystem.removeGrid();
+    blurredLocation.disableCenterShade();
+
   </script>
+  </body>
 </html>
