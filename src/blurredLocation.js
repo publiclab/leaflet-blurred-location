@@ -38,7 +38,6 @@ BlurredLocation = function BlurredLocation(options) {
   Interface = options.Interface(InterfaceOptions);
 
   var tileLayer = L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
-
   // options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
   function getLat() {
@@ -99,7 +98,7 @@ BlurredLocation = function BlurredLocation(options) {
 
   function getPlacenameFromCoordinates(lat, lng, onResponse) {
       $.ajax({
-      url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
+      url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng+"result_type=country$" ,
       success: function(result) {
         onResponse(result);
       }
@@ -168,14 +167,10 @@ BlurredLocation = function BlurredLocation(options) {
       if(boolean && !blurred) {
         gridSystem.addGrid();
         blurred = true;
-        enableCenterShade();
-        disableCenterMarker();
       }
       else if(!boolean) {
         blurred = false;
         gridSystem.removeGrid();
-        disableCenterShade();
-        enableCenterMarker();
       }
   }
 
@@ -214,24 +209,15 @@ BlurredLocation = function BlurredLocation(options) {
     options.map.off('moveend',updateRectangleOnPan);
   }
 
-  var marker = L.marker([getFullLat(), getFullLon()]);
-
-  function updateMarker() {
-    if(marker) marker.remove();
-    marker = L.marker([getFullLat(), getFullLon()]).addTo(options.map);
-  }
-
-  function enableCenterMarker() {
-    updateMarker();
-    options.map.on('moveend', updateMarker);
-  }
-
-  function disableCenterMarker() {
-    marker.remove();
-    options.map.off('moveend',updateMarker);
-  }
-
   enableCenterShade();
+
+  function enableLatLngInputTruncate() {
+    options.map.on('moveend', Interface.updateLatLngInputListeners);
+  }
+
+  function disableLatLngInputTruncate() {
+    options.map.off('moveend', Interface.updateLatLngInputListeners);
+  }
 
   return {
     getLat: getLat,
@@ -259,8 +245,8 @@ BlurredLocation = function BlurredLocation(options) {
     setZoomByPrecision: setZoomByPrecision,
     disableCenterShade: disableCenterShade,
     enableCenterShade: enableCenterShade,
-    disableCenterMarker: disableCenterMarker,
-    enableCenterMarker: enableCenterMarker,
+    disableLatLngInputTruncate: disableLatLngInputTruncate,
+    enableLatLngInputTruncate: enableLatLngInputTruncate,
   }
 }
 

@@ -37,9 +37,15 @@ module.exports = function Interface (options) {
 
   options.map.on('moveend', options.onDrag);
 
+  function updateLatLngInputListeners() {
+    $("#"+options.latId).val(options.getLat());
+    $("#"+options.lngId).val(options.getLon());
+  }
+
   return {
     panMapWhenInputsChange: panMapWhenInputsChange,
     onDrag: options.onDrag,
+    updateLatLngInputListeners: updateLatLngInputListeners,
   }
 
 }
