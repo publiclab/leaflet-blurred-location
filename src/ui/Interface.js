@@ -27,8 +27,21 @@ module.exports = function Interface (options) {
       if($("#"+options.selector).val())
         $("#location").val($("#"+options.selector).val());
 
-      else if(result.results[0])
-        $("#location").val(result.results[0].formatted_address);
+      else if(result.results[0]) {
+        if(options.getPrecision() == 0) {
+          for (i in result.results) {
+            if(result.results[i].types.indexOf("country") != -1) {
+              $("#location").val(result.results[i].formatted_address);
+            }
+          }
+        }
+        else {
+          $("#location").val(result.results[0].formatted_address);
+        }
+      }
+      else {
+        $("#location").val("Location unavailable");
+      }
     }
 
       options.getPlacenameFromCoordinates(options.getLat(), options.getLon(), changeVal);

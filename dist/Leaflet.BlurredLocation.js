@@ -14153,6 +14153,7 @@ BlurredLocation = function BlurredLocation(options) {
   InterfaceOptions.getLat = getLat;
   InterfaceOptions.getLon = getLon;
   InterfaceOptions.map = options.map;
+  InterfaceOptions.getPrecision = getPrecision;
 
   Interface = options.Interface(InterfaceOptions);
 
@@ -14217,7 +14218,7 @@ BlurredLocation = function BlurredLocation(options) {
 
   function getPlacenameFromCoordinates(lat, lng, onResponse) {
       $.ajax({
-      url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng+"result_type=country$" ,
+      url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
       success: function(result) {
         onResponse(result);
       }
@@ -14338,6 +14339,33 @@ BlurredLocation = function BlurredLocation(options) {
     options.map.off('moveend', Interface.updateLatLngInputListeners);
   }
 
+  function getBlurredPlacename(lat, lng, onResponse) {
+      $.ajax({
+      url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng ,
+      success: function(result) {
+        onResponse(result);
+      }
+    });
+  }
+
+  function getCountry(result) {
+    if(result) {
+      for (i in result.results) {
+        if(result.results[i].types.indexOf("country") != -1) {
+          console.log(result.results[i].formatted_address);
+          $("#location").val(result.results[i].formatted_address);
+        }
+      }
+    }
+  }
+
+  function test(lat, lng) {
+    getBlurredPlacename(lat, lng, getCountry);
+  }
+
+  options.map.on('moveend', test);
+
+
   return {
     getLat: getLat,
     getLon: getLon,
@@ -14366,6 +14394,7 @@ BlurredLocation = function BlurredLocation(options) {
     enableCenterShade: enableCenterShade,
     disableLatLngInputTruncate: disableLatLngInputTruncate,
     enableLatLngInputTruncate: enableLatLngInputTruncate,
+    test: test,
   }
 }
 
@@ -14421,6 +14450,7 @@ module.exports = function gridSystem(options) {
                            }
                            if (lng > 180) {
                                lng = 360 - lng;
+                               lng = lng.toString();
                                if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
                                return '' + lng + 'W';
                            }
@@ -14494,8 +14524,21 @@ module.exports = function Interface (options) {
       if($("#"+options.selector).val())
         $("#location").val($("#"+options.selector).val());
 
-      else if(result.results[0])
-        $("#location").val(result.results[0].formatted_address);
+      else if(result.results[0]) {
+        if(options.getPrecision() == 0) {
+          for (i in result.results) {
+            if(result.results[i].types.indexOf("country") != -1) {
+              $("#location").val(result.results[i].formatted_address);
+            }
+          }
+        }
+        else {
+          $("#location").val(result.results[0].formatted_address);
+        }
+      }
+      else {
+        $("#location").val("Location unavailable");
+      }
     }
 
       options.getPlacenameFromCoordinates(options.getLat(), options.getLon(), changeVal);

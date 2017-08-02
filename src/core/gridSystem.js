@@ -47,6 +47,7 @@ module.exports = function gridSystem(options) {
                            }
                            if (lng > 180) {
                                lng = 360 - lng;
+                               lng = lng.toString();
                                if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
                                return '' + lng + 'W';
                            }
