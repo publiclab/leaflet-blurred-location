@@ -10,6 +10,7 @@
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="../dist/Leaflet.BlurredLocation.js"></script>
+    <script src="../node_modules/leaflet/dist/leaflet.js"></script>
 
   </head>
 
@@ -64,9 +65,9 @@
           lngId: 'lng'
         }
       }
- 
+
       var blurredLocation = new BlurredLocation(options);
- 
+
       blurredLocation.panMapToGeocodedLocation("geo_location");
 
     </script>
