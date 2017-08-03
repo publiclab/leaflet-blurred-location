@@ -14126,11 +14126,11 @@ BlurredLocation = function BlurredLocation(options) {
 
   options = options || {};
   options.location = options.location || {
-    lat: 41.011234567,
-    lon: -85.66123456789
+    lat: 0,
+    lon: 0
   };
 
-  options.zoom = options.zoom || 6;
+  options.zoom = options.zoom || 3;
 
   options.map = options.map || new L.Map('map',{zoomControl:false}).setView([options.location.lat, options.location.lon], options.zoom);
 
@@ -14457,6 +14457,9 @@ module.exports = function gridSystem(options) {
                                lng  = 360 + lng;
                                if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
                                return '' + lng + 'W';
+                           }
+                           else if(lng == 0) {
+                             return '' + lng;
                            }
                          },
              }

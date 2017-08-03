@@ -70,6 +70,9 @@ module.exports = function gridSystem(options) {
                                if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
                                return '' + lng + 'W';
                            }
+                           else if(lng == 0) {
+                             return '' + lng;
+                           }
                          },
              }
 
