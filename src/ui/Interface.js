@@ -29,8 +29,10 @@ module.exports = function Interface (options) {
 
       else if(result.results[0]) {
         if(options.getPrecision() == 0) {
+          //Iterates through all locations available, and checks if the type of location is country
           for (i in result.results) {
             if(result.results[i].types.indexOf("country") != -1) {
+              //If the type of location is a country assign it to thr input box value
               $("#location").val(result.results[i].formatted_address);
             }
           }
@@ -53,12 +55,22 @@ module.exports = function Interface (options) {
   function updateLatLngInputListeners() {
     $("#"+options.latId).val(options.getLat());
     $("#"+options.lngId).val(options.getLon());
-  }
+  };
+
+  function enableLatLngInputTruncate() {
+    options.map.on('moveend', updateLatLngInputListeners);
+  };
+
+  function disableLatLngInputTruncate() {
+    options.map.off('moveend', updateLatLngInputListeners);
+  };
 
   return {
     panMapWhenInputsChange: panMapWhenInputsChange,
     onDrag: options.onDrag,
     updateLatLngInputListeners: updateLatLngInputListeners,
+    disableLatLngInputTruncate: disableLatLngInputTruncate,
+    enableLatLngInputTruncate: enableLatLngInputTruncate,
   }
 
 }

@@ -14331,14 +14331,6 @@ BlurredLocation = function BlurredLocation(options) {
 
   enableCenterShade();
 
-  function enableLatLngInputTruncate() {
-    options.map.on('moveend', Interface.updateLatLngInputListeners);
-  }
-
-  function disableLatLngInputTruncate() {
-    options.map.off('moveend', Interface.updateLatLngInputListeners);
-  }
-
   function getBlurredPlacename(lat, lng, onResponse) {
       $.ajax({
       url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng ,
@@ -14352,7 +14344,6 @@ BlurredLocation = function BlurredLocation(options) {
     if(result) {
       for (i in result.results) {
         if(result.results[i].types.indexOf("country") != -1) {
-          console.log(result.results[i].formatted_address);
           $("#location").val(result.results[i].formatted_address);
         }
       }
@@ -14369,9 +14360,7 @@ BlurredLocation = function BlurredLocation(options) {
   return {
     getLat: getLat,
     getLon: getLon,
-    goTo: goTo,
-    geocodeStringAndPan: geocodeStringAndPan,
-    getSize: getSize,
+    goTo: goTo,    getSize: getSize,
     gridSystem: gridSystem,
     panMapToGeocodedLocation: panMapToGeocodedLocation,
     getPlacenameFromCoordinates: getPlacenameFromCoordinates,
@@ -14392,9 +14381,8 @@ BlurredLocation = function BlurredLocation(options) {
     setZoomByPrecision: setZoomByPrecision,
     disableCenterShade: disableCenterShade,
     enableCenterShade: enableCenterShade,
-    disableLatLngInputTruncate: disableLatLngInputTruncate,
-    enableLatLngInputTruncate: enableLatLngInputTruncate,
     test: test,
+    geocodeStringAndPan: geocodeStringAndPan,
   }
 }
 
@@ -14526,8 +14514,10 @@ module.exports = function Interface (options) {
 
       else if(result.results[0]) {
         if(options.getPrecision() == 0) {
+          //Iterates through all locations available, and checks if the type of location is country
           for (i in result.results) {
             if(result.results[i].types.indexOf("country") != -1) {
+              //If the type of location is a country assign it to thr input box value
               $("#location").val(result.results[i].formatted_address);
             }
           }
@@ -14550,12 +14540,22 @@ module.exports = function Interface (options) {
   function updateLatLngInputListeners() {
     $("#"+options.latId).val(options.getLat());
     $("#"+options.lngId).val(options.getLon());
-  }
+  };
+
+  function enableLatLngInputTruncate() {
+    options.map.on('moveend', updateLatLngInputListeners);
+  };
+
+  function disableLatLngInputTruncate() {
+    options.map.off('moveend', updateLatLngInputListeners);
+  };
 
   return {
     panMapWhenInputsChange: panMapWhenInputsChange,
     onDrag: options.onDrag,
     updateLatLngInputListeners: updateLatLngInputListeners,
+    disableLatLngInputTruncate: disableLatLngInputTruncate,
+    enableLatLngInputTruncate: enableLatLngInputTruncate,
   }
 
 }

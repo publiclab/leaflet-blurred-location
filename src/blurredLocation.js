@@ -212,14 +212,6 @@ BlurredLocation = function BlurredLocation(options) {
 
   enableCenterShade();
 
-  function enableLatLngInputTruncate() {
-    options.map.on('moveend', Interface.updateLatLngInputListeners);
-  }
-
-  function disableLatLngInputTruncate() {
-    options.map.off('moveend', Interface.updateLatLngInputListeners);
-  }
-
   function getBlurredPlacename(lat, lng, onResponse) {
       $.ajax({
       url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng ,
@@ -233,7 +225,6 @@ BlurredLocation = function BlurredLocation(options) {
     if(result) {
       for (i in result.results) {
         if(result.results[i].types.indexOf("country") != -1) {
-          console.log(result.results[i].formatted_address);
           $("#location").val(result.results[i].formatted_address);
         }
       }
@@ -250,9 +241,7 @@ BlurredLocation = function BlurredLocation(options) {
   return {
     getLat: getLat,
     getLon: getLon,
-    goTo: goTo,
-    geocodeStringAndPan: geocodeStringAndPan,
-    getSize: getSize,
+    goTo: goTo,    getSize: getSize,
     gridSystem: gridSystem,
     panMapToGeocodedLocation: panMapToGeocodedLocation,
     getPlacenameFromCoordinates: getPlacenameFromCoordinates,
@@ -273,9 +262,8 @@ BlurredLocation = function BlurredLocation(options) {
     setZoomByPrecision: setZoomByPrecision,
     disableCenterShade: disableCenterShade,
     enableCenterShade: enableCenterShade,
-    disableLatLngInputTruncate: disableLatLngInputTruncate,
-    enableLatLngInputTruncate: enableLatLngInputTruncate,
     test: test,
+    geocodeStringAndPan: geocodeStringAndPan,
   }
 }
 
