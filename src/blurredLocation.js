@@ -241,7 +241,8 @@ BlurredLocation = function BlurredLocation(options) {
   return {
     getLat: getLat,
     getLon: getLon,
-    goTo: goTo,    getSize: getSize,
+    goTo: goTo,
+    getSize: getSize,
     gridSystem: gridSystem,
     panMapToGeocodedLocation: panMapToGeocodedLocation,
     getPlacenameFromCoordinates: getPlacenameFromCoordinates,
