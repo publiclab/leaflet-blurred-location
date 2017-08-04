@@ -2,7 +2,8 @@ module.exports = function Interface (options) {
 
     options.latId = options.latId || 'lat';
     options.lngId = options.lngId || 'lng';
-    options.selector = options.selector || 'geo_location'
+    options.selector = options.selector || 'geo_location';
+    options.locationText = options.locationText || 'location';
 
     function panMapWhenInputsChange() {
       var lat = document.getElementById(options.latId);
@@ -25,24 +26,24 @@ module.exports = function Interface (options) {
     function changeVal(result) {
 
       if($("#"+options.selector).val())
-        $("#location").val($("#"+options.selector).val());
+        $("#"+options.locationText).val($("#"+options.selector).val());
 
       else if(result.results[0]) {
-        if(options.getPrecision() == 0) {
+        if(options.getPrecision() <=0 ) {
           //Iterates through all locations available, and checks if the type of location is country
           for (i in result.results) {
             if(result.results[i].types.indexOf("country") != -1) {
               //If the type of location is a country assign it to thr input box value
-              $("#location").val(result.results[i].formatted_address);
+              $("#"+options.locationText).val(result.results[i].formatted_address);
             }
           }
         }
         else {
-          $("#location").val(result.results[0].formatted_address);
+          $("#"+options.locationText).val(result.results[0].formatted_address);
         }
       }
       else {
-        $("#location").val("Location unavailable");
+        $("#"+options.locationText).val("Location unavailable");
       }
     }
 

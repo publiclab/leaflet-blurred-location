@@ -14331,32 +14331,6 @@ BlurredLocation = function BlurredLocation(options) {
 
   enableCenterShade();
 
-  function getBlurredPlacename(lat, lng, onResponse) {
-      $.ajax({
-      url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng ,
-      success: function(result) {
-        onResponse(result);
-      }
-    });
-  }
-
-  function getCountry(result) {
-    if(result) {
-      for (i in result.results) {
-        if(result.results[i].types.indexOf("country") != -1) {
-          $("#location").val(result.results[i].formatted_address);
-        }
-      }
-    }
-  }
-
-  function test(lat, lng) {
-    getBlurredPlacename(lat, lng, getCountry);
-  }
-
-  options.map.on('moveend', test);
-
-
   return {
     getLat: getLat,
     getLon: getLon,
@@ -14382,7 +14356,6 @@ BlurredLocation = function BlurredLocation(options) {
     setZoomByPrecision: setZoomByPrecision,
     disableCenterShade: disableCenterShade,
     enableCenterShade: enableCenterShade,
-    test: test,
     geocodeStringAndPan: geocodeStringAndPan,
   }
 }
@@ -14488,7 +14461,8 @@ module.exports = function Interface (options) {
 
     options.latId = options.latId || 'lat';
     options.lngId = options.lngId || 'lng';
-    options.selector = options.selector || 'geo_location'
+    options.selector = options.selector || 'geo_location';
+    options.locationText = options.locationText || 'location';
 
     function panMapWhenInputsChange() {
       var lat = document.getElementById(options.latId);
@@ -14511,24 +14485,24 @@ module.exports = function Interface (options) {
     function changeVal(result) {
 
       if($("#"+options.selector).val())
-        $("#location").val($("#"+options.selector).val());
+        $("#"+options.locationText).val($("#"+options.selector).val());
 
       else if(result.results[0]) {
-        if(options.getPrecision() == 0) {
+        if(options.getPrecision() <=0 ) {
           //Iterates through all locations available, and checks if the type of location is country
           for (i in result.results) {
             if(result.results[i].types.indexOf("country") != -1) {
               //If the type of location is a country assign it to thr input box value
-              $("#location").val(result.results[i].formatted_address);
+              $("#"+options.locationText).val(result.results[i].formatted_address);
             }
           }
         }
         else {
-          $("#location").val(result.results[0].formatted_address);
+          $("#"+options.locationText).val(result.results[0].formatted_address);
         }
       }
       else {
-        $("#location").val("Location unavailable");
+        $("#"+options.locationText).val("Location unavailable");
       }
     }
 

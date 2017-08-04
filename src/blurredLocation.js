@@ -212,32 +212,6 @@ BlurredLocation = function BlurredLocation(options) {
 
   enableCenterShade();
 
-  function getBlurredPlacename(lat, lng, onResponse) {
-      $.ajax({
-      url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng ,
-      success: function(result) {
-        onResponse(result);
-      }
-    });
-  }
-
-  function getCountry(result) {
-    if(result) {
-      for (i in result.results) {
-        if(result.results[i].types.indexOf("country") != -1) {
-          $("#location").val(result.results[i].formatted_address);
-        }
-      }
-    }
-  }
-
-  function test(lat, lng) {
-    getBlurredPlacename(lat, lng, getCountry);
-  }
-
-  options.map.on('moveend', test);
-
-
   return {
     getLat: getLat,
     getLon: getLon,
@@ -263,7 +237,6 @@ BlurredLocation = function BlurredLocation(options) {
     setZoomByPrecision: setZoomByPrecision,
     disableCenterShade: disableCenterShade,
     enableCenterShade: enableCenterShade,
-    test: test,
     geocodeStringAndPan: geocodeStringAndPan,
   }
 }
