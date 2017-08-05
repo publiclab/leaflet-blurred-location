@@ -97,11 +97,24 @@ BlurredLocation = function BlurredLocation(options) {
     options.map.panTo(new L.LatLng(lat, lng));
   }
 
-  function getPlacenameFromCoordinates(lat, lng, onResponse) {
+  function getPlacenameFromCoordinates(lat, lng, precision, onResponse) {
       $.ajax({
       url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
       success: function(result) {
-        onResponse(result);
+        if(result.results[0]) {
+          if(precision <= 0) {
+              for (i in result.results) {
+                if(result.results[i].types.indexOf("country") != -1) {
+                  //If the type of location is a country assign it to thr input box value
+                  onResponse(result.results[i].formatted_address);
+                }
+              }
+            }
+            else {
+              onResponse(result.results[0].formatted_address);
+            }
+        }
+        else onResponse("Location unavailable");
       }
     });
   }

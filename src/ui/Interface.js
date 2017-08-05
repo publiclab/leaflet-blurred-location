@@ -25,29 +25,13 @@ module.exports = function Interface (options) {
   options.onDrag = options.onDrag || function onDrag() {
     function onPlacenameReturned(result) {
 
-      if($("#"+options.placenameInputId).val())
-        $("#"+options.placenameDisplayId).val($("#"+options.placenameInputId).val());
+      if($("#"+options.placenameInputId).val()) $("#"+options.placenameDisplayId).val($("#"+options.placenameInputId).val());
 
-      else if(result.results[0]) {
-        if(options.getPrecision() <=0 ) {
-          //Iterates through all locations available, and checks if the type of location is country
-          for (i in result.results) {
-            if(result.results[i].types.indexOf("country") != -1) {
-              //If the type of location is a country assign it to thr input box value
-              $("#"+options.placenameDisplayId).val(result.results[i].formatted_address);
-            }
-          }
-        }
-        else {
-          $("#"+options.placenameDisplayId).val(result.results[0].formatted_address);
-        }
-      }
-      else {
-        $("#"+options.placenameDisplayId).val("Location unavailable");
-      }
-    }
+      else $("#"+options.placenameDisplayId).val(result);
 
-      options.getPlacenameFromCoordinates(options.getLat(), options.getLon(), onPlacenameReturned);
+      }
+
+      options.getPlacenameFromCoordinates(options.getLat(), options.getLon(), options.getPrecision(), onPlacenameReturned);
   }
 
 
