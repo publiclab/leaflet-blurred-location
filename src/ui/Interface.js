@@ -2,8 +2,8 @@ module.exports = function Interface (options) {
 
     options.latId = options.latId || 'lat';
     options.lngId = options.lngId || 'lng';
-    options.selector = options.selector || 'geo_location';
-    options.locationText = options.locationText || 'location';
+    options.placenameInputId = options.placenameInputId || 'placenameInput'; // the placename as input by the user
+    options.placenameDisplayId = options.placenameDisplayId || 'placenameDisplay'; // the placename as will be stored/displaye
 
     function panMapWhenInputsChange() {
       var lat = document.getElementById(options.latId);
@@ -25,8 +25,8 @@ module.exports = function Interface (options) {
   options.onDrag = options.onDrag || function onDrag() {
     function changeVal(result) {
 
-      if($("#"+options.selector).val())
-        $("#"+options.locationText).val($("#"+options.selector).val());
+      if($("#"+options.placenameInputId).val())
+        $("#"+options.placenameDisplayId).val($("#"+options.placenameInputId).val());
 
       else if(result.results[0]) {
         if(options.getPrecision() <=0 ) {
@@ -34,16 +34,16 @@ module.exports = function Interface (options) {
           for (i in result.results) {
             if(result.results[i].types.indexOf("country") != -1) {
               //If the type of location is a country assign it to thr input box value
-              $("#"+options.locationText).val(result.results[i].formatted_address);
+              $("#"+options.placenameDisplayId).val(result.results[i].formatted_address);
             }
           }
         }
         else {
-          $("#"+options.locationText).val(result.results[0].formatted_address);
+          $("#"+options.placenameDisplayId).val(result.results[0].formatted_address);
         }
       }
       else {
-        $("#"+options.locationText).val("Location unavailable");
+        $("#"+options.placenameDisplayId).val("Location unavailable");
       }
     }
 

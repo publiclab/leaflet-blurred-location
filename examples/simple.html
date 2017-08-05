@@ -23,7 +23,7 @@
           <br/><br/>
           <h4 class="font-size-small">Option 1 : By Placename</h4>
           </br>
-          <input id="geo_location" type="text" class="form-control"><br/>
+          <input id="placenameInput" type="text" class="form-control"><br/>
           <h4 class="font-size-small">Option 2 : By dragging the map</h4></br>
           <h4 class="font-size-small">Option 3 : By giving co-ordinates</h4></br>
           <div class="col-md-6">
@@ -39,7 +39,7 @@
           <div id="map" class="leaflet-map" style="width: 400px; height: 400px;"></div>
           <br/>
           <h3 class="font-size-small">In Text:</h3><br/>
-          <input id="location" type="text" class="form-control"><br/>
+          <input id="placenameDisplay" type="text" class="form-control"><br/>
         </div>
       </div>
     </div>
@@ -55,7 +55,7 @@
     options.InterfaceOptions = InterfaceOptions;
 
     var blurredLocation = new BlurredLocation(options);
-    blurredLocation.panMapToGeocodedLocation("geo_location");
+    blurredLocation.panMapToGeocodedLocation("placenameInput");
     blurredLocation.gridSystem.removeGrid();
     blurredLocation.disableCenterShade();
 
