@@ -23,7 +23,7 @@ module.exports = function Interface (options) {
 
 
   options.onDrag = options.onDrag || function onDrag() {
-    function changeVal(result) {
+    function onPlacenameReturned(result) {
 
       if($("#"+options.placenameInputId).val())
         $("#"+options.placenameDisplayId).val($("#"+options.placenameInputId).val());
@@ -47,7 +47,7 @@ module.exports = function Interface (options) {
       }
     }
 
-      options.getPlacenameFromCoordinates(options.getLat(), options.getLon(), changeVal);
+      options.getPlacenameFromCoordinates(options.getLat(), options.getLon(), onPlacenameReturned);
   }
 
 
