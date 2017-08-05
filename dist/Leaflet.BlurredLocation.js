@@ -632,20 +632,24 @@ BlurredLocation = function BlurredLocation(options) {
 
   function getPlacenameFromCoordinates(lat, lng, precision, onResponse) {
       $.ajax({
-      url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
-      success: function(result) {
-        if(result.results[0]) {
-          if(precision <= 0) {
-              for (i in result.results) {
-                if(result.results[i].types.indexOf("country") != -1) {
-                  //If the type of location is a country assign it to thr input box value
-                  onResponse(result.results[i].formatted_address);
-                }
+        url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
+        success: function(result) {
+          if(result.results[0]) {
+            var country;
+            var fullAddress = result.results[0].formatted_address.split(",");
+            for (i in result.results) {
+              if(result.results[i].types.indexOf("country") != -1) {
+                //If the type of location is a country assign it to thr input box value
+                country = result.results[i].formatted_address;
               }
             }
-            else {
-              onResponse(result.results[0].formatted_address);
-            }
+
+            if(precision <= 0) onResponse(country);
+
+            else if(precision == 1) onResponse(fullAddress[fullAddress.length - 2] + "," + country);
+
+            else if(precision >= 2) onResponse(fullAddress[fullAddress.length - 3] + "," + fullAddress[fullAddress.length - 2] + "," + country);
+
         }
         else onResponse("Location unavailable");
       }
