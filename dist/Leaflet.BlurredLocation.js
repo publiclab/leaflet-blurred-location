@@ -873,7 +873,7 @@ module.exports = function gridSystem(options) {
                                return '' + lng + 'W';
                            }
                            else if(lng == 0) {
-                             return '' + lng
+                             return '' + lng;
                            }
                          },
              }
