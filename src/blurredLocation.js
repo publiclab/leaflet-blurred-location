@@ -206,12 +206,12 @@ BlurredLocation = function BlurredLocation(options) {
 
   function enableCenterShade() {
     updateRectangleOnPan();
-    options.map.on('moveend', updateRectangleOnPan);
+    options.map.on('move', updateRectangleOnPan);
   }
 
   function disableCenterShade() {
     if(rectangle) rectangle.remove();
-    options.map.off('moveend',updateRectangleOnPan);
+    options.map.off('move',updateRectangleOnPan);
   }
 
   var marker = L.marker([getFullLat(), getFullLon()]);
@@ -228,7 +228,7 @@ BlurredLocation = function BlurredLocation(options) {
 
   function disableCenterMarker() {
     marker.remove();
-    options.map.off('moveend',updateMarker);
+    options.map.off('move',updateMarker);
   }
 
   enableCenterShade();
