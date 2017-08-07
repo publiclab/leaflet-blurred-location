@@ -6,11 +6,11 @@ BlurredLocation = function BlurredLocation(options) {
 
   options = options || {};
   options.location = options.location || {
-    lat: 1,
-    lon: 1
+    lat: 1.0,
+    lon: 1.0
   };
 
-  options.zoom = options.zoom || 3;
+  options.zoom = options.zoom || 6;
 
   options.map = options.map || new L.Map('map',{zoomControl:false}).setView([options.location.lat, options.location.lon], options.zoom);
 
