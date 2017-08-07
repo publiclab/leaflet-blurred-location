@@ -222,7 +222,7 @@ BlurredLocation = function BlurredLocation(options) {
 
   function enableCenterMarker() {
     updateMarker();
-    options.map.on('moveend', updateMarker);
+    options.map.on('move', updateMarker);
   }
 
   function disableCenterMarker() {
