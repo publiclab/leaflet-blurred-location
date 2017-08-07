@@ -940,6 +940,8 @@ module.exports = function Interface (options) {
     options.map.off('moveend', updateLatLngInputListeners);
   };
 
+  enableLatLngInputTruncate()
+
   return {
     panMapWhenInputsChange: panMapWhenInputsChange,
     onDrag: options.onDrag,
