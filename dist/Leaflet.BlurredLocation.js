@@ -651,6 +651,8 @@ BlurredLocation = function BlurredLocation(options) {
 
             else if(precision >= 2) onResponse(fullAddress[fullAddress.length - 3] + "," + fullAddress[fullAddress.length - 2] + "," + country);
 
+            else onResponse(result.results[0].formatted_address);
+
         }
         else onResponse("Location unavailable");
       }
