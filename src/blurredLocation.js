@@ -6,8 +6,8 @@ BlurredLocation = function BlurredLocation(options) {
 
   options = options || {};
   options.location = options.location || {
-    lat: 41.011234567,
-    lon: -85.66123456789
+    lat: 1.0,
+    lon: 1.0
   };
 
   options.zoom = options.zoom || 6;
@@ -38,6 +38,8 @@ BlurredLocation = function BlurredLocation(options) {
   Interface = options.Interface(InterfaceOptions);
 
   var tileLayer = L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
+  options.map.options.scrollWheelZoom="center";
+
   // options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
   function getLat() {
@@ -218,12 +220,29 @@ BlurredLocation = function BlurredLocation(options) {
 
   function enableCenterShade() {
     updateRectangleOnPan();
-    options.map.on('moveend', updateRectangleOnPan);
+    options.map.on('move', updateRectangleOnPan);
   }
 
   function disableCenterShade() {
     if(rectangle) rectangle.remove();
-    options.map.off('moveend',updateRectangleOnPan);
+    options.map.off('move',updateRectangleOnPan);
+  }
+
+  var marker = L.marker([getFullLat(), getFullLon()]);
+
+  function updateMarker() {
+    if(marker) marker.remove();
+    marker = L.marker([getFullLat(), getFullLon()]).addTo(options.map);
+  }
+
+  function enableCenterMarker() {
+    updateMarker();
+    options.map.on('move', updateMarker);
+  }
+
+  function disableCenterMarker() {
+    marker.remove();
+    options.map.off('move',updateMarker);
   }
 
   enableCenterShade();

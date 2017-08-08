@@ -5,21 +5,21 @@ describe("Basic testing", function() {
 
   it("Checks if getLat returns the correct latitude with correct precision", function () {
     blurredLocation.setZoom(13);
-    expect(blurredLocation.getLat()).toBe(41.01);
+    expect(blurredLocation.getLat()).toBe(1.0);
     blurredLocation.setZoom(10);
-    expect(blurredLocation.getLat()).toBe(41.0);
+    expect(blurredLocation.getLat()).toBe(1.0);
   });
 
   it("Checks if getLon returns the correct longitude with correct precision", function () {
     blurredLocation.setZoom(13);
-    expect(blurredLocation.getLon()).toBe(-85.66);
+    expect(blurredLocation.getLon()).toBe(1.0);
     blurredLocation.setZoom(10);
-    expect(blurredLocation.getLon()).toBe(-85.6);
+    expect(blurredLocation.getLon()).toBe(1.0);
   });
 
   it("Checks if goTo changes the map location to given parameters", function() {
-    expect(blurredLocation.getLat()).toBe(41.0);
-    expect(blurredLocation.getLon()).toBe(-85.6);
+    expect(blurredLocation.getLat()).toBe(1.0);
+    expect(blurredLocation.getLon()).toBe(1.0);
     blurredLocation.goTo(51.50223, -0.09123213, 13);
     expect(blurredLocation.getLat()).toBe(51.50);
     expect(blurredLocation.getLon()).toBe(-0.09);
