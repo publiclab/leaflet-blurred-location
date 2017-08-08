@@ -540,8 +540,8 @@ BlurredLocation = function BlurredLocation(options) {
 
   options = options || {};
   options.location = options.location || {
-    lat: 41.011234567,
-    lon: -85.66123456789
+    lat: 1.0,
+    lon: 1.0
   };
 
   options.zoom = options.zoom || 6;
@@ -872,6 +872,9 @@ module.exports = function gridSystem(options) {
                                lng  = 360 + lng;
                                if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
                                return '' + lng + 'W';
+                           }
+                           else if(lng == 0) {
+                             return '' + lng;
                            }
                          },
              }
