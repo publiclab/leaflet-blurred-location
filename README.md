@@ -50,8 +50,8 @@ To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`.
 
 ## Options
 
-| Methods         | Use | Usage (Example)|
-|-----------------|-----|----------------|
+| Methods         | Use                | Usage (Example)|
+|-----------------|--------------------|----------------|
 |`getLat()`       | Used to get the current latitude of the center of the map.|  blurredLocation.getLat() //This would return the value in numerics|
 |`getLon()`       | Used to get the current latitude of the center of the map|blurredLocation.getLon() //This would return the value in numerics|
 |`goTo(lat, lon, zoom)`         | Takes in three parameters, namely latitude, longitude and zoom. Will set the center of map to co-ordinates input.| `blurredLocation.goTo(44.51, -89.99, 13)` Will set center of map to (44.51,-89.99) with zoom set as 13|
@@ -68,4 +68,5 @@ To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`.
 | Feature         | Use                                                        |
 |-----------------|------------------------------------------------------------|
 |Geo Location     |Current location of the map will be reverse geocoded and the name of the location will be displayed. The extent of address depends on the precision level you currently are on. For instance for precision 0 only the country name will be provided as you zoom in precision will increase and so will the address details, such as state, city, etc.|
-|Truncated Co-ordinates | You may enter co-ordinates in the input boxes, string search or pan the map to a certain location and the co-ordinate input boxes will be truncated with the current location of the map with appropiate precision as well.| 
+|Truncated Co-ordinates | You may enter co-ordinates in the input boxes, string search or pan the map to a certain location and the co-ordinate input boxes will be truncated with the current location of the map with appropiate precision as well.|
+|Privacy System | Your exact location won't be posted, only the grid square it falls within will be shown. Zoom out to make it harder to tell exactly where your location is. Drag the map to change your location and the amount of blurring.|
