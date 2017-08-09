@@ -33,6 +33,7 @@ BlurredLocation = function BlurredLocation(options) {
   InterfaceOptions.getLat = getLat;
   InterfaceOptions.getLon = getLon;
   InterfaceOptions.map = options.map;
+  InterfaceOptions.getPrecision = getPrecision;
 
   Interface = options.Interface(InterfaceOptions);
 
@@ -97,11 +98,30 @@ BlurredLocation = function BlurredLocation(options) {
     options.map.panTo(new L.LatLng(lat, lng));
   }
 
-  function getPlacenameFromCoordinates(lat, lng, onResponse) {
+  function getPlacenameFromCoordinates(lat, lng, precision, onResponse) {
       $.ajax({
-      url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
-      success: function(result) {
-        onResponse(result);
+        url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
+        success: function(result) {
+          if(result.results[0]) {
+            var country;
+            var fullAddress = result.results[0].formatted_address.split(",");
+            for (i in result.results) {
+              if(result.results[i].types.indexOf("country") != -1) {
+                //If the type of location is a country assign it to thr input box value
+                country = result.results[i].formatted_address;
+              }
+            }
+
+            if(precision <= 0) onResponse(country);
+
+            else if(precision == 1) onResponse(fullAddress[fullAddress.length - 2] + "," + country);
+
+            else if(precision >= 2) onResponse(fullAddress[fullAddress.length - 3] + "," + fullAddress[fullAddress.length - 2] + "," + country);
+
+            else onResponse(result.results[0].formatted_address);
+
+        }
+        else onResponse("Location unavailable");
       }
     });
   }
@@ -168,14 +188,10 @@ BlurredLocation = function BlurredLocation(options) {
       if(boolean && !blurred) {
         gridSystem.addGrid();
         blurred = true;
-        enableCenterShade();
-        disableCenterMarker();
       }
       else if(!boolean) {
         blurred = false;
         gridSystem.removeGrid();
-        disableCenterShade();
-        enableCenterMarker();
       }
   }
 
@@ -237,7 +253,6 @@ BlurredLocation = function BlurredLocation(options) {
     getLat: getLat,
     getLon: getLon,
     goTo: goTo,
-    geocodeStringAndPan: geocodeStringAndPan,
     getSize: getSize,
     gridSystem: gridSystem,
     panMapToGeocodedLocation: panMapToGeocodedLocation,
@@ -259,8 +274,7 @@ BlurredLocation = function BlurredLocation(options) {
     setZoomByPrecision: setZoomByPrecision,
     disableCenterShade: disableCenterShade,
     enableCenterShade: enableCenterShade,
-    disableCenterMarker: disableCenterMarker,
-    enableCenterMarker: enableCenterMarker,
+    geocodeStringAndPan: geocodeStringAndPan,
   }
 }
 
