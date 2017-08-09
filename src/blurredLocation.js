@@ -39,6 +39,7 @@ BlurredLocation = function BlurredLocation(options) {
 
   var tileLayer = L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
   options.map.options.scrollWheelZoom="center";
+  options.map.options.touchZoom="center";
 
   // options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
