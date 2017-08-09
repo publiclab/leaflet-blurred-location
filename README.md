@@ -62,3 +62,10 @@ To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`.
 | `getPlacenameFromCoordinates()`| Used to get the human-readable location name in text of specific latitude and longitude. This would take in 3 arguments namely latitude, longitude and a callback function which is called on success and would return address of the location pinpointed by those co-ordinates| `blurredLocation.getPlacenameFromCoordinates(43,43,function(result) {console.log(result);} // This would return the output to the console`|
 |map |Used to access the leaflet map element to perform leaflet commands on it| blurredLocation.map //This would return the leaflet map element|
 |`setZoomByPrecision()` | Used to zoom map to the given precision. This would pan the map to adjust the specified precision.| `blurredLocation.setZoomByPrecision(2)` This would zoom the map so that the precision of map becomes 2 |
+
+## Features
+
+| Feature         | Use                                                        |
+|-----------------|------------------------------------------------------------|
+|Geo Location     |Current location of the map will be reverse geocoded and the name of the location will be displayed. The extent of address depends on the precision level you currently are on. For instance for precision 0 only the country name will be provided as you zoom in precision will increase and so will the address details, such as state, city, etc.|
+|Truncated Co-ordinates | You may enter co-ordinates in the input boxes, string search or pan the map to a certain location and the co-ordinate input boxes will be truncated with the current location of the map with appropiate precision as well.| 
