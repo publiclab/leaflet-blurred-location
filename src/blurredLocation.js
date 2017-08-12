@@ -249,6 +249,14 @@ BlurredLocation = function BlurredLocation(options) {
 
   enableCenterShade();
 
+  function geocodeWithBrowser(boolean) {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+      goTo(position.coords.latitude, position.coords.longitude,options.zoom);
+      });
+    }
+  }
+
   return {
     getLat: getLat,
     getLon: getLon,
@@ -275,6 +283,7 @@ BlurredLocation = function BlurredLocation(options) {
     disableCenterShade: disableCenterShade,
     enableCenterShade: enableCenterShade,
     geocodeStringAndPan: geocodeStringAndPan,
+    geocodeWithBrowser: geocodeWithBrowser,
   }
 }
 
