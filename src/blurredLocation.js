@@ -113,12 +113,20 @@ BlurredLocation = function BlurredLocation(options) {
                 country = result.results[i].formatted_address;
               }
             }
+            if (!country) country = fullAddress[fullAddress.length - 1];
 
             if(precision <= 0) onResponse(country);
 
-            else if(precision == 1) onResponse(fullAddress[fullAddress.length - 2] + "," + country);
+            else if(precision == 1) {
+              if (fullAddress.length>=2) onResponse(fullAddress[fullAddress.length - 2] + ", " + country);
+              else onResponse(country);
+            }
 
-            else if(precision >= 2) onResponse(fullAddress[fullAddress.length - 3] + "," + fullAddress[fullAddress.length - 2] + "," + country);
+            else if(precision >= 2) {
+              if (fullAddress.length >= 3) onResponse(fullAddress[fullAddress.length - 3] + ", " + fullAddress[fullAddress.length - 2] + ", " + country);
+              else if (fullAddress.length == 2) onResponse(fullAddress[fullAddress.length - 2] + ", " + country);
+              else onResponse(country);
+            }
 
             else onResponse(result.results[0].formatted_address);
 
