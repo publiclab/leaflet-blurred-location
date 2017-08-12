@@ -27,6 +27,11 @@
       <h3>Enter a location</h3>
 
       <label>
+        <input id="browserLocation" type="checkbox" checked onchange='blurredLocation.geocodeWithBrowser(document.getElementById("browserLocation").checked);'>
+        Get my location
+      </label>
+      <br/>
+      <label>
         <input id="obscureLocation" type="checkbox" checked onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
         Blur my location
       </label>
