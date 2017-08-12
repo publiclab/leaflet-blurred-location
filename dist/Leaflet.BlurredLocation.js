@@ -545,7 +545,9 @@ BlurredLocation = function BlurredLocation(options) {
 
   options.zoom = options.zoom || 6;
 
-  options.map = options.map || new L.Map('map',{zoomControl:false}).setView([options.location.lat, options.location.lon], options.zoom);
+  options.mapID = options.mapID || 'map'
+
+  options.map = options.map || new L.Map(options.mapID,{zoomControl:false}).setView([options.location.lat, options.location.lon], options.zoom);
 
   options.pixels = options.pixels || 400;
 
