@@ -50,6 +50,27 @@ To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`.
 
 ## Options
 
+### Basic
+
+| Option         | Use                | Usage (Default)                  |
+|----------------|--------------------|----------------------------------|
+| location       |To set the initial co-ordinates of the map|`options.location = {lat:1.0, lon:1.0}`|
+|zoom            |To set the initial zoom of the map|`options.zoom = 6`|
+|mapID           |To set the ID of the map container|`options.mapID = 'map'`|
+|pixels          |To set the pixel size to calculate precision|`options.pixels = 400`|
+
+### Interface
+
+| Option         | Use                | Usage (Default)                  |
+|----------------|--------------------|----------------------------------|
+| latId          |To set the input listener for latitude|`options.InterfaceOptions.latId = 'lat'`|
+| lngId          |To set the input listener for longitude|`options.InterfaceOptions.lngId = 'lng'`|
+
+
+
+
+## API
+
 | Methods         | Use                | Usage (Example)|
 |-----------------|--------------------|----------------|
 |`getLat()`       | Used to get the current latitude of the center of the map.|  blurredLocation.getLat() //This would return the value in numerics|
