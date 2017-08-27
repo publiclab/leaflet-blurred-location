@@ -269,6 +269,12 @@ BlurredLocation = function BlurredLocation(options) {
     }
   }
 
+  function displayLocation() {
+    var lat = getLat();
+    var lon = getLon();
+    alert("Your current location is: " + lat +  ', ' + lon);
+  }
+
   return {
     getLat: getLat,
     getLon: getLon,
@@ -296,6 +302,7 @@ BlurredLocation = function BlurredLocation(options) {
     enableCenterShade: enableCenterShade,
     geocodeStringAndPan: geocodeStringAndPan,
     geocodeWithBrowser: geocodeWithBrowser,
+    displayLocation: displayLocation,
   }
 }
 
