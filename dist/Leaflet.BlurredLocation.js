@@ -803,11 +803,9 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function displayLocation() {
-    if(blurredLocation) {
-      var lat = getLat();
-      var lon = getLon();
-      alert("Your current location is: " + lat +  ', ' + lon);
-    }
+    var lat = getLat();
+    var lon = getLon();
+    alert("Your current location is: " + lat +  ', ' + lon);
   }
 
   return {
