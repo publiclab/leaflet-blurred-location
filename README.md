@@ -33,7 +33,11 @@ __________________________________________
 -------------------------------------------
 ```
 
-We've tried to get the zoom level to correlate reasonably to the value of `precision`, on [these lines of code](https://github.com/publiclab/leaflet-blurred-location/blob/master/src/core/gridSystem.js#L12-L17) to best display grids on varying screen sizes and zoom levels. We're open to variations on this if you have suggestions; please open an issue. 
+Zooming into the upper left square would then break that up into 10 subdivisions from `72.00` to `72.09` and `44.30` to `44.39`, and increase the precision by 1. 
+
+We've tried to get the actual map zoom level to correlate reasonably to the value of `precision`, on [these lines of code](https://github.com/publiclab/leaflet-blurred-location/blob/master/src/core/gridSystem.js#L12-L17) to best display grids on varying screen sizes and zoom levels. 
+
+We're open to variations on this if you have suggestions; please [open an issue](https://github.com/publiclab/leaflet-blurred-location/issues/new)!. 
 
 ****
 
