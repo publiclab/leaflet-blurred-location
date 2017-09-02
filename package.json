@@ -1,5 +1,5 @@
 {
-  "name": "map_module",
+  "name": "leaflet-blurred-location",
   "version": "1.1.0",
   "description": "",
   "main": "Gruntfile.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mridulnagpal/map_module.git"
+    "url": "git+https://github.com/publiclab/leaflet-blurred-location.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mridulnagpal/map_module/issues"
+    "url": "https://github.com/publiclab/leaflet-blurred-location/issues"
   },
-  "homepage": "https://github.com/mridulnagpal/map_module#readme",
+  "homepage": "https://github.com/publiclab/leaflet-blurred-location#readme",
   "devDependencies": {
     "bootstrap": "^3.3.7",
     "grunt": "^1.0.1",

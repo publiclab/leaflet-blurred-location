@@ -12,7 +12,9 @@ BlurredLocation = function BlurredLocation(options) {
 
   options.zoom = options.zoom || 6;
 
-  options.map = options.map || new L.Map('map',{zoomControl:false}).setView([options.location.lat, options.location.lon], options.zoom);
+  options.mapID = options.mapID || 'map'
+
+  options.map = options.map || new L.Map(options.mapID,{zoomControl:false}).setView([options.location.lat, options.location.lon], options.zoom);
 
   options.pixels = options.pixels || 400;
 
@@ -38,7 +40,9 @@ BlurredLocation = function BlurredLocation(options) {
   Interface = options.Interface(InterfaceOptions);
 
   var tileLayer = L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
-  options.map.options.scrollWheelZoom="center";
+
+  options.map.options.scrollWheelZoom = "center";
+  options.map.options.touchZoom = "center";
 
   // options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
@@ -111,12 +115,20 @@ BlurredLocation = function BlurredLocation(options) {
                 country = result.results[i].formatted_address;
               }
             }
+            if (!country) country = fullAddress[fullAddress.length - 1];
 
             if(precision <= 0) onResponse(country);
 
-            else if(precision == 1) onResponse(fullAddress[fullAddress.length - 2] + "," + country);
+            else if(precision == 1) {
+              if (fullAddress.length>=2) onResponse(fullAddress[fullAddress.length - 2] + ", " + country);
+              else onResponse(country);
+            }
 
-            else if(precision >= 2) onResponse(fullAddress[fullAddress.length - 3] + "," + fullAddress[fullAddress.length - 2] + "," + country);
+            else if(precision >= 2) {
+              if (fullAddress.length >= 3) onResponse(fullAddress[fullAddress.length - 3] + ", " + fullAddress[fullAddress.length - 2] + ", " + country);
+              else if (fullAddress.length == 2) onResponse(fullAddress[fullAddress.length - 2] + ", " + country);
+              else onResponse(country);
+            }
 
             else onResponse(result.results[0].formatted_address);
 
@@ -249,6 +261,20 @@ BlurredLocation = function BlurredLocation(options) {
 
   enableCenterShade();
 
+  function geocodeWithBrowser(boolean) {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+      goTo(position.coords.latitude, position.coords.longitude,options.zoom);
+      });
+    }
+  }
+
+  function displayLocation() {
+    var lat = getLat();
+    var lon = getLon();
+    alert("Your current location is: " + lat +  ', ' + lon);
+  }
+
   return {
     getLat: getLat,
     getLon: getLon,
@@ -275,6 +301,8 @@ BlurredLocation = function BlurredLocation(options) {
     disableCenterShade: disableCenterShade,
     enableCenterShade: enableCenterShade,
     geocodeStringAndPan: geocodeStringAndPan,
+    geocodeWithBrowser: geocodeWithBrowser,
+    displayLocation: displayLocation,
   }
 }
 
