@@ -89,7 +89,8 @@ location.getLon(); // should return -85.66
 |------------------------------|--------------------|-------------------|
 | `location.getLat()`          | get the current latitude of map center | returns a decimal |
 | `location.getLon()`          | get the current latitude of map center | returns a decimal |
-| `location.goTo(lat, lon, zoom)` | three parameters: latitude, longitude and zoom, set the map center | `location.goTo(44.51, -89.99, 13)` sets center of map to `44.51, -89.99` with `zoom` set as `13` |
+| `location.goTo(lat, lon, zoom)`  | three parameters: latitude, longitude and zoom, set the map center | `location.goTo(44.51, -89.99, 13)` sets center of map to `44.51, -89.99` with `zoom` set as `13` |
+| `location.isBlurred()`           | returns `true` if blurring is on; that is, if the location is being partially obscured | returns a boolean `true` / `false` |
 | `location.setBlurred(boolean)`   | Enables "location blurring" to obscure the location: the location will be obscured to the smallest latitude/longitude grid square which the map center falls in |
 | `location.getFullLat()`   | Returns non-truncated latitude of map center, regardless of precision | `location.getFullLat()` returns decimal |
 | `location.getFullLon()` | Returns non-truncated longitude of map center, regardless of precision | `location.getFullLon()` returns decimal |
