@@ -14,7 +14,8 @@ BlurredLocation = function BlurredLocation(options) {
 
   options.mapID = options.mapID || 'map'
 
-  options.map = options.map || new L.Map(options.mapID,{zoomControl:false}).setView([options.location.lat, options.location.lon], options.zoom);
+
+  options.map = options.map || new L.Map(options.mapID,{}).setView([options.location.lat, options.location.lon], options.zoom);
 
   options.pixels = options.pixels || 400;
 
@@ -70,7 +71,7 @@ BlurredLocation = function BlurredLocation(options) {
   function geocodeStringAndPan(string, onComplete) {
     var url = "https://maps.googleapis.com/maps/api/geocode/json?address="+string.split(" ").join("+");
     var Blurred = $.ajax({
-        async: false,
+        async: options.map = options.map || new L.Map(options.mapID, {}).setView([options.location.lat, options.location.lon], options.zoom);,
         url: url
     });
     onComplete = onComplete || function onComplete(geometry) {
