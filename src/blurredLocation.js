@@ -71,7 +71,7 @@ BlurredLocation = function BlurredLocation(options) {
   function geocodeStringAndPan(string, onComplete) {
     var url = "https://maps.googleapis.com/maps/api/geocode/json?address="+string.split(" ").join("+");
     var Blurred = $.ajax({
-        async: options.map = options.map || new L.Map(options.mapID, {}).setView([options.location.lat, options.location.lon], options.zoom);,
+        async: false,
         url: url
     });
     onComplete = onComplete || function onComplete(geometry) {
