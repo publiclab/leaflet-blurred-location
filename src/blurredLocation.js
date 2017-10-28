@@ -206,6 +206,7 @@ BlurredLocation = function BlurredLocation(options) {
         blurred = false;
         gridSystem.removeGrid();
       }
+      updateRectangleOnPan();
   }
 
   function isBlurred() {
@@ -223,8 +224,14 @@ BlurredLocation = function BlurredLocation(options) {
     var precision = getPrecision();
     var interval = Math.pow(10,-precision);
     var bounds = [[getLat(), getLon()], [getLat() + (getLat()/Math.abs(getLat()))*interval, getLon() + (getLon()/Math.abs(getLon()))*interval]];
-
-    drawCenterRectangle(bounds);
+    if(isBlurred()) {
+        drawCenterRectangle(bounds);
+        disableCenterMarker();
+    }
+    else{
+       enableCenterMarker();
+       disableCenterShade();
+    }
   }
 
 
