@@ -747,6 +747,9 @@ BlurredLocation = function BlurredLocation(options) {
   var rectangle;
 
   function drawCenterRectangle(bounds) {
+
+    if (!bounds[1][0]) {if (getFullLat() < 0) {bounds[0][0] = -1; bounds[1][0] = 0;} else{bounds[1][0] = 1; }};
+    if (!bounds[1][1]) {if (getFullLon() < 0) {bounds[0][1] = -1; bounds[1][1] = 0;} else{bounds[1][1] = 1; }};
     if(rectangle) rectangle.remove();
     rectangle = L.rectangle(bounds, {color: "#ff0000", weight: 1}).addTo(options.map);
   }
