@@ -547,7 +547,8 @@ BlurredLocation = function BlurredLocation(options) {
 
   options.mapID = options.mapID || 'map'
 
-  options.map = options.map || new L.Map(options.mapID,{zoomControl:false}).setView([options.location.lat, options.location.lon], options.zoom);
+
+  options.map = options.map || new L.Map(options.mapID,{}).setView([options.location.lat, options.location.lon], options.zoom);
 
   options.pixels = options.pixels || 400;
 
@@ -738,6 +739,7 @@ BlurredLocation = function BlurredLocation(options) {
         blurred = false;
         gridSystem.removeGrid();
       }
+      updateRectangleOnPan();
   }
 
   function isBlurred() {
@@ -755,8 +757,14 @@ BlurredLocation = function BlurredLocation(options) {
     var precision = getPrecision();
     var interval = Math.pow(10,-precision);
     var bounds = [[getLat(), getLon()], [getLat() + (getLat()/Math.abs(getLat()))*interval, getLon() + (getLon()/Math.abs(getLon()))*interval]];
-
-    drawCenterRectangle(bounds);
+    if(isBlurred()) {
+        drawCenterRectangle(bounds);
+        disableCenterMarker();
+    }
+    else{
+       enableCenterMarker();
+       disableCenterShade();
+    }
   }
 
 
