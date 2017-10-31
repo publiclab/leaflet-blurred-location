@@ -2,6 +2,7 @@ BlurredLocation = function BlurredLocation(options) {
 
   var blurredLocation = this;
   var blurred = true;
+  var DEFAULT_PRECISION = 6;
   require('leaflet-graticule');
 
   options = options || {};
@@ -51,14 +52,14 @@ BlurredLocation = function BlurredLocation(options) {
     if(isBlurred())
       return parseFloat(truncateToPrecision(options.map.getCenter().lat, getPrecision()));
     else
-      return parseFloat(options.map.getCenter().lat);
+      return parseFloat(truncateToPrecision(options.map.getCenter().lat, DEFAULT_PRECISION));
   }
 
   function getLon() {
     if(isBlurred())
       return parseFloat(truncateToPrecision(options.map.getCenter().lng, getPrecision()));
     else
-      return parseFloat(options.map.getCenter().lng);
+      return parseFloat(truncateToPrecision(options.map.getCenter().lng, DEFAULT_PRECISION));
   }
   function goTo(lat, lon, zoom) {
     options.map.setView([lat, lon], zoom);
