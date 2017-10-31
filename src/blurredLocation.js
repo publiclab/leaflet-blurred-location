@@ -2,6 +2,7 @@ BlurredLocation = function BlurredLocation(options) {
 
   var blurredLocation = this;
   var blurred = true;
+  var DEFAULT_PRECISION = 6;
   require('leaflet-graticule');
 
   options = options || {};
@@ -15,8 +16,7 @@ BlurredLocation = function BlurredLocation(options) {
   options.mapID = options.mapID || 'map'
 
   options.map = options.map || new L.Map(options.mapID,{ zoomControl:false })
-                                    .setView([ options.location.lat, options.location.lon ],
-                                             options.zoom);
+                                    .setView([ options.location.lat, options.location.lon ], options.zoom);
 
   options.pixels = options.pixels || 400;
 
@@ -52,14 +52,14 @@ BlurredLocation = function BlurredLocation(options) {
     if(isBlurred())
       return parseFloat(truncateToPrecision(options.map.getCenter().lat, getPrecision()));
     else
-      return parseFloat(options.map.getCenter().lat);
+      return parseFloat(truncateToPrecision(options.map.getCenter().lat, DEFAULT_PRECISION));
   }
 
   function getLon() {
     if(isBlurred())
       return parseFloat(truncateToPrecision(options.map.getCenter().lng, getPrecision()));
     else
-      return parseFloat(options.map.getCenter().lng);
+      return parseFloat(truncateToPrecision(options.map.getCenter().lng, DEFAULT_PRECISION));
   }
   function goTo(lat, lon, zoom) {
     options.map.setView([lat, lon], zoom);
@@ -207,6 +207,7 @@ BlurredLocation = function BlurredLocation(options) {
         blurred = false;
         gridSystem.removeGrid();
       }
+      updateRectangleOnPan();
   }
 
   function isBlurred() {
@@ -232,8 +233,14 @@ BlurredLocation = function BlurredLocation(options) {
     var precision = getPrecision();
     var interval = Math.pow(10,-precision);
     var bounds = [[getLat(), getLon()], [getLat() + (getLat()/Math.abs(getLat()))*interval, getLon() + (getLon()/Math.abs(getLon()))*interval]];
-
-    drawCenterRectangle(bounds);
+    if(isBlurred()) {
+        drawCenterRectangle(bounds);
+        disableCenterMarker();
+    }
+    else{
+       enableCenterMarker();
+       disableCenterShade();
+    }
   }
 
 
