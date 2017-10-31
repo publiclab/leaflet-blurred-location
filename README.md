@@ -41,6 +41,15 @@ We're open to variations on this if you have suggestions; please [open an issue]
 
 ****
 
+## Human-readable blurring
+
+Leaflet.BlurredLocation also tries to return a human readable string description of location at a specificity which corresponds to the displayed precision of the location selected. 
+
+More coming soon on this, see https://github.com/publiclab/leaflet-blurred-location/issues/98
+
+
+****
+
 ## Setting up leaflet-blurred-location
 
 To set up the library first clone this repo to your local environment; then run 'npm install' to install all the neccessary packages required. Open `examples/index.html` to look at the preview of the library.
