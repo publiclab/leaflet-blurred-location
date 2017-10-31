@@ -1,6 +1,6 @@
 {
   "name": "leaflet-blurred-location",
-  "version": "1.1.1",
+  "version": "1.1.3",
   "description": "",
   "main": "Gruntfile.js",
   "scripts": {
@@ -29,10 +29,10 @@
     "jasmine": "^2.5.3",
     "jasmine-ajax": "^3.3.1",
     "jasmine-jquery": "^2.1.1",
+    "leaflet-graticule": "git://github.com/jywarren/Leaflet.Graticule.git#patch-1",
     "matchdep": "^1.0.1",
     "require": "^2.4.20",
-    "resig-class": "^1.0.0",
-    "leaflet-graticule": "git://github.com/jywarren/Leaflet.Graticule.git#patch-1"
+    "resig-class": "^1.0.0"
   },
   "dependencies": {
     "jquery": "^3.2.1",
