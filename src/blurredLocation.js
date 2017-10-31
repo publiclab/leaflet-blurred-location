@@ -14,7 +14,9 @@ BlurredLocation = function BlurredLocation(options) {
 
   options.mapID = options.mapID || 'map'
 
-  options.map = options.map || new L.Map(options.mapID,{zoomControl:false}).setView([options.location.lat, options.location.lon], options.zoom);
+  options.map = options.map || new L.Map(options.mapID,{ zoomControl:false })
+                                    .setView([ options.location.lat, options.location.lon ],
+                                             options.zoom);
 
   options.pixels = options.pixels || 400;
 
@@ -68,7 +70,7 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function geocodeStringAndPan(string, onComplete) {
-    var url = "https://maps.googleapis.com/maps/api/geocode/json?address="+string.split(" ").join("+");
+    var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+");
     var Blurred = $.ajax({
         async: false,
         url: url
@@ -77,7 +79,7 @@ BlurredLocation = function BlurredLocation(options) {
       $("#lat").val(geometry.lat);
       $("#lng").val(geometry.lng);
 
-      options.map.setView([geometry.lat, geometry.lng],options.zoom);
+      options.map.setView([geometry.lat, geometry.lng], options.zoom);
     }
     onComplete(Blurred.responseJSON.results[0].geometry.location);
   }
@@ -154,7 +156,7 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function gridWidthInPixels(degrees) {
-    var p1 = L.latLng(options.map.getCenter().lat,options.map.getCenter().lng);
+    var p1 = L.latLng(options.map.getCenter().lat, options.map.getCenter().lng);
     var p2 = L.latLng(p1.lat+degrees, p1.lng+degrees);
     var l1 = options.map.latLngToContainerPoint(p1);
     var l2 = options.map.latLngToContainerPoint(p2);
@@ -214,9 +216,15 @@ BlurredLocation = function BlurredLocation(options) {
   var rectangle;
 
   function drawCenterRectangle(bounds) {
-    if (!bounds[1][0]) {if (getFullLat() < 0) {bounds[0][0] = -1; bounds[1][0] = 0;} else{bounds[1][0] = 1; }};
-    if (!bounds[1][1]) {if (getFullLon() < 0) {bounds[0][1] = -1; bounds[1][1] = 0;} else{bounds[1][1] = 1; }};
-    if(rectangle) rectangle.remove();
+    if (!bounds[1][0]) {
+      if (getFullLat() < 0) { bounds[0][0] = -1; bounds[1][0] = 0; }
+      else { bounds[1][0] = 1; }
+    }
+    if (!bounds[1][1]) {
+      if (getFullLon() < 0) { bounds[0][1] = -1; bounds[1][1] = 0; }
+      else { bounds[1][1] = 1; }
+    }
+    if (rectangle) rectangle.remove();
     rectangle = L.rectangle(bounds, {color: "#ff0000", weight: 1}).addTo(options.map);
   }
 
