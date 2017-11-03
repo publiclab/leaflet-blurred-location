@@ -65,6 +65,12 @@ blurredLocation.getLon(); // should return -85.66
 
 ****
 
+## Contributing
+
+We welcome contributions, and are especially interested in welcoming [first time contributors](#first-time). Read more about [how to contribute](#developers) below! We especially welcome contributions from people from groups under-represented in free and open source software!
+
+****
+
 ## Options
 
 ### Basic
@@ -117,3 +123,19 @@ To run tests, open /test.html in a browser. If you have phantomjs installed, you
 You can find the installation instructions for phantomjs in its official [build documentation](http://phantomjs.org/build.html). For Ubuntu/debian based system you can follow [these instructions](https://gist.github.com/julionc/7476620) or use the script mentioned there.
 
 To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`.
+
+## Developers
+
+Help improve Public Lab software!
+
+* Join the 'plots-dev@googlegroups.com' discussion list to get involved
+* Look for open issues at https://github.com/publiclab/leaflet-blurred-location/issues
+* We're specifically asking for help with issues labelled with [help-wanted](https://github.com/publiclab/leaflet-blurred-location/labels/help-wanted) tag
+* Find lots of info on contributing at http://publiclab.org/wiki/developers
+* Review specific contributor guidelines at http://publiclab.org/wiki/contributing-to-public-lab-software
+* Some devs hang out in http://publiclab.org/chat (irc webchat)
+* Join our gitter chat at https://gitter.im/publiclab/publiclab
+
+## First Time?
+
+New to open source/free software? Here is a selection of issues we've made especially for first-timers. We're here to help, so just ask if one looks interesting : https://github.com/publiclab/leaflet-blurred-location/labels/first-timers-only
