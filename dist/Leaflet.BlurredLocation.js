@@ -751,14 +751,15 @@ BlurredLocation = function BlurredLocation(options) {
 
   function drawCenterRectangle(bounds) {
     if (!bounds[1][0]) {
-      if (getFullLat() < 0) { bounds[0][0] = -1; bounds[1][0] = 0; }
-      else { bounds[1][0] = 1; }
+      if (getFullLat() < 0) { bounds[0][0] = -1*(0.1**getPrecision()); bounds[1][0] = 0; }
+      else { bounds[1][0] = 1*(0.1**getPrecision()); }
     }
     if (!bounds[1][1]) {
-      if (getFullLon() < 0) { bounds[0][1] = -1; bounds[1][1] = 0; }
-      else { bounds[1][1] = 1; }
+      if (getFullLon() < 0) { bounds[0][1] = -1*(0.1**getPrecision()); bounds[1][1] = 0; }
+      else { bounds[1][1] = 1*(0.1**getPrecision()); }
     }
     if (rectangle) rectangle.remove();
+    console.log(bounds)
     rectangle = L.rectangle(bounds, {color: "#ff0000", weight: 1}).addTo(options.map);
   }
 
