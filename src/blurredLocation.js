@@ -15,8 +15,8 @@ BlurredLocation = function BlurredLocation(options) {
 
   options.mapID = options.mapID || 'map'
 
-  options.map = options.map || new L.Map(options.mapID,{ zoomControl:false })
-                                    .setView([ options.location.lat, options.location.lon ], options.zoom);
+  options.map = options.map || new L.Map(options.mapID,{})
+                                    .setView([options.location.lat, options.location.lon], options.zoom);
 
   options.pixels = options.pixels || 400;
 
@@ -217,16 +217,17 @@ BlurredLocation = function BlurredLocation(options) {
   var rectangle;
 
   function drawCenterRectangle(bounds) {
+    var precision = getPrecision();
+    var interval = Math.pow(0.1, precision);
     if (!bounds[1][0]) {
-      if (getFullLat() < 0) { bounds[0][0] = -1*(0.1**getPrecision()); bounds[1][0] = 0; }
-      else { bounds[1][0] = 1*(0.1**getPrecision()); }
+      if (getFullLat() < 0) { bounds[0][0] = -1*interval; bounds[1][0] = 0; }
+      else { bounds[1][0] = 1*interval; }
     }
     if (!bounds[1][1]) {
-      if (getFullLon() < 0) { bounds[0][1] = -1*(0.1**getPrecision()); bounds[1][1] = 0; }
-      else { bounds[1][1] = 1*(0.1**getPrecision()); }
+      if (getFullLon() < 0) { bounds[0][1] = -1*interval; bounds[1][1] = 0; }
+      else { bounds[1][1] = 1*interval; }
     }
     if (rectangle) rectangle.remove();
-    console.log(bounds)
     rectangle = L.rectangle(bounds, {color: "#ff0000", weight: 1}).addTo(options.map);
   }
 
