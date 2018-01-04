@@ -761,7 +761,6 @@ BlurredLocation = function BlurredLocation(options) {
       else { bounds[1][1] = 1*interval; }
     }
     if (rectangle) rectangle.remove();
-    console.log(bounds)
     rectangle = L.rectangle(bounds, {color: "#ff0000", weight: 1}).addTo(options.map);
   }
 
