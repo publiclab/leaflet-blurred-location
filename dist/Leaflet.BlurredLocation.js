@@ -814,10 +814,24 @@ BlurredLocation = function BlurredLocation(options) {
   enableCenterShade();
 
   function geocodeWithBrowser(boolean) {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-      goTo(position.coords.latitude, position.coords.longitude,options.zoom);
-      });
+    if(boolean) {
+      $("label").remove(".spinner");
+      var label = document.createElement("label");
+      var i = document.createElement("i");
+      i.classList.add("fa");
+      i.classList.add("fa-spinner");
+      i.classList.add("fa-spin");
+      var node = document.createTextNode("Get my location");
+      label.appendChild(node);
+      label.appendChild(i);
+      var element = document.getElementById("div1");
+      element.appendChild(label);
+      console.log("Here");
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+        goTo(position.coords.latitude, position.coords.longitude,options.zoom);
+        });
+      }
     }
   }
 
@@ -859,7 +873,6 @@ BlurredLocation = function BlurredLocation(options) {
 }
 
 exports.BlurredLocation = BlurredLocation;
-
 },{"./core/gridSystem.js":5,"./ui/Interface.js":6,"leaflet-graticule":2}],5:[function(require,module,exports){
 module.exports = function gridSystem(options) {
 
