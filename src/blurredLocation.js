@@ -238,6 +238,7 @@ BlurredLocation = function BlurredLocation(options) {
     if(isBlurred()) {
         drawCenterRectangle(bounds);
         disableCenterMarker();
+        options.map.on('move',updateRectangleOnPan);
     }
     else{
        enableCenterMarker();
