@@ -8,7 +8,7 @@ BlurredLocation = function BlurredLocation(options) {
   options = options || {};
   options.location = options.location || {
     lat: 1.0,
-    lon: 1.0
+    lon: 10.0
   };
 
   options.zoom = options.zoom || 6;
