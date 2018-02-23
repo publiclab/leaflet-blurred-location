@@ -238,6 +238,7 @@ BlurredLocation = function BlurredLocation(options) {
     if(isBlurred()) {
         drawCenterRectangle(bounds);
         disableCenterMarker();
+        enableCenterShade() ; 
     }
     else{
        enableCenterMarker();
@@ -252,7 +253,6 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function enableCenterShade() {
-    updateRectangleOnPan();
     options.map.on('move', updateRectangleOnPan);
   }
 
@@ -278,7 +278,7 @@ BlurredLocation = function BlurredLocation(options) {
     options.map.off('move',updateMarker);
   }
 
-  enableCenterShade();
+    updateRectangleOnPan();
 
   function geocodeWithBrowser(boolean) {
     if ("geolocation" in navigator) {
