@@ -539,7 +539,7 @@ BlurredLocation = function BlurredLocation(options) {
   options = options || {};
   options.location = options.location || {
     lat: 1.0,
-    lon: 1.0
+    lon: 10.0
   };
 
   options.zoom = options.zoom || 6;
@@ -555,14 +555,14 @@ BlurredLocation = function BlurredLocation(options) {
 
   options.Interface = options.Interface || require('./ui/Interface.js');
 
-  gridSystemOptions = options.gridSystemOptions || {};
+  var gridSystemOptions = options.gridSystemOptions || {};
   gridSystemOptions.map = options.map;
   gridSystemOptions.gridWidthInPixels = gridWidthInPixels;
   gridSystemOptions.getMinimumGridWidth = getMinimumGridWidth;
 
-  gridSystem = options.gridSystem(gridSystemOptions);
+  var gridSystem = options.gridSystem(gridSystemOptions);
 
-  InterfaceOptions = options.InterfaceOptions || {};
+  var InterfaceOptions = options.InterfaceOptions || {};
   InterfaceOptions.panMap = panMap;
   InterfaceOptions.getPlacenameFromCoordinates = getPlacenameFromCoordinates;
   InterfaceOptions.getLat = getLat;
@@ -570,7 +570,7 @@ BlurredLocation = function BlurredLocation(options) {
   InterfaceOptions.map = options.map;
   InterfaceOptions.getPrecision = getPrecision;
 
-  Interface = options.Interface(InterfaceOptions);
+  var Interface = options.Interface(InterfaceOptions);
 
   var tileLayer = L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
 
