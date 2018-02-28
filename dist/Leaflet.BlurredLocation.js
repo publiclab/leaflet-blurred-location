@@ -817,6 +817,7 @@ BlurredLocation = function BlurredLocation(options) {
     if(boolean) {
       $("label").remove(".spinner");
       var label = document.createElement("label");
+      label.classList.add("spinner");
       var i = document.createElement("i");
       i.classList.add("fa");
       i.classList.add("fa-spinner");
@@ -826,10 +827,12 @@ BlurredLocation = function BlurredLocation(options) {
       label.appendChild(i);
       var element = document.getElementById("div1");
       element.appendChild(label);
-      console.log("Here");
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(function(position) {
         goTo(position.coords.latitude, position.coords.longitude,options.zoom);
+        $("i").remove(".fa");
+        }, function(error) {
+          console.log(error);
         });
       }
     }
