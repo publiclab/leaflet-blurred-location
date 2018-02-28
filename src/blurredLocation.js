@@ -199,9 +199,11 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function setBlurred(boolean) {
+
       if(boolean && !blurred) {
         gridSystem.addGrid();
         blurred = true;
+        enableCenterShade();
       }
       else if(!boolean) {
         blurred = false;
