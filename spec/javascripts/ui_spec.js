@@ -38,5 +38,4 @@ describe("UI testing", function() {
     expect(parseFloat(latEl.val())).toBe(40.73);
     expect(parseFloat(lngEl.val())).toBe(-73.92);
   });
-
 });
