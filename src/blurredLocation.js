@@ -24,12 +24,18 @@ BlurredLocation = function BlurredLocation(options) {
 
   options.Interface = options.Interface || require('./ui/Interface.js');
 
+  options.Geocoding = options.Geocoding || require('./core/Geocoding.js')
+
   var gridSystemOptions = options.gridSystemOptions || {};
   gridSystemOptions.map = options.map;
   gridSystemOptions.gridWidthInPixels = gridWidthInPixels;
   gridSystemOptions.getMinimumGridWidth = getMinimumGridWidth;
 
+  var GeocodingOptions = options.GeocodingOptions || {};
+  GeocodingOptions.map = options.map;
+
   var gridSystem = options.gridSystem(gridSystemOptions);
+  var Geocoding = options.Geocoding(GeocodingOptions);
 
   var InterfaceOptions = options.InterfaceOptions || {};
   InterfaceOptions.panMap = panMap;
@@ -69,20 +75,20 @@ BlurredLocation = function BlurredLocation(options) {
     options.map.setZoom(zoom);
   }
 
-  function geocodeStringAndPan(string, onComplete) {
-    var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+");
-    var Blurred = $.ajax({
-        async: false,
-        url: url
-    });
-    onComplete = onComplete || function onComplete(geometry) {
-      $("#lat").val(geometry.lat);
-      $("#lng").val(geometry.lng);
+  // function geocodeStringAndPan(string, onComplete) {
+  //   var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+");
+  //   var Blurred = $.ajax({
+  //       async: false,
+  //       url: url
+  //   });
+  //   onComplete = onComplete || function onComplete(geometry) {
+  //     $("#lat").val(geometry.lat);
+  //     $("#lng").val(geometry.lng);
 
-      options.map.setView([geometry.lat, geometry.lng], options.zoom);
-    }
-    onComplete(Blurred.responseJSON.results[0].geometry.location);
-  }
+  //     options.map.setView([geometry.lat, geometry.lng], options.zoom);
+  //   }
+  //   onComplete(Blurred.responseJSON.results[0].geometry.location);
+  // }
 
   function getSize() {
     return options.map.getSize();
@@ -95,7 +101,7 @@ BlurredLocation = function BlurredLocation(options) {
     autocomplete.addListener('place_changed', function() {
       setTimeout(function () {
         var str = input.value;
-        geocodeStringAndPan(str);
+        Geocoding.geocodeStringAndPan(str);
       }, 10);
     });
   };
@@ -321,7 +327,7 @@ BlurredLocation = function BlurredLocation(options) {
     setZoomByPrecision: setZoomByPrecision,
     disableCenterShade: disableCenterShade,
     enableCenterShade: enableCenterShade,
-    geocodeStringAndPan: geocodeStringAndPan,
+    geocodeStringAndPan: Geocoding.geocodeStringAndPan,
     geocodeWithBrowser: geocodeWithBrowser,
     displayLocation: displayLocation,
   }
