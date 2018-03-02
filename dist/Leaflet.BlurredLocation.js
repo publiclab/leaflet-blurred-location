@@ -815,15 +815,12 @@ BlurredLocation = function BlurredLocation(options) {
 
   function geocodeWithBrowser(boolean) {
     if(boolean) {
-      $("label").remove(".spinner");
       var label = document.createElement("label");
       label.classList.add("spinner");
       var i = document.createElement("i");
       i.classList.add("fa");
       i.classList.add("fa-spinner");
       i.classList.add("fa-spin");
-      var node = document.createTextNode("Get my location");
-      label.appendChild(node);
       label.appendChild(i);
       var element = document.getElementById("div1");
       element.appendChild(label);

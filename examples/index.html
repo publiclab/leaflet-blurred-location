@@ -27,12 +27,16 @@
 
       <h3>Enter a location</h3>
 
-      <div id="div1" class="auto-complete">
-        <input id="browserLocation" type="checkbox" checked onchange='blurredLocation.geocodeWithBrowser(document.getElementById("browserLocation").checked);'>
-          <label class="spinner">
+      <label>
+        <p><button class="btn btn-primary" onclick="blurredLocation.geocodeWithBrowser(true);">
+          <div id="div1">          
             Get my location
-          </label>
-      </div>
+          </div>
+
+        </button></p>
+      </label>
+      <br/>
+
       <label>
         <input id="obscureLocation" type="checkbox" checked onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
         Blur my location
