@@ -996,8 +996,8 @@ module.exports = function Interface (options) {
   options.map.on('move', options.onDrag);
 
   function updateLatLngInputListeners() {
-    $("#"+options.latId).val(options.getLat());
-    $("#"+options.lngId).val(options.getLon());
+    $("#"+options.latId).val(options.getLat().toFixed(options.getPrecision()));
+    $("#"+options.lngId).val(options.getLon().toFixed(options.getPrecision()));
   };
 
   function enableLatLngInputTruncate() {
