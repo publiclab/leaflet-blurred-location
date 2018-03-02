@@ -17,7 +17,45 @@ module.exports = function Geocoding(options) {
     onComplete(Blurred.responseJSON.results[0].geometry.location);
   }
 
+  function getPlacenameFromCoordinates(lat, lng, precision, onResponse) {
+      $.ajax({
+        url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
+        success: function(result) {
+          if(result.results[0]) {
+            var country;
+            var fullAddress = result.results[0].formatted_address.split(",");
+            for (i in result.results) {
+              if(result.results[i].types.indexOf("country") != -1) {
+                //If the type of location is a country assign it to thr input box value
+                country = result.results[i].formatted_address;
+              }
+            }
+            if (!country) country = fullAddress[fullAddress.length - 1];
+
+            if(precision <= 0) onResponse(country);
+
+            else if(precision == 1) {
+              if (fullAddress.length>=2) onResponse(fullAddress[fullAddress.length - 2] + ", " + country);
+              else onResponse(country);
+            }
+
+            else if(precision >= 2) {
+              if (fullAddress.length >= 3) onResponse(fullAddress[fullAddress.length - 3] + ", " + fullAddress[fullAddress.length - 2] + ", " + country);
+              else if (fullAddress.length == 2) onResponse(fullAddress[fullAddress.length - 2] + ", " + country);
+              else onResponse(country);
+            }
+
+            else onResponse(result.results[0].formatted_address);
+
+        }
+        else onResponse("Location unavailable");
+      }
+    });
+  }
+
+
   return {
-    geocodeStringAndPan: geocodeStringAndPan
+    geocodeStringAndPan: geocodeStringAndPan,
+    getPlacenameFromCoordinates: getPlacenameFromCoordinates
   }
 }
