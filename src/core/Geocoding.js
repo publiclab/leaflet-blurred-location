@@ -53,9 +53,26 @@ module.exports = function Geocoding(options) {
     });
   }
 
+  function panMapByBrowserGeocode(checkbox) {
+    var x = document.getElementById("location");
+      if(checkbox.checked == true) {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(displayPosition);
+        } else {
+          x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+
+        function displayPosition(position) {
+          panMap(parseFloat(position.coords.latitude), parseFloat(position.coords.longitude));
+        }
+    }
+  }
+
+
 
   return {
     geocodeStringAndPan: geocodeStringAndPan,
-    getPlacenameFromCoordinates: getPlacenameFromCoordinates
+    getPlacenameFromCoordinates: getPlacenameFromCoordinates,
+    panMapByBrowserGeocode: panMapByBrowserGeocode
   }
 }

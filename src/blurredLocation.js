@@ -131,20 +131,20 @@ BlurredLocation = function BlurredLocation(options) {
   //   });
   // }
 
-  function panMapByBrowserGeocode(checkbox) {
-    var x = document.getElementById("location");
-      if(checkbox.checked == true) {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(displayPosition);
-        } else {
-          x.innerHTML = "Geolocation is not supported by this browser.";
-        }
+  // function panMapByBrowserGeocode(checkbox) {
+  //   var x = document.getElementById("location");
+  //     if(checkbox.checked == true) {
+  //       if (navigator.geolocation) {
+  //         navigator.geolocation.getCurrentPosition(displayPosition);
+  //       } else {
+  //         x.innerHTML = "Geolocation is not supported by this browser.";
+  //       }
 
-        function displayPosition(position) {
-          panMap(parseFloat(position.coords.latitude), parseFloat(position.coords.longitude));
-        }
-    }
-  }
+  //       function displayPosition(position) {
+  //         panMap(parseFloat(position.coords.latitude), parseFloat(position.coords.longitude));
+  //       }
+  //   }
+  // }
 
   function gridWidthInPixels(degrees) {
     var p1 = L.latLng(options.map.getCenter().lat, options.map.getCenter().lng);
@@ -296,7 +296,7 @@ BlurredLocation = function BlurredLocation(options) {
     panMapToGeocodedLocation: panMapToGeocodedLocation,
     getPlacenameFromCoordinates: Geocoding.getPlacenameFromCoordinates,
     panMap: panMap,
-    panMapByBrowserGeocode: panMapByBrowserGeocode,
+    panMapByBrowserGeocode: Geocoding.panMapByBrowserGeocode,
     getMinimumGridWidth: getMinimumGridWidth,
     gridWidthInPixels: gridWidthInPixels,
     getPrecision: getPrecision,
