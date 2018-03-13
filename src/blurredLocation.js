@@ -246,6 +246,8 @@ BlurredLocation = function BlurredLocation(options) {
        enableCenterMarker();
        disableCenterShade();
     }
+    document.getElementById('lat').value = getLat() ;
+    document.getElementById('lng').value = getLon() ;
   }
 
 
