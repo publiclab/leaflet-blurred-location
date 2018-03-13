@@ -777,6 +777,8 @@ BlurredLocation = function BlurredLocation(options) {
        enableCenterMarker();
        disableCenterShade();
     }
+    $("#"+InterfaceOptions.latId).val(getLat()) ;
+    $("#"+InterfaceOptions.lngId).val(getLon()) ; 
   }
 
 
