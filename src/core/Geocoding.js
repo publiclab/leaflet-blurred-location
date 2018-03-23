@@ -68,11 +68,31 @@ module.exports = function Geocoding(options) {
     }
   }
 
+  function panMapToGeocodedLocation(selector) {
+    var input = document.getElementById(selector);
 
+    var autocomplete = new google.maps.places.Autocomplete(input);
+    autocomplete.addListener('place_changed', function() {
+      setTimeout(function () {
+        var str = input.value;
+        Geocoding.geocodeStringAndPan(str);
+      }, 10);
+    });
+  };
+
+  function geocodeWithBrowser(boolean) {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+      goTo(position.coords.latitude, position.coords.longitude,options.zoom);
+      });
+    }
+  }
 
   return {
     geocodeStringAndPan: geocodeStringAndPan,
     getPlacenameFromCoordinates: getPlacenameFromCoordinates,
-    panMapByBrowserGeocode: panMapByBrowserGeocode
+    panMapByBrowserGeocode: panMapByBrowserGeocode,
+    panMapToGeocodedLocation: panMapToGeocodedLocation,
+    geocodeWithBrowser: geocodeWithBrowser
   }
 }
