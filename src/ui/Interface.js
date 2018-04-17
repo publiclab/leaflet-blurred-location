@@ -38,8 +38,8 @@ module.exports = function Interface (options) {
   options.map.on('move', options.onDrag);
 
   function updateLatLngInputListeners() {
-    $("#"+options.latId).val(options.getLat().toFixed(options.getPrecision()));
-    $("#"+options.lngId).val(options.getLon().toFixed(options.getPrecision()));
+    $("#"+options.latId).val(options.getLat().toFixed(Math.max(0,options.getPrecision())));
+    $("#"+options.lngId).val(options.getLon().toFixed(Math.max(0,options.getPrecision())));
   };
 
   function enableLatLngInputTruncate() {
