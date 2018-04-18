@@ -34,6 +34,9 @@ module.exports = function Geocoding(options) {
 
         }
         else onResponse("Location unavailable");
+      },
+      error: function(error) {
+        onResponse("Location unavailable");
       }
     });
   }
@@ -66,10 +69,14 @@ module.exports = function Geocoding(options) {
   };
 
   function geocodeWithBrowser(boolean) {
-    if ("geolocation" in navigator) {
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
-      goTo(position.coords.latitude, position.coords.longitude,options.zoom);
-      });
+      options.goTo(position.coords.latitude, position.coords.longitude,options.zoom);
+      },
+      function(error) {
+        console.log(error);
+      },
+      {timeout:10000});
     }
   }
 
