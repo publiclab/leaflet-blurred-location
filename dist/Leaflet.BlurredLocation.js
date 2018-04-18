@@ -1022,18 +1022,15 @@ module.exports = function Interface (options) {
 
   options.onDrag = options.onDrag || function onDrag() {
     function onPlacenameReturned(result) {
-
-      if($("#"+options.placenameInputId).val()) $("#"+options.placenameDisplayId).val($("#"+options.placenameInputId).val());
-
-      else $("#"+options.placenameDisplayId).val(result);
-
-      }
+      $("#"+options.placenameDisplayId).val(result);
+    }
 
       options.getPlacenameFromCoordinates(options.getLat(), options.getLon(), options.getPrecision(), onPlacenameReturned);
   }
 
 
   options.map.on('move', options.onDrag);
+  options.map.on('zoom', options.onDrag);
 
   function updateLatLngInputListeners() {
     $("#"+options.latId).val(options.getLat().toFixed(Math.max(0,options.getPrecision())));
