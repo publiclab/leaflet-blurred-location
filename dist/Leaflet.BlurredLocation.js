@@ -945,50 +945,39 @@ module.exports = function gridSystem(options) {
                 },
 
                 getLabeledCoordinate: function(coordinate, coordinate_type, decimalPlacesAfterZero) {
+                    var dir = "";
                     if (coordinate_type == "lat") {
                       if (coordinate < 0) {
                           coordinate = coordinate * -1;
-                          coordinate = coordinate.toString();
-                          if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero);
-                          return '' + coordinate + 'S';
+                          dir = "S";                          
                       }
                       else if (coordinate > 0) {
-                          if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero)
-                          return '' + coordinate + 'N';
+                          dir = "N";                        
                       }
-                      return '' + coordinate;
                     }
                     else {
                        if (coordinate > 180) {
                            coordinate = 360 - coordinate;
-                           coordinate = coordinate.toString();
-                           if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero)
-                           return '' + coordinate + 'W';
+                           dir = "W";
                        }
                        else if (coordinate > 0 && coordinate < 180) {
-                         if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero)
-                         return '' + coordinate + 'E';
+                           dir = "E"
                        }
                        else if (coordinate < 0 && coordinate > -180) {
                            coordinate = coordinate * -1;
-                           coordinate = coordinate.toString();
-                           if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero)
-                           return '' + coordinate + 'W';
+                           dir = "W";
                        }
                        else if (coordinate == -180) {
                            coordinate = coordinate*-1;
-                           if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero)
-                           return '' + coordinate;
                        }
                        else if (coordinate < -180) {
                            coordinate  = 360 + coordinate;
-                           if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero)
-                           return '' + coordinate + 'W';
-                       }
-                       else if(coordinate == 0) {
-                         return '' + coordinate;
+                           dir = "W";
                        }
                     }
+                  coordinate = coordinate.toString();
+                  if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero);
+                  return '' + coordinate + dir;
                 }
              }
 
