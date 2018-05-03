@@ -22,52 +22,14 @@ module.exports = function gridSystem(options) {
                             var decimalPlacesAfterZero = 0;
                             lat = lat.toString();
                             decimalPlacesAfterZero = this.getDecimalPlacesAfterZero();
-                            if (lat < 0) {
-                                lat = lat * -1;
-                                lat = lat.toString();
-                                if(lat.indexOf(".") != -1) lat = lat.split('.')[0] + '.' + lat.split('.')[1].slice(0,decimalPlacesAfterZero);
-                                return '' + lat + 'S';
-                            }
-                            else if (lat > 0) {
-                                if(lat.indexOf(".") != -1) lat = lat.split('.')[0] + '.' + lat.split('.')[1].slice(0,decimalPlacesAfterZero)
-                                return '' + lat + 'N';
-                            }
-                            return '' + lat;
+                            return this.getLabeledCoordinate(lat, "lat", decimalPlacesAfterZero);
                           },
 
                 lngFormatTickLabel: function(lng) {
                            var decimalPlacesAfterZero = 0;
                            lng = lng.toString();
                            decimalPlacesAfterZero = this.getDecimalPlacesAfterZero(); 
-                           if (lng > 180) {
-                               lng = 360 - lng;
-                               lng = lng.toString();
-                               if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
-                               return '' + lng + 'W';
-                           }
-                           else if (lng > 0 && lng < 180) {
-                             if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
-                             return '' + lng + 'E';
-                           }
-                           else if (lng < 0 && lng > -180) {
-                               lng = lng * -1;
-                               lng = lng.toString();
-                               if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
-                               return '' + lng + 'W';
-                           }
-                           else if (lng == -180) {
-                               lng = lng*-1;
-                               if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
-                               return '' + lng;
-                           }
-                           else if (lng < -180) {
-                               lng  = 360 + lng;
-                               if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
-                               return '' + lng + 'W';
-                           }
-                           else if(lng == 0) {
-                             return '' + lng;
-                           }
+                           return this.getLabeledCoordinate(lng, "lng", decimalPlacesAfterZero);
                          },
 
                 getDecimalPlacesAfterZero: function() {
@@ -79,6 +41,53 @@ module.exports = function gridSystem(options) {
                   }
 
                   return decimalPlacesAfterZero;
+                },
+
+                getLabeledCoordinate: function(coordinate, coordinate_type, decimalPlacesAfterZero) {
+                    if (coordinate_type == "lat") {
+                      if (coordinate < 0) {
+                          coordinate = coordinate * -1;
+                          coordinate = coordinate.toString();
+                          if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero);
+                          return '' + coordinate + 'S';
+                      }
+                      else if (coordinate > 0) {
+                          if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero)
+                          return '' + coordinate + 'N';
+                      }
+                      return '' + coordinate;
+                    }
+                    else {
+                       if (coordinate > 180) {
+                           coordinate = 360 - coordinate;
+                           coordinate = coordinate.toString();
+                           if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero)
+                           return '' + coordinate + 'W';
+                       }
+                       else if (coordinate > 0 && coordinate < 180) {
+                         if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero)
+                         return '' + coordinate + 'E';
+                       }
+                       else if (coordinate < 0 && coordinate > -180) {
+                           coordinate = coordinate * -1;
+                           coordinate = coordinate.toString();
+                           if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero)
+                           return '' + coordinate + 'W';
+                       }
+                       else if (coordinate == -180) {
+                           coordinate = coordinate*-1;
+                           if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero)
+                           return '' + coordinate;
+                       }
+                       else if (coordinate < -180) {
+                           coordinate  = 360 + coordinate;
+                           if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero)
+                           return '' + coordinate + 'W';
+                       }
+                       else if(coordinate == 0) {
+                         return '' + coordinate;
+                       }
+                    }
                 }
              }
 
@@ -92,17 +101,6 @@ module.exports = function gridSystem(options) {
   function removeGrid() {
   layer.remove();
   }
-
-  // function getDecimalPlacesAfterZero(zoomInterval, map) {
-  //   var decimalPlacesAfterZero = 0;
-  //   console.log(zoomInterval);
-
-  //   for(i in zoomInterval) {
-  //     if(map.getZoom() >= zoomInterval[i].start && map.getZoom() <= zoomInterval[i].end && zoomInterval[i].interval < 1)
-  //       decimalPlacesAfterZero = (zoomInterval[i].interval + '').split('.')[1].length;
-  //   }
-  //   return decimalPlacesAfterZero;
-  // }
 
   return {
     removeGrid: removeGrid,
