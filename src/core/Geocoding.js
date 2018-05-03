@@ -2,21 +2,6 @@ module.exports = function Geocoding(options) {
 
   var map = options.map || document.getElementById("map") || L.map('map');
 
-  function geocodeStringAndPan(string, onComplete) {
-    var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+");
-    var Blurred = $.ajax({
-        async: false,
-        url: url
-    });
-    onComplete = onComplete || function onComplete(geometry) {
-      $("#lat").val(geometry.lat);
-      $("#lng").val(geometry.lng);
-
-      map.setView([geometry.lat, geometry.lng], options.zoom);
-    }
-    onComplete(Blurred.responseJSON.results[0].geometry.location);
-  }
-
   function getPlacenameFromCoordinates(lat, lng, precision, onResponse) {
       $.ajax({
         url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
@@ -49,6 +34,9 @@ module.exports = function Geocoding(options) {
 
         }
         else onResponse("Location unavailable");
+      },
+      error: function(error) {
+        onResponse("Location unavailable");
       }
     });
   }
@@ -75,17 +63,36 @@ module.exports = function Geocoding(options) {
     autocomplete.addListener('place_changed', function() {
       setTimeout(function () {
         var str = input.value;
-        Geocoding.geocodeStringAndPan(str);
+        geocodeStringAndPan(str);
       }, 10);
     });
   };
 
   function geocodeWithBrowser(boolean) {
-    if ("geolocation" in navigator) {
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
-      goTo(position.coords.latitude, position.coords.longitude,options.zoom);
-      });
+      options.goTo(position.coords.latitude, position.coords.longitude,options.zoom);
+      },
+      function(error) {
+        console.log(error);
+      },
+      {timeout:10000});
     }
+  }
+
+  function geocodeStringAndPan(string, onComplete) {
+    var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+");
+    var Blurred = $.ajax({
+        async: false,
+        url: url
+    });
+    onComplete = onComplete || function onComplete(geometry) {
+      $("#lat").val(geometry.lat);
+      $("#lng").val(geometry.lng);
+
+      map.setView([geometry.lat, geometry.lng], options.zoom);
+    }
+    onComplete(Blurred.responseJSON.results[0].geometry.location);
   }
 
   return {

@@ -33,6 +33,7 @@ BlurredLocation = function BlurredLocation(options) {
 
   var GeocodingOptions = options.GeocodingOptions || {};
   GeocodingOptions.map = options.map;
+  GeocodingOptions.goTo = goTo;
 
   var gridSystem = options.gridSystem(gridSystemOptions);
   var Geocoding = options.Geocoding(GeocodingOptions);
