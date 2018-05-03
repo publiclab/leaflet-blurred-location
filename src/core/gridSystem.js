@@ -21,10 +21,7 @@ module.exports = function gridSystem(options) {
                  latFormatTickLabel: function(lat) {
                             var decimalPlacesAfterZero = 0;
                             lat = lat.toString();
-                            for(i in this.zoomInterval) {
-                              if(map.getZoom() >= this.zoomInterval[i].start && map.getZoom() <= this.zoomInterval[i].end && this.zoomInterval[i].interval < 1)
-                                decimalPlacesAfterZero = (this.zoomInterval[i].interval + '').split('.')[1].length;
-                            }
+                            decimalPlacesAfterZero = this.getDecimalPlacesAfterZero();
                             if (lat < 0) {
                                 lat = lat * -1;
                                 lat = lat.toString();
@@ -41,10 +38,7 @@ module.exports = function gridSystem(options) {
                 lngFormatTickLabel: function(lng) {
                            var decimalPlacesAfterZero = 0;
                            lng = lng.toString();
-                           for(i in this.zoomInterval) {
-                             if(map.getZoom() >= this.zoomInterval[i].start && map.getZoom() <= this.zoomInterval[i].end && this.zoomInterval[i].interval < 1)
-                               decimalPlacesAfterZero = (this.zoomInterval[i].interval + '').split('.')[1].length;
-                           }
+                           decimalPlacesAfterZero = this.getDecimalPlacesAfterZero(); 
                            if (lng > 180) {
                                lng = 360 - lng;
                                lng = lng.toString();
@@ -75,6 +69,17 @@ module.exports = function gridSystem(options) {
                              return '' + lng;
                            }
                          },
+
+                getDecimalPlacesAfterZero: function() {
+                  var decimalPlacesAfterZero = 0;
+
+                  for(i in this.zoomInterval) {
+                    if(map.getZoom() >= this.zoomInterval[i].start && map.getZoom() <= this.zoomInterval[i].end && this.zoomInterval[i].interval < 1)
+                      decimalPlacesAfterZero = (this.zoomInterval[i].interval + '').split('.')[1].length;
+                  }
+
+                  return decimalPlacesAfterZero;
+                }
              }
 
 
@@ -87,6 +92,17 @@ module.exports = function gridSystem(options) {
   function removeGrid() {
   layer.remove();
   }
+
+  // function getDecimalPlacesAfterZero(zoomInterval, map) {
+  //   var decimalPlacesAfterZero = 0;
+  //   console.log(zoomInterval);
+
+  //   for(i in zoomInterval) {
+  //     if(map.getZoom() >= zoomInterval[i].start && map.getZoom() <= zoomInterval[i].end && zoomInterval[i].interval < 1)
+  //       decimalPlacesAfterZero = (zoomInterval[i].interval + '').split('.')[1].length;
+  //   }
+  //   return decimalPlacesAfterZero;
+  // }
 
   return {
     removeGrid: removeGrid,
