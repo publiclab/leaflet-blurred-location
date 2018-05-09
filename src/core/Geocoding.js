@@ -57,15 +57,27 @@ module.exports = function Geocoding(options) {
   }
 
   function panMapToGeocodedLocation(selector) {
+    console.log(selector);
     var input = document.getElementById(selector);
 
     var autocomplete = new google.maps.places.Autocomplete(input);
+    
     autocomplete.addListener('place_changed', function() {
       setTimeout(function () {
         var str = input.value;
         geocodeStringAndPan(str);
       }, 10);
     });
+    
+    $("#"+selector).keypress(function(e) {
+      setTimeout(function () {
+        if(e.which == 13) {
+          var str = input.value;
+          geocodeStringAndPan(str);          
+        }
+      }, 10);
+    });
+
   };
 
   function geocodeWithBrowser(boolean) {
