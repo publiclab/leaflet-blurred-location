@@ -681,14 +681,13 @@ BlurredLocation = function BlurredLocation(options) {
   function drawCenterRectangle(bounds) {
     var precision = getPrecision();
     var interval = Math.pow(0.1, precision);
-    if (!bounds[1][0]) {
-      if (getFullLat() < 0) { bounds[0][0] = -1*interval; bounds[1][0] = 0; }
-      else { bounds[1][0] = 1*interval; }
+    if (!bounds[1][0] || !bounds[1][1]) {
+      var ind = 0;
+      if (!bounds[1][1]) ind = 1;   
+      if (getFullLat() < 0) { bounds[0][ind] = -1*interval; bounds[1][ind] = 0; }
+      else { bounds[1][ind] = 1*interval; }
     }
-    if (!bounds[1][1]) {
-      if (getFullLon() < 0) { bounds[0][1] = -1*interval; bounds[1][1] = 0; }
-      else { bounds[1][1] = 1*interval; }
-    }
+
     if (rectangle) rectangle.remove();
     rectangle = L.rectangle(bounds, {color: "#ff0000", weight: 1}).addTo(options.map);
   }
@@ -957,50 +956,39 @@ module.exports = function gridSystem(options) {
                 },
 
                 getLabeledCoordinate: function(coordinate, coordinate_type, decimalPlacesAfterZero) {
+                    var dir = "";
                     if (coordinate_type == "lat") {
                       if (coordinate < 0) {
                           coordinate = coordinate * -1;
-                          coordinate = coordinate.toString();
-                          if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero);
-                          return '' + coordinate + 'S';
+                          dir = "S";                          
                       }
                       else if (coordinate > 0) {
-                          if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero)
-                          return '' + coordinate + 'N';
+                          dir = "N";                        
                       }
-                      return '' + coordinate;
                     }
                     else {
                        if (coordinate > 180) {
                            coordinate = 360 - coordinate;
-                           coordinate = coordinate.toString();
-                           if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero)
-                           return '' + coordinate + 'W';
+                           dir = "W";
                        }
                        else if (coordinate > 0 && coordinate < 180) {
-                         if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero)
-                         return '' + coordinate + 'E';
+                           dir = "E"
                        }
                        else if (coordinate < 0 && coordinate > -180) {
                            coordinate = coordinate * -1;
-                           coordinate = coordinate.toString();
-                           if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero)
-                           return '' + coordinate + 'W';
+                           dir = "W";
                        }
                        else if (coordinate == -180) {
                            coordinate = coordinate*-1;
-                           if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero)
-                           return '' + coordinate;
                        }
                        else if (coordinate < -180) {
                            coordinate  = 360 + coordinate;
-                           if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero)
-                           return '' + coordinate + 'W';
-                       }
-                       else if(coordinate == 0) {
-                         return '' + coordinate;
+                           dir = "W";
                        }
                     }
+                  coordinate = coordinate.toString();
+                  if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero);
+                  return '' + coordinate + dir;
                 }
              }
 
