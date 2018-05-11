@@ -2,6 +2,7 @@ leaflet-blurred-location
 ====
 
 [![Build Status](https://travis-ci.org/publiclab/leaflet-blurred-location.svg)](https://travis-ci.org/publiclab/leaflet-blurred-location)
+[![Code Climate](https://codeclimate.com/github/publiclab/leaflet-blurred-location/badges/gpa.svg)](https://codeclimate.com/github/publiclab/leaflet-blurred-location)
 
 A Leaflet-based HTML interface for selecting a "blurred" or low-resolution location, to preserve privacy.
 

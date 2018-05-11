@@ -8,7 +8,7 @@ BlurredLocation = function BlurredLocation(options) {
   options = options || {};
   options.location = options.location || {
     lat: 1.0,
-    lon: 1.0
+    lon: 10.0
   };
 
   options.zoom = options.zoom || 6;
@@ -24,22 +24,29 @@ BlurredLocation = function BlurredLocation(options) {
 
   options.Interface = options.Interface || require('./ui/Interface.js');
 
-  gridSystemOptions = options.gridSystemOptions || {};
+  options.Geocoding = options.Geocoding || require('./core/Geocoding.js')
+
+  var gridSystemOptions = options.gridSystemOptions || {};
   gridSystemOptions.map = options.map;
   gridSystemOptions.gridWidthInPixels = gridWidthInPixels;
   gridSystemOptions.getMinimumGridWidth = getMinimumGridWidth;
 
-  gridSystem = options.gridSystem(gridSystemOptions);
+  var GeocodingOptions = options.GeocodingOptions || {};
+  GeocodingOptions.map = options.map;
+  GeocodingOptions.goTo = goTo;
 
-  InterfaceOptions = options.InterfaceOptions || {};
+  var gridSystem = options.gridSystem(gridSystemOptions);
+  var Geocoding = options.Geocoding(GeocodingOptions);
+
+  var InterfaceOptions = options.InterfaceOptions || {};
   InterfaceOptions.panMap = panMap;
-  InterfaceOptions.getPlacenameFromCoordinates = getPlacenameFromCoordinates;
+  InterfaceOptions.getPlacenameFromCoordinates = Geocoding.getPlacenameFromCoordinates;
   InterfaceOptions.getLat = getLat;
   InterfaceOptions.getLon = getLon;
   InterfaceOptions.map = options.map;
   InterfaceOptions.getPrecision = getPrecision;
 
-  Interface = options.Interface(InterfaceOptions);
+  var Interface = options.Interface(InterfaceOptions);
 
   var tileLayer = L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
 
@@ -69,90 +76,12 @@ BlurredLocation = function BlurredLocation(options) {
     options.map.setZoom(zoom);
   }
 
-  function geocodeStringAndPan(string, onComplete) {
-    var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+");
-    var Blurred = $.ajax({
-        async: false,
-        url: url
-    });
-    onComplete = onComplete || function onComplete(geometry) {
-      $("#lat").val(geometry.lat);
-      $("#lng").val(geometry.lng);
-
-      options.map.setView([geometry.lat, geometry.lng], options.zoom);
-    }
-    onComplete(Blurred.responseJSON.results[0].geometry.location);
-  }
-
   function getSize() {
     return options.map.getSize();
   }
 
-  function panMapToGeocodedLocation(selector) {
-    var input = document.getElementById(selector);
-
-    var autocomplete = new google.maps.places.Autocomplete(input);
-    autocomplete.addListener('place_changed', function() {
-      setTimeout(function () {
-        var str = input.value;
-        geocodeStringAndPan(str);
-      }, 10);
-    });
-  };
-
   function panMap(lat, lng) {
     options.map.panTo(new L.LatLng(lat, lng));
-  }
-
-  function getPlacenameFromCoordinates(lat, lng, precision, onResponse) {
-      $.ajax({
-        url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
-        success: function(result) {
-          if(result.results[0]) {
-            var country;
-            var fullAddress = result.results[0].formatted_address.split(",");
-            for (i in result.results) {
-              if(result.results[i].types.indexOf("country") != -1) {
-                //If the type of location is a country assign it to thr input box value
-                country = result.results[i].formatted_address;
-              }
-            }
-            if (!country) country = fullAddress[fullAddress.length - 1];
-
-            if(precision <= 0) onResponse(country);
-
-            else if(precision == 1) {
-              if (fullAddress.length>=2) onResponse(fullAddress[fullAddress.length - 2] + ", " + country);
-              else onResponse(country);
-            }
-
-            else if(precision >= 2) {
-              if (fullAddress.length >= 3) onResponse(fullAddress[fullAddress.length - 3] + ", " + fullAddress[fullAddress.length - 2] + ", " + country);
-              else if (fullAddress.length == 2) onResponse(fullAddress[fullAddress.length - 2] + ", " + country);
-              else onResponse(country);
-            }
-
-            else onResponse(result.results[0].formatted_address);
-
-        }
-        else onResponse("Location unavailable");
-      }
-    });
-  }
-
-  function panMapByBrowserGeocode(checkbox) {
-    var x = document.getElementById("location");
-      if(checkbox.checked == true) {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(displayPosition);
-        } else {
-          x.innerHTML = "Geolocation is not supported by this browser.";
-        }
-
-        function displayPosition(position) {
-          panMap(parseFloat(position.coords.latitude), parseFloat(position.coords.longitude));
-        }
-    }
   }
 
   function gridWidthInPixels(degrees) {
@@ -199,9 +128,11 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function setBlurred(boolean) {
+
       if(boolean && !blurred) {
         gridSystem.addGrid();
         blurred = true;
+        enableCenterShade();
       }
       else if(!boolean) {
         blurred = false;
@@ -219,14 +150,13 @@ BlurredLocation = function BlurredLocation(options) {
   function drawCenterRectangle(bounds) {
     var precision = getPrecision();
     var interval = Math.pow(0.1, precision);
-    if (!bounds[1][0]) {
-      if (getFullLat() < 0) { bounds[0][0] = -1*interval; bounds[1][0] = 0; }
-      else { bounds[1][0] = 1*interval; }
+    if (!bounds[1][0] || !bounds[1][1]) {
+      var ind = 0;
+      if (!bounds[1][1]) ind = 1;   
+      if (getFullLat() < 0) { bounds[0][ind] = -1*interval; bounds[1][ind] = 0; }
+      else { bounds[1][ind] = 1*interval; }
     }
-    if (!bounds[1][1]) {
-      if (getFullLon() < 0) { bounds[0][1] = -1*interval; bounds[1][1] = 0; }
-      else { bounds[1][1] = 1*interval; }
-    }
+
     if (rectangle) rectangle.remove();
     rectangle = L.rectangle(bounds, {color: "#ff0000", weight: 1}).addTo(options.map);
   }
@@ -244,6 +174,8 @@ BlurredLocation = function BlurredLocation(options) {
        enableCenterMarker();
        disableCenterShade();
     }
+    $("#"+InterfaceOptions.latId).val(getLat()) ;
+    $("#"+InterfaceOptions.lngId).val(getLon()) ; 
   }
 
 
@@ -280,13 +212,13 @@ BlurredLocation = function BlurredLocation(options) {
 
     updateRectangleOnPan();
 
-  function geocodeWithBrowser(boolean) {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-      goTo(position.coords.latitude, position.coords.longitude,options.zoom);
-      });
-    }
-  }
+  // function geocodeWithBrowser(boolean) {
+  //   if ("geolocation" in navigator) {
+  //     navigator.geolocation.getCurrentPosition(function(position) {
+  //     goTo(position.coords.latitude, position.coords.longitude,options.zoom);
+  //     });
+  //   }
+  // }
 
   function displayLocation() {
     var lat = getLat();
@@ -300,10 +232,10 @@ BlurredLocation = function BlurredLocation(options) {
     goTo: goTo,
     getSize: getSize,
     gridSystem: gridSystem,
-    panMapToGeocodedLocation: panMapToGeocodedLocation,
-    getPlacenameFromCoordinates: getPlacenameFromCoordinates,
+    panMapToGeocodedLocation: Geocoding.panMapToGeocodedLocation,
+    getPlacenameFromCoordinates: Geocoding.getPlacenameFromCoordinates,
     panMap: panMap,
-    panMapByBrowserGeocode: panMapByBrowserGeocode,
+    panMapByBrowserGeocode: Geocoding.panMapByBrowserGeocode,
     getMinimumGridWidth: getMinimumGridWidth,
     gridWidthInPixels: gridWidthInPixels,
     getPrecision: getPrecision,
@@ -319,8 +251,8 @@ BlurredLocation = function BlurredLocation(options) {
     setZoomByPrecision: setZoomByPrecision,
     disableCenterShade: disableCenterShade,
     enableCenterShade: enableCenterShade,
-    geocodeStringAndPan: geocodeStringAndPan,
-    geocodeWithBrowser: geocodeWithBrowser,
+    geocodeStringAndPan: Geocoding.geocodeStringAndPan,
+    geocodeWithBrowser: Geocoding.geocodeWithBrowser,
     displayLocation: displayLocation,
   }
 }
