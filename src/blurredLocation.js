@@ -214,8 +214,8 @@ BlurredLocation = function BlurredLocation(options) {
 
     updateRectangleOnPan();
 
-  function geocodeWithBrowser(boolean) {
-    if(boolean) {
+  function geocodeWithBrowser(success) {
+    if(success) {
       var label = document.createElement("label");
       label.classList.add("spinner");
       var i = document.createElement("i");
