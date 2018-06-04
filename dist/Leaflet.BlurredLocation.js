@@ -585,7 +585,6 @@ BlurredLocation = function BlurredLocation(options) {
   options.map.options.touchZoom = "center";
 
   var geocodeButtonId = options.geocodeButtonId || "ldi-geocode-button";
-  var element = document.getElementById(geocodeButtonId);
 
   // options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
