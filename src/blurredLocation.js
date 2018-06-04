@@ -46,6 +46,9 @@ BlurredLocation = function BlurredLocation(options) {
   options.map.options.scrollWheelZoom = "center";
   options.map.options.touchZoom = "center";
 
+  var geocodeButtonId = options.geocodeButtonId || "ldi-geocode-button";
+  var element = document.getElementById(geocodeButtonId);
+
   // options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
   function getLat() {
@@ -289,7 +292,7 @@ BlurredLocation = function BlurredLocation(options) {
       i.classList.add("fa-spinner");
       i.classList.add("fa-spin");
       label.appendChild(i);
-      var element = document.getElementById("div1");
+      var element = document.getElementById(geocodeButtonId);
       element.appendChild(label);
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(function(position) {
