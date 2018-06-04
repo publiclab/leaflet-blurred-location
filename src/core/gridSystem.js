@@ -21,60 +21,63 @@ module.exports = function gridSystem(options) {
                  latFormatTickLabel: function(lat) {
                             var decimalPlacesAfterZero = 0;
                             lat = lat.toString();
-                            for(i in this.zoomInterval) {
-                              if(map.getZoom() >= this.zoomInterval[i].start && map.getZoom() <= this.zoomInterval[i].end && this.zoomInterval[i].interval < 1)
-                                decimalPlacesAfterZero = (this.zoomInterval[i].interval + '').split('.')[1].length;
-                            }
-                            if (lat < 0) {
-                                lat = lat * -1;
-                                lat = lat.toString();
-                                if(lat.indexOf(".") != -1) lat = lat.split('.')[0] + '.' + lat.split('.')[1].slice(0,decimalPlacesAfterZero);
-                                return '' + lat + 'S';
-                            }
-                            else if (lat > 0) {
-                                if(lat.indexOf(".") != -1) lat = lat.split('.')[0] + '.' + lat.split('.')[1].slice(0,decimalPlacesAfterZero)
-                                return '' + lat + 'N';
-                            }
-                            return '' + lat;
+                            decimalPlacesAfterZero = this.getDecimalPlacesAfterZero();
+                            return this.getLabeledCoordinate(lat, "lat", decimalPlacesAfterZero);
                           },
 
                 lngFormatTickLabel: function(lng) {
                            var decimalPlacesAfterZero = 0;
                            lng = lng.toString();
-                           for(i in this.zoomInterval) {
-                             if(map.getZoom() >= this.zoomInterval[i].start && map.getZoom() <= this.zoomInterval[i].end && this.zoomInterval[i].interval < 1)
-                               decimalPlacesAfterZero = (this.zoomInterval[i].interval + '').split('.')[1].length;
-                           }
-                           if (lng > 180) {
-                               lng = 360 - lng;
-                               lng = lng.toString();
-                               if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
-                               return '' + lng + 'W';
-                           }
-                           else if (lng > 0 && lng < 180) {
-                             if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
-                             return '' + lng + 'E';
-                           }
-                           else if (lng < 0 && lng > -180) {
-                               lng = lng * -1;
-                               lng = lng.toString();
-                               if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
-                               return '' + lng + 'W';
-                           }
-                           else if (lng == -180) {
-                               lng = lng*-1;
-                               if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
-                               return '' + lng;
-                           }
-                           else if (lng < -180) {
-                               lng  = 360 + lng;
-                               if(lng.indexOf(".") != -1) lng = lng.split('.')[0] + '.' + lng.split('.')[1].slice(0,decimalPlacesAfterZero)
-                               return '' + lng + 'W';
-                           }
-                           else if(lng == 0) {
-                             return '' + lng;
-                           }
+                           decimalPlacesAfterZero = this.getDecimalPlacesAfterZero(); 
+                           return this.getLabeledCoordinate(lng, "lng", decimalPlacesAfterZero);
                          },
+
+                getDecimalPlacesAfterZero: function() {
+                  var decimalPlacesAfterZero = 0;
+
+                  for(i in this.zoomInterval) {
+                    if(map.getZoom() >= this.zoomInterval[i].start && map.getZoom() <= this.zoomInterval[i].end && this.zoomInterval[i].interval < 1)
+                      decimalPlacesAfterZero = (this.zoomInterval[i].interval + '').split('.')[1].length;
+                  }
+
+                  return decimalPlacesAfterZero;
+                },
+
+                getLabeledCoordinate: function(coordinate, coordinate_type, decimalPlacesAfterZero) {
+                    var dir = "";
+                    if (coordinate_type == "lat") {
+                      if (coordinate < 0) {
+                          coordinate = coordinate * -1;
+                          dir = "S";                          
+                      }
+                      else if (coordinate > 0) {
+                          dir = "N";                        
+                      }
+                    }
+                    else {
+                       if (coordinate > 180) {
+                           coordinate = 360 - coordinate;
+                           dir = "W";
+                       }
+                       else if (coordinate > 0 && coordinate < 180) {
+                           dir = "E"
+                       }
+                       else if (coordinate < 0 && coordinate > -180) {
+                           coordinate = coordinate * -1;
+                           dir = "W";
+                       }
+                       else if (coordinate == -180) {
+                           coordinate = coordinate*-1;
+                       }
+                       else if (coordinate < -180) {
+                           coordinate  = 360 + coordinate;
+                           dir = "W";
+                       }
+                    }
+                  coordinate = coordinate.toString();
+                  if(coordinate.indexOf(".") != -1) coordinate = coordinate.split('.')[0] + '.' + coordinate.split('.')[1].slice(0,decimalPlacesAfterZero);
+                  return '' + coordinate + dir;
+                }
              }
 
 

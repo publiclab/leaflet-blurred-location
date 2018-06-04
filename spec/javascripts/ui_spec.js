@@ -26,4 +26,16 @@ describe("UI testing", function() {
     expect(blurredLocation.getLat()).toBe(2);
     expect(blurredLocation.getLon()).toBe(23);
   });
+
+  it("Checks if panning map changes fields in the UI section", function() {
+    var fixture = loadFixtures('index.html');
+
+    var latEl = $("#lat");
+    var lngEl = $("#lng");
+    blurredLocation.map.panTo(new L.LatLng(40.737, -73.923));
+    blurredLocation.setZoomByPrecision(2);
+
+    expect(parseFloat(latEl.val())).toBe(40.73);
+    expect(parseFloat(lngEl.val())).toBe(-73.92);
+  });
 });
