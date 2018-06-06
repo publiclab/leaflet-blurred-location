@@ -565,6 +565,7 @@ BlurredLocation = function BlurredLocation(options) {
   var GeocodingOptions = options.GeocodingOptions || {};
   GeocodingOptions.map = options.map;
   GeocodingOptions.goTo = goTo;
+  GeocodingOptions.geocodeButtonId = options.geocodeButtonId || "ldi-geocode-button";
 
   var gridSystem = options.gridSystem(gridSystemOptions);
   var Geocoding = options.Geocoding(GeocodingOptions);
@@ -743,14 +744,6 @@ BlurredLocation = function BlurredLocation(options) {
 
     updateRectangleOnPan();
 
-  // function geocodeWithBrowser(boolean) {
-  //   if ("geolocation" in navigator) {
-  //     navigator.geolocation.getCurrentPosition(function(position) {
-  //     goTo(position.coords.latitude, position.coords.longitude,options.zoom);
-  //     });
-  //   }
-  // }
-
   function displayLocation() {
     var lat = getLat();
     var lon = getLon();
@@ -789,7 +782,6 @@ BlurredLocation = function BlurredLocation(options) {
 }
 
 exports.BlurredLocation = BlurredLocation;
-
 },{"./core/Geocoding.js":5,"./core/gridSystem.js":6,"./ui/Interface.js":7,"leaflet-graticule":2}],5:[function(require,module,exports){
 module.exports = function Geocoding(options) {
 
@@ -873,15 +865,25 @@ module.exports = function Geocoding(options) {
 
   };
 
-  function geocodeWithBrowser(boolean) {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-      options.goTo(position.coords.latitude, position.coords.longitude,options.zoom);
-      },
-      function(error) {
-        console.log(error);
-      },
-      {timeout:10000});
+  function geocodeWithBrowser(success) {
+    if(success) {
+      var label = document.createElement("label");
+      label.classList.add("spinner");
+      var i = document.createElement("i");
+      i.classList.add("fa");
+      i.classList.add("fa-spinner");
+      i.classList.add("fa-spin");
+      label.appendChild(i);
+      var element = document.getElementById(options.geocodeButtonId);
+      element.appendChild(label);
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+        options.goTo(position.coords.latitude, position.coords.longitude,options.zoom);
+        $("i").remove(".fa");
+        }, function(error) {
+          console.log(error);
+        });
+      }
     }
   }
 

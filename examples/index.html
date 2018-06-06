@@ -12,6 +12,7 @@
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="../dist/Leaflet.BlurredLocation.js"></script>
     <script src="../node_modules/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   </head>
 
@@ -26,8 +27,17 @@
       <hr />
 
       <h3>Enter a location</h3>
-      
-      <p><button class="btn btn-primary" onclick="blurredLocation.geocodeWithBrowser();">Get my location</button></p>
+
+      <label>
+        <p><button class="btn btn-primary" onclick="blurredLocation.geocodeWithBrowser(true);">
+          <div id="ldi-geocode-button">          
+            Get my location
+          </div>
+
+        </button></p>
+      </label>
+      <br/>
+
       <label>
         <input id="obscureLocation" type="checkbox" checked onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
         Blur my location

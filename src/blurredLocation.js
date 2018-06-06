@@ -34,6 +34,7 @@ BlurredLocation = function BlurredLocation(options) {
   var GeocodingOptions = options.GeocodingOptions || {};
   GeocodingOptions.map = options.map;
   GeocodingOptions.goTo = goTo;
+  GeocodingOptions.geocodeButtonId = options.geocodeButtonId || "ldi-geocode-button";
 
   var gridSystem = options.gridSystem(gridSystemOptions);
   var Geocoding = options.Geocoding(GeocodingOptions);
@@ -211,14 +212,6 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
     updateRectangleOnPan();
-
-  // function geocodeWithBrowser(boolean) {
-  //   if ("geolocation" in navigator) {
-  //     navigator.geolocation.getCurrentPosition(function(position) {
-  //     goTo(position.coords.latitude, position.coords.longitude,options.zoom);
-  //     });
-  //   }
-  // }
 
   function displayLocation() {
     var lat = getLat();
