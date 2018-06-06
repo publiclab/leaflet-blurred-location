@@ -34,6 +34,7 @@ BlurredLocation = function BlurredLocation(options) {
   var GeocodingOptions = options.GeocodingOptions || {};
   GeocodingOptions.map = options.map;
   GeocodingOptions.goTo = goTo;
+  GeocodingOptions.geocodeButtonId = options.geocodeButtonId || "ldi-geocode-button";
 
   var gridSystem = options.gridSystem(gridSystemOptions);
   var Geocoding = options.Geocoding(GeocodingOptions);
@@ -52,8 +53,6 @@ BlurredLocation = function BlurredLocation(options) {
 
   options.map.options.scrollWheelZoom = "center";
   options.map.options.touchZoom = "center";
-
-  var geocodeButtonId = options.geocodeButtonId || "ldi-geocode-button";
 
   // options.map.setView([options.location.lat, options.location.lon], options.zoom);
 
@@ -213,28 +212,6 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
     updateRectangleOnPan();
-
-  function geocodeWithBrowser(success) {
-    if(success) {
-      var label = document.createElement("label");
-      label.classList.add("spinner");
-      var i = document.createElement("i");
-      i.classList.add("fa");
-      i.classList.add("fa-spinner");
-      i.classList.add("fa-spin");
-      label.appendChild(i);
-      var element = document.getElementById(geocodeButtonId);
-      element.appendChild(label);
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-        goTo(position.coords.latitude, position.coords.longitude,options.zoom);
-        $("i").remove(".fa");
-        }, function(error) {
-          console.log(error);
-        });
-      }
-    }
-  }
 
   function displayLocation() {
     var lat = getLat();
