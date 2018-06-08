@@ -46,6 +46,9 @@ BlurredLocation = function BlurredLocation(options) {
   InterfaceOptions.getLon = getLon;
   InterfaceOptions.map = options.map;
   InterfaceOptions.getPrecision = getPrecision;
+  InterfaceOptions.isBlurred = isBlurred;
+  InterfaceOptions.DEFAULT_PRECISION = DEFAULT_PRECISION;
+
 
   var Interface = options.Interface(InterfaceOptions);
 
@@ -67,7 +70,7 @@ BlurredLocation = function BlurredLocation(options) {
     if(isBlurred())
       return parseFloat(truncateToPrecision(options.map.getCenter().lng, getPrecision()));
     else
-      return parseFloat(truncateToPrecision(options.map.getCenter().lng, DEFAULT_PRECISION));
+      return truncateToPrecision(options.map.getCenter().lng, DEFAULT_PRECISION);
   }
   function goTo(lat, lon, zoom) {
     options.map.setView([lat, lon], zoom);

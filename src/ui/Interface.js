@@ -35,8 +35,14 @@ module.exports = function Interface (options) {
   options.map.on('zoom', options.onDrag);
 
   function updateLatLngInputListeners() {
-    $("#"+options.latId).val(options.getLat().toFixed(Math.max(0,options.getPrecision())));
-    $("#"+options.lngId).val(options.getLon().toFixed(Math.max(0,options.getPrecision())));
+    if (options.isBlurred()){
+      $("#"+options.latId).val(options.getLat().toFixed(Math.max(0,options.getPrecision())));
+      $("#"+options.lngId).val(options.getLon().toFixed(Math.max(0,options.getPrecision())));
+    }
+    else {
+      $("#"+options.latId).val(options.getLat().toFixed(options.DEFAULT_PRECISION));
+      $("#"+options.lngId).val(options.getLon().toFixed(options.DEFAULT_PRECISION));      
+    }
   };
 
   function enableLatLngInputTruncate() {
