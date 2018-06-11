@@ -577,6 +577,9 @@ BlurredLocation = function BlurredLocation(options) {
   InterfaceOptions.getLon = getLon;
   InterfaceOptions.map = options.map;
   InterfaceOptions.getPrecision = getPrecision;
+  InterfaceOptions.isBlurred = isBlurred;
+  InterfaceOptions.DEFAULT_PRECISION = DEFAULT_PRECISION;
+
 
   var Interface = options.Interface(InterfaceOptions);
 
@@ -598,7 +601,7 @@ BlurredLocation = function BlurredLocation(options) {
     if(isBlurred())
       return parseFloat(truncateToPrecision(options.map.getCenter().lng, getPrecision()));
     else
-      return parseFloat(truncateToPrecision(options.map.getCenter().lng, DEFAULT_PRECISION));
+      return truncateToPrecision(options.map.getCenter().lng, DEFAULT_PRECISION);
   }
   function goTo(lat, lon, zoom) {
     options.map.setView([lat, lon], zoom);
@@ -1049,8 +1052,14 @@ module.exports = function Interface (options) {
   options.map.on('zoom', options.onDrag);
 
   function updateLatLngInputListeners() {
-    $("#"+options.latId).val(options.getLat().toFixed(Math.max(0,options.getPrecision())));
-    $("#"+options.lngId).val(options.getLon().toFixed(Math.max(0,options.getPrecision())));
+    if (options.isBlurred()){
+      $("#"+options.latId).val(options.getLat().toFixed(Math.max(0,options.getPrecision())));
+      $("#"+options.lngId).val(options.getLon().toFixed(Math.max(0,options.getPrecision())));
+    }
+    else {
+      $("#"+options.latId).val(options.getLat().toFixed(options.DEFAULT_PRECISION));
+      $("#"+options.lngId).val(options.getLon().toFixed(options.DEFAULT_PRECISION));      
+    }
   };
 
   function enableLatLngInputTruncate() {
