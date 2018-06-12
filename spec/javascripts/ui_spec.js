@@ -38,4 +38,23 @@ describe("UI testing", function() {
     expect(parseFloat(latEl.val())).toBe(40.73);
     expect(parseFloat(lngEl.val())).toBe(-73.92);
   });
+
+  it("Checks if precision changes when location is unblurred or blurred", function() {
+    var fixture = loadFixtures('index.html');
+
+    var latEl = $("#lat");
+    var lngEl = $("#lng");
+    
+    blurredLocation.map.panTo(new L.LatLng(40.737232, -73.923232));
+    blurredLocation.setZoomByPrecision(2);    
+    blurredLocation.setBlurred(false);
+
+    expect(parseFloat(latEl.val())).toBe(40.737232);
+    expect(parseFloat(lngEl.val())).toBe(-73.923232);
+
+    blurredLocation.setBlurred(true);
+
+    expect(parseFloat(latEl.val())).toBe(40.73);
+    expect(parseFloat(lngEl.val())).toBe(-73.92);
+  });
 });
