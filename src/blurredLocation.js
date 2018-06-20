@@ -231,7 +231,7 @@ BlurredLocation = function BlurredLocation(options) {
     var ne = { latitude: bounds._northEast.lat, longitude: bounds._northEast.lng }
  
     distance = haversine(sw, ne)/1000;
-    return distance;
+    alert("Your current scale is: " + truncateToPrecision(distance, 2) + "km");
   }
 
   return {
