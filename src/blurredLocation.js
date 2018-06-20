@@ -4,7 +4,7 @@ BlurredLocation = function BlurredLocation(options) {
   var blurred = true;
   var DEFAULT_PRECISION = 6;
   require('leaflet-graticule');
-
+  
   options = options || {};
   options.location = options.location || {
     lat: 1.0,
@@ -222,6 +222,18 @@ BlurredLocation = function BlurredLocation(options) {
     alert("Your current location is: " + lat +  ', ' + lon);
   }
 
+  function getDistance() {
+    const humanizeDistance = require('humanize-distance');
+
+    var distance = humanizeDistance(
+      {latitude: 50.95, longitude: 6.91},
+      {latitude: 50.9486184, longitude: 6.9426425},
+      'de-DE',
+      'metric')
+    return distance;
+  }
+
+
   return {
     getLat: getLat,
     getLon: getLon,
@@ -250,6 +262,7 @@ BlurredLocation = function BlurredLocation(options) {
     geocodeStringAndPan: Geocoding.geocodeStringAndPan,
     geocodeWithBrowser: Geocoding.geocodeWithBrowser,
     displayLocation: displayLocation,
+    getDistance: getDistance,
   }
 }
 

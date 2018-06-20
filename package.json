@@ -35,6 +35,7 @@
     "resig-class": "^1.0.0"
   },
   "dependencies": {
+    "humanize-distance": "^1.0.9",
     "jquery": "^3.2.1",
     "leaflet": "^1.0.3"
   }
