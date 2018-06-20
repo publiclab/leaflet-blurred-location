@@ -222,6 +222,18 @@ BlurredLocation = function BlurredLocation(options) {
     alert("Your current location is: " + lat +  ', ' + lon);
   }
 
+  function getDistanceMetrics() {
+    var haversine = require('haversine-distance');
+    
+    var bounds = options.map.getBounds()
+
+    var sw = { latitude: bounds._southWest.lat, longitude: bounds._southWest.lng }
+    var ne = { latitude: bounds._northEast.lat, longitude: bounds._northEast.lng }
+ 
+    distance = haversine(sw, ne)/1000;
+    return distance;
+  }
+
   return {
     getLat: getLat,
     getLon: getLon,
@@ -250,6 +262,7 @@ BlurredLocation = function BlurredLocation(options) {
     geocodeStringAndPan: Geocoding.geocodeStringAndPan,
     geocodeWithBrowser: Geocoding.geocodeWithBrowser,
     displayLocation: displayLocation,
+    getDistanceMetrics: getDistanceMetrics,
   }
 }
 
