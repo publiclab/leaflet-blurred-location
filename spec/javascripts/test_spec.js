@@ -96,7 +96,6 @@ describe("Basic testing", function() {
     expect(blurredLocation.getDistanceMetrics()).toBe(23.08);
   });
 
-
   // it("geocode spec", function() {
   //   var geometry = blurredLocation.geocode("Buenos Aires");
   //   console.log(blurredLocation.getLat());

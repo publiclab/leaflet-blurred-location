@@ -44,7 +44,7 @@ We're open to variations on this if you have suggestions; please [open an issue]
 
 ## Human-readable blurring
 
-Leaflet.BlurredLocation also tries to return a human readable string description of location at a specificity which corresponds to the displayed precision of the location selected. 
+Leaflet.BlurredLocation also tries to return a human readable string description of location at a specificity which corresponds to the displayed precision of the location selected.It also specifies the scale in a human readable format for the grid on the map using the button 'Show scale in km'. 
 
 More coming soon on this, see https://github.com/publiclab/leaflet-blurred-location/issues/98
 
