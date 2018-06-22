@@ -43,12 +43,19 @@
         Blur my location
       </label>
 
+      <label>
+        <input id="scaleDisplay" type="checkbox" checked onchange='blurredLocation.toggleScaleMetrics(document.getElementById("scaleDisplay").checked);' checked>
+        Show scale in km
+      </label>
+
       <hr />
 
       <p> 
         <button class="btn btn-primary" onclick="blurredLocation.displayLocation();">Show Location</button>
+      </p>
+      <hr />
 
-        <button class="btn btn-primary" onclick="blurredLocation.getDistanceMetrics();">Show scale in km</button>
+      <p id="scale">
       </p>
 
       <p><b>By place name</b></p>

@@ -93,7 +93,7 @@ describe("Basic testing", function() {
 
   it("Checks if getDistanceMetrics returns correct scale", function() {
     blurredLocation.setZoomByPrecision(2);
-    expect(blurredLocation.getDistanceMetrics()).toBe(23.08);
+    expect(blurredLocation.getDistanceMetrics()).toBe(1.41);
   });
 
   // it("geocode spec", function() {
