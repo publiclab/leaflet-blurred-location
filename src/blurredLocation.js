@@ -58,6 +58,7 @@ BlurredLocation = function BlurredLocation(options) {
   options.map.options.touchZoom = "center";
 
   // options.map.setView([options.location.lat, options.location.lon], options.zoom);
+  options.scaleID = options.scaleID || "scale";
 
   function getLat() {
     if(isBlurred())
@@ -222,6 +223,35 @@ BlurredLocation = function BlurredLocation(options) {
     alert("Your current location is: " + lat +  ', ' + lon);
   }
 
+  function getDistanceMetrics() {
+    var haversine = require('haversine-distance');
+    
+    var add = Math.pow(10,-getPrecision())
+
+    var sw = { latitude: getLat(), longitude: getLon() }
+    var ne = { latitude: getLat() + add, longitude: getLon() + add }
+ 
+    distance = haversine(sw, ne)/1000;
+    return truncateToPrecision(distance, 2)
+  }
+
+  function addScaleToListener() {
+    $("#"+options.scaleID).text("Each grid square is roughly "+getDistanceMetrics()+"km wide");
+  }
+
+  function toggleScaleMetrics(boolean) {
+    if(boolean) {
+      addScaleToListener();
+      options.map.on('move', addScaleToListener);      
+    }
+    else {
+      $("#"+ options.scaleID).text("");
+      options.map.off('move', addScaleToListener);
+    }
+  }
+
+  toggleScaleMetrics(true);
+
   return {
     getLat: getLat,
     getLon: getLon,
@@ -250,6 +280,8 @@ BlurredLocation = function BlurredLocation(options) {
     geocodeStringAndPan: Geocoding.geocodeStringAndPan,
     geocodeWithBrowser: Geocoding.geocodeWithBrowser,
     displayLocation: displayLocation,
+    getDistanceMetrics: getDistanceMetrics,
+    toggleScaleMetrics: toggleScaleMetrics,
   }
 }
 
