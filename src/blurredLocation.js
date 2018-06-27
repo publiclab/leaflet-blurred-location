@@ -58,7 +58,7 @@ BlurredLocation = function BlurredLocation(options) {
   options.map.options.touchZoom = "center";
 
   // options.map.setView([options.location.lat, options.location.lon], options.zoom);
-  options.scaleID = options.scaleID || "scale";
+  options.scaleDisplay = options.scaleDisplay || "scale";
 
   function getLat() {
     if(isBlurred())
@@ -236,7 +236,7 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function addScaleToListener() {
-    $("#"+options.scaleID).text("Each grid square is roughly "+getDistanceMetrics()+"km wide");
+    $("#"+options.scaleDisplay).text("Each grid square is roughly "+getDistanceMetrics()+"km wide");
   }
 
   function toggleScaleMetrics(boolean) {
@@ -245,7 +245,7 @@ BlurredLocation = function BlurredLocation(options) {
       options.map.on('move', addScaleToListener);      
     }
     else {
-      $("#"+ options.scaleID).text("");
+      $("#"+ options.scaleDisplay).text("");
       options.map.off('move', addScaleToListener);
     }
   }
