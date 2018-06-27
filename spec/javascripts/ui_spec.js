@@ -57,4 +57,20 @@ describe("UI testing", function() {
     expect(parseFloat(latEl.val())).toBe(40.73);
     expect(parseFloat(lngEl.val())).toBe(-73.92);
   });
+
+  it("Checks scale listener output the correct scale of the boxes", function() {
+    var fixture = loadFixtures('index.html');
+
+    blurredLocation.setZoomByPrecision(2);
+    var scale = blurredLocation.getDistanceMetrics()
+
+    expect(scale).toBe(1.57);
+
+    blurredLocation.setZoomByPrecision(3);
+
+    var scale = blurredLocation.getDistanceMetrics()
+    expect(scale).toBe(0.15);
+  });
+
+
 });
