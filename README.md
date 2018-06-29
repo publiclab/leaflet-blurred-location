@@ -99,6 +99,7 @@ We welcome contributions, and are especially interested in welcoming [first time
 | latId          | the input to set latitude   | `'lat'` |
 | lngId          | the input to set longitude  | `'lng'` |
 | geocodeButtonId          | the division to wrapping "Get my location" for inserting spinner icons  | `'ldi-geocode-button'` |
+| scaleDisplay          | Element to display scale in km  | `'scale'` |
 
 ## API
 
