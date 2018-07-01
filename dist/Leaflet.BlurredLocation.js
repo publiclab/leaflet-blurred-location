@@ -619,6 +619,22 @@ BlurredLocation = function BlurredLocation(options) {
 
   // options.map.setView([options.location.lat, options.location.lon], options.zoom);
   options.scaleDisplay = options.scaleDisplay || "scale";
+  options.blurryScale = options.blurryScale || "scale_blurry"
+
+  options.blurryScaleDict = options.blurryScaleDict || {
+   "urban_0":"country",
+   "rural_0":"country",
+   "urban_1":"state",
+   "rural_1":"county",
+   "urban_2":"district",
+   "rural_2":"town",
+   "urban_3":"neighborhood",
+   "rural_3":"village",
+   "urban_4":"block",
+   "rural_4":"house",
+   "urban_5":"building",
+   "rural_5":"house",
+ }
 
   function getLat() {
     if(isBlurred())
@@ -805,12 +821,35 @@ BlurredLocation = function BlurredLocation(options) {
       options.map.on('move', addScaleToListener);      
     }
     else {
-      $("#"+ options.scaleDisplay).text("");
+      $("#" + options.scaleDisplay).text("");
       options.map.off('move', addScaleToListener);
     }
   }
 
+  function getBlurryScale() {
+    var urban = options.blurryScaleDict["urban_"+getPrecision().toString()]
+    var rural = options.blurryScaleDict["rural_"+getPrecision().toString()]
+    return [urban, rural]
+  }
+
+  function addBlurryScale() {
+    blurryDescriptions = getBlurryScale();
+    $("#" + options.blurryScale).text("Urban description: "+ blurryDescriptions[0].toString() + " Rural description: " + blurryDescriptions[1].toString());
+  }
+
+  function toggleBlurryScale(boolean) {
+    if(boolean) {
+      addBlurryScale();
+      options.map.on('move', addBlurryScale);
+    }
+    else {
+      $("#"+options.blurryScale).text("");
+      options.map.on('move', addBlurryScale);
+    }
+  }
+
   toggleScaleMetrics(true);
+  toggleBlurryScale(true);
 
   return {
     getLat: getLat,
@@ -842,6 +881,7 @@ BlurredLocation = function BlurredLocation(options) {
     displayLocation: displayLocation,
     getDistanceMetrics: getDistanceMetrics,
     toggleScaleMetrics: toggleScaleMetrics,
+    toggleBlurryScale: toggleBlurryScale,
   }
 }
 
