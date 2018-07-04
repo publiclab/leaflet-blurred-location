@@ -71,6 +71,4 @@ describe("UI testing", function() {
     var scale = blurredLocation.getDistanceMetrics()
     expect(scale).toBe(0.15);
   });
-
-
 });

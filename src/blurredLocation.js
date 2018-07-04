@@ -61,19 +61,9 @@ BlurredLocation = function BlurredLocation(options) {
   options.scaleDisplay = options.scaleDisplay || "scale";
   options.blurryScale = options.blurryScale || "scale_blurry"
 
-  options.blurryScaleDict = options.blurryScaleDict || {
-   "urban_0":"country",
-   "rural_0":"country",
-   "urban_1":"state",
-   "rural_1":"county",
-   "urban_2":"district",
-   "rural_2":"town",
-   "urban_3":"neighborhood",
-   "rural_3":"village",
-   "urban_4":"block",
-   "rural_4":"house",
-   "urban_5":"building",
-   "rural_5":"house",
+  options.blurryScaleNames = options.blurryScaleNames || {
+   "urban":["country", "state", "district", "neighborhood","block", "building"],
+   "rural":["country", "county", "town", "village", "house", "house"],
  }
 
   function getLat() {
@@ -266,25 +256,29 @@ BlurredLocation = function BlurredLocation(options) {
     }
   }
 
-  function getBlurryScale() {
-    var urban = options.blurryScaleDict["urban_"+getPrecision().toString()]
-    var rural = options.blurryScaleDict["rural_"+getPrecision().toString()]
-    return [urban, rural]
+  function getBlurryScale(region) {
+    var urban = options.blurryScaleNames["urban"]
+    var rural = options.blurryScaleNames["rural"]
+
+    if(region == "urban")
+      return urban[getPrecision()]
+
+    if(region == "rural")
+      return rural[getPrecision()]
   }
 
-  function addBlurryScale() {
-    blurryDescriptions = getBlurryScale();
-    $("#" + options.blurryScale).text("Urban description: "+ blurryDescriptions[0].toString() + " Rural description: " + blurryDescriptions[1].toString());
+  function displayBlurryScale() {
+    $("#" + options.blurryScale).text("This corresponds roughly to a "+getBlurryScale("urban").toString()+" in an urban area, and "+getBlurryScale("rural").toString()+" in a rural area.");
   }
 
   function toggleBlurryScale(boolean) {
     if(boolean) {
-      addBlurryScale();
-      options.map.on('move', addBlurryScale);
+      displayBlurryScale();
+      options.map.on('move', displayBlurryScale);
     }
     else {
       $("#"+options.blurryScale).text("");
-      options.map.on('move', addBlurryScale);
+      options.map.on('move', displayBlurryScale);
     }
   }
 
