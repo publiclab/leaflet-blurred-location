@@ -874,6 +874,7 @@ BlurredLocation = function BlurredLocation(options) {
     geocodeWithBrowser: Geocoding.geocodeWithBrowser,
     displayLocation: displayLocation,
     getDistanceMetrics: getDistanceMetrics,
+    getBlurryScale: getBlurryScale,
     toggleScaleMetrics: toggleScaleMetrics,
     toggleBlurryScale: toggleBlurryScale,
   }

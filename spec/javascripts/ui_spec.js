@@ -71,4 +71,24 @@ describe("UI testing", function() {
     var scale = blurredLocation.getDistanceMetrics()
     expect(scale).toBe(0.15);
   });
+
+  it("Checks blurry scale listener output the correct scale of the boxes", function() {
+    var fixture = loadFixtures('index.html');
+
+    blurredLocation.setZoomByPrecision(2);
+    var rural = blurredLocation.getBlurryScale("rural")
+    var urban = blurredLocation.getBlurryScale("urban")
+
+    expect(rural).toBe("town");
+    expect(urban).toBe("district");
+
+    blurredLocation.setZoomByPrecision(2);
+    
+    rural = blurredLocation.getBlurryScale("rural")
+    urban = blurredLocation.getBlurryScale("urban")
+
+    expect(rural).toBe("town");
+    expect(urban).toBe("district");
+  });
+
 });
