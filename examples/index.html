@@ -48,6 +48,11 @@
         Show scale in km
       </label>
 
+      <label>
+        <input id="blurryScale" type="checkbox" checked onchange='blurredLocation.toggleBlurryScale(document.getElementById("blurryScale").checked);' checked>
+        Show estimated blurry scale
+      </label>
+
       <hr />
 
       <p> 
@@ -56,6 +61,9 @@
       <hr />
 
       <p id="scale">
+      </p>
+
+      <p id="scale_blurry">
       </p>
 
       <p><b>By place name</b></p>

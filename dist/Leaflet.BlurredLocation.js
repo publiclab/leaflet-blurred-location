@@ -619,6 +619,12 @@ BlurredLocation = function BlurredLocation(options) {
 
   // options.map.setView([options.location.lat, options.location.lon], options.zoom);
   options.scaleDisplay = options.scaleDisplay || "scale";
+  options.blurryScale = options.blurryScale || "scale_blurry"
+
+  options.blurryScaleNames = options.blurryScaleNames || {
+   "urban":["country", "state", "district", "neighborhood","block", "building"],
+   "rural":["country", "county", "town", "village", "house", "house"],
+ }
 
   function getLat() {
     if(isBlurred())
@@ -805,12 +811,39 @@ BlurredLocation = function BlurredLocation(options) {
       options.map.on('move', addScaleToListener);      
     }
     else {
-      $("#"+ options.scaleDisplay).text("");
+      $("#" + options.scaleDisplay).text("");
       options.map.off('move', addScaleToListener);
     }
   }
 
+  function getBlurryScale(region) {
+    var urban = options.blurryScaleNames["urban"]
+    var rural = options.blurryScaleNames["rural"]
+
+    if(region == "urban")
+      return urban[getPrecision()]
+
+    if(region == "rural")
+      return rural[getPrecision()]
+  }
+
+  function displayBlurryScale() {
+    $("#" + options.blurryScale).text("This corresponds roughly to a "+getBlurryScale("urban").toString()+" in an urban area, and "+getBlurryScale("rural").toString()+" in a rural area.");
+  }
+
+  function toggleBlurryScale(boolean) {
+    if(boolean) {
+      displayBlurryScale();
+      options.map.on('move', displayBlurryScale);
+    }
+    else {
+      $("#"+options.blurryScale).text("");
+      options.map.on('move', displayBlurryScale);
+    }
+  }
+
   toggleScaleMetrics(true);
+  toggleBlurryScale(true);
 
   return {
     getLat: getLat,
@@ -841,7 +874,9 @@ BlurredLocation = function BlurredLocation(options) {
     geocodeWithBrowser: Geocoding.geocodeWithBrowser,
     displayLocation: displayLocation,
     getDistanceMetrics: getDistanceMetrics,
+    getBlurryScale: getBlurryScale,
     toggleScaleMetrics: toggleScaleMetrics,
+    toggleBlurryScale: toggleBlurryScale,
   }
 }
 
