@@ -838,12 +838,23 @@ BlurredLocation = function BlurredLocation(options) {
     }
     else {
       $("#"+options.blurryScale).text("");
-      options.map.on('move', displayBlurryScale);
+      options.map.off('move', displayBlurryScale);
     }
   }
 
-  toggleScaleMetrics(true);
-  toggleBlurryScale(true);
+  function toggleScales(method, id, boolean) {
+    if(boolean) {
+      method();
+      options.map.on('move', method);
+    }
+    else {
+      $("#"+id).text("");
+      options.map.off('move', method);
+    }
+  }
+       
+  toggleScales(addScaleToListener, options.scaleDisplay, true);
+  toggleScales(displayBlurryScale, options.blurryScale, true);
 
   return {
     getLat: getLat,
@@ -875,8 +886,9 @@ BlurredLocation = function BlurredLocation(options) {
     displayLocation: displayLocation,
     getDistanceMetrics: getDistanceMetrics,
     getBlurryScale: getBlurryScale,
-    toggleScaleMetrics: toggleScaleMetrics,
-    toggleBlurryScale: toggleBlurryScale,
+    addScaleToListener: addScaleToListener,
+    displayBlurryScale: displayBlurryScale,
+    toggleScales: toggleScales,
   }
 }
 
