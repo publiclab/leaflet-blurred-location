@@ -805,17 +805,6 @@ BlurredLocation = function BlurredLocation(options) {
     $("#"+options.scaleDisplay).text("Each grid square is roughly "+getDistanceMetrics()+"km wide");
   }
 
-  function toggleScaleMetrics(boolean) {
-    if(boolean) {
-      addScaleToListener();
-      options.map.on('move', addScaleToListener);      
-    }
-    else {
-      $("#" + options.scaleDisplay).text("");
-      options.map.off('move', addScaleToListener);
-    }
-  }
-
   function getBlurryScale(region) {
     var urban = options.blurryScaleNames["urban"]
     var rural = options.blurryScaleNames["rural"]
@@ -829,17 +818,6 @@ BlurredLocation = function BlurredLocation(options) {
 
   function displayBlurryScale() {
     $("#" + options.blurryScale).text("This corresponds roughly to a "+getBlurryScale("urban").toString()+" in an urban area, and "+getBlurryScale("rural").toString()+" in a rural area.");
-  }
-
-  function toggleBlurryScale(boolean) {
-    if(boolean) {
-      displayBlurryScale();
-      options.map.on('move', displayBlurryScale);
-    }
-    else {
-      $("#"+options.blurryScale).text("");
-      options.map.off('move', displayBlurryScale);
-    }
   }
 
   function toggleScales(method, id, boolean) {
