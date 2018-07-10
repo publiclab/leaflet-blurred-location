@@ -805,17 +805,6 @@ BlurredLocation = function BlurredLocation(options) {
     $("#"+options.scaleDisplay).text("Each grid square is roughly "+getDistanceMetrics()+"km wide");
   }
 
-  function toggleScaleMetrics(boolean) {
-    if(boolean) {
-      addScaleToListener();
-      options.map.on('move', addScaleToListener);      
-    }
-    else {
-      $("#" + options.scaleDisplay).text("");
-      options.map.off('move', addScaleToListener);
-    }
-  }
-
   function getBlurryScale(region) {
     var urban = options.blurryScaleNames["urban"]
     var rural = options.blurryScaleNames["rural"]
@@ -831,19 +820,19 @@ BlurredLocation = function BlurredLocation(options) {
     $("#" + options.blurryScale).text("This corresponds roughly to a "+getBlurryScale("urban").toString()+" in an urban area, and "+getBlurryScale("rural").toString()+" in a rural area.");
   }
 
-  function toggleBlurryScale(boolean) {
+  function toggleScales(method, id, boolean) {
     if(boolean) {
-      displayBlurryScale();
-      options.map.on('move', displayBlurryScale);
+      method();
+      options.map.on('move', method);
     }
     else {
-      $("#"+options.blurryScale).text("");
-      options.map.on('move', displayBlurryScale);
+      $("#"+id).text("");
+      options.map.off('move', method);
     }
   }
-
-  toggleScaleMetrics(true);
-  toggleBlurryScale(true);
+       
+  toggleScales(addScaleToListener, options.scaleDisplay, true);
+  toggleScales(displayBlurryScale, options.blurryScale, true);
 
   return {
     getLat: getLat,
@@ -875,8 +864,9 @@ BlurredLocation = function BlurredLocation(options) {
     displayLocation: displayLocation,
     getDistanceMetrics: getDistanceMetrics,
     getBlurryScale: getBlurryScale,
-    toggleScaleMetrics: toggleScaleMetrics,
-    toggleBlurryScale: toggleBlurryScale,
+    addScaleToListener: addScaleToListener,
+    displayBlurryScale: displayBlurryScale,
+    toggleScales: toggleScales,
   }
 }
 

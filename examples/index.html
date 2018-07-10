@@ -47,12 +47,12 @@
       </label>
 
       <label>
-        <input id="scaleDisplay" type="checkbox" checked onchange='blurredLocation.toggleScaleMetrics(document.getElementById("scaleDisplay").checked);' checked>
+        <input id="scaleDisplay" type="checkbox" checked onchange='blurredLocation.toggleScales(blurredLocation.addScaleToListener, "scale", document.getElementById("scaleDisplay").checked);' checked>
         Show scale in km
       </label>
 
       <label>
-        <input id="blurryScale" type="checkbox" checked onchange='blurredLocation.toggleBlurryScale(document.getElementById("blurryScale").checked);' checked>
+        <input id="blurryScale" type="checkbox" checked onchange='blurredLocation.toggleScales(blurredLocation.displayBlurryScale, "blurry_scale", document.getElementById("blurryScale").checked);' checked>
         Show estimated blurry scale
       </label>
 
