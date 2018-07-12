@@ -69,11 +69,11 @@
       <p id="scale_blurry">
       </p>
 
-      <p><b>By place name</b></p>
+      <h4><b>By place name</b></h4>
       <p><input id="placenameInput" type="text" class="form-control" /></p>
 
       <p>
-        <b>By entering co-ordinates</b>
+        <h4><b>By entering co-ordinates</b></h4>
         <div class="row">
           <div class="col-md-6">
             <p><input id="lat" type="text" class="form-control" placeholder="Latitude"></p>
@@ -84,13 +84,18 @@
         </div>
       </p>
 
-      <p><b>By dragging the map</b></p>
+      <h4><b>By dragging the map</b></h4>
 
+        <h4><b>Scale</h4></p>
+      <br />
       <div class="slidecontainer">
         <p style="display: inline">Country</p>
         <p style="display: inline; float: right" >Building</p>
+        
         <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+        <br />
       </div>
+      <br />
 
       <div id="map" class="leaflet-map" style="width: 100%; height: 400px;"></div>
 
@@ -113,14 +118,10 @@
       blurredLocation.panMapToGeocodedLocation("placenameInput");
 
       var slider = document.getElementById("myRange");
-      // var output = document.getElementById("demo");
-      // output.innerHTML = slider.value; // Display the default slider value
 
       // Update the current slider value (each time you drag the slider handle)
       slider.oninput = function() {
-          // output.innerHTML = this.value;
-          // console.log(this.value/10 + 6);
-          blurredLocation.setZoom(this.value/10 + 6);
+          blurredLocation.setZoom(16 - this.value/10);
       }       
 
     </script>
@@ -132,41 +133,36 @@
           width: 100%; /* Width of the outside container */
       }
 
-      /* The slider itself */
       .slider {
-          -webkit-appearance: none;  /* Override default CSS styles */
-          appearance: none;
-          width: 100%; /* Full-width */
-          height: 25px; /* Specified height */
-          background: #d3d3d3; /* Grey background */
-          outline: none; /* Remove outline */
-          opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-          -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+          -webkit-appearance: none;
+          width: 100%;
+          height: 15px;
+          border-radius: 5px;  
+          background: #ffffff;
+          outline: none;
+          opacity: 0.7;
+          -webkit-transition: .2s;
           transition: opacity .2s;
       }
 
-      /* Mouse-over effects */
-      .slider:hover {
-          opacity: 1; /* Fully shown on mouse-over */
-      }
-
-      /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
       .slider::-webkit-slider-thumb {
-          -webkit-appearance: none; /* Override default look */
+          -webkit-appearance: none;
           appearance: none;
-          width: 25px; /* Set a specific slider handle width */
-          height: 25px; /* Slider handle height */
-          background: #4CAF50; /* Green background */
-          cursor: pointer; /* Cursor on hover */
+          width: 25px;
+          height: 25px;
+          border-radius: 50%; 
+          background: #4CAF50;
+          cursor: pointer;
       }
 
       .slider::-moz-range-thumb {
-          width: 25px; /* Set a specific slider handle width */
-          height: 25px; /* Slider handle height */
-          background: #4CAF50; /* Green background */
-          cursor: pointer; /* Cursor on hover */
-      }      
-    </style>
+          width: 25px;
+          height: 25px;
+          border-radius: 50%;
+          background: #4CAF50;
+          cursor: pointer;
+      }
+</style>
 
   </body>
 </html>
