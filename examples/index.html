@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link href="../dist/Leaflet.BlurredLocation.css" rel="stylesheet">
   </head>
 
   <body>
@@ -88,11 +89,12 @@
 
         <h4><b>Scale</h4></p>
       <br />
-      <div class="slidecontainer">
+      <div class="slidecontainer" style="border-bottom: 2px solid #ccc;">
         <p style="display: inline">Country</p>
         <p style="display: inline; float: right" >Building</p>
         
         <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+        
         <br />
       </div>
       <br />
@@ -125,44 +127,5 @@
       }       
 
     </script>
-
-    <style>
-      html { background: #f8f8f8; margin-bottom: 100px;}
-      body { background: none; }
-      .slidecontainer {
-          width: 100%; /* Width of the outside container */
-      }
-
-      .slider {
-          -webkit-appearance: none;
-          width: 100%;
-          height: 15px;
-          border-radius: 5px;  
-          background: #ffffff;
-          outline: none;
-          opacity: 0.7;
-          -webkit-transition: .2s;
-          transition: opacity .2s;
-      }
-
-      .slider::-webkit-slider-thumb {
-          -webkit-appearance: none;
-          appearance: none;
-          width: 25px;
-          height: 25px;
-          border-radius: 50%; 
-          background: #4CAF50;
-          cursor: pointer;
-      }
-
-      .slider::-moz-range-thumb {
-          width: 25px;
-          height: 25px;
-          border-radius: 50%;
-          background: #4CAF50;
-          cursor: pointer;
-      }
-</style>
-
   </body>
 </html>
