@@ -34,3 +34,6 @@ body { background: none; }
     background: #4CAF50;
     cursor: pointer;
 }
+#ex1Slider .slider-selection {
+    background: #BABABA;
+}

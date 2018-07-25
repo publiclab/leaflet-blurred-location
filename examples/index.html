@@ -10,14 +10,17 @@
     <link href="../node_modules/leaflet/dist/leaflet.css" rel="stylesheet">
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
     <script src="../dist/Leaflet.BlurredLocation.js"></script>
     <script src="../node_modules/leaflet/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link href="../dist/Leaflet.BlurredLocation.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/bootstrap-slider.js" integrity="sha256-0w/fZPAdu72g2CGIv9Ha8Lp9qXAjls4R2QmMJ5B2Qb4=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/css/bootstrap-slider.min.css" />
   </head>
 
   <body>
@@ -93,7 +96,7 @@
         <p style="display: inline">Country</p>
         <p style="display: inline; float: right" >Building</p>
         
-        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+        <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="6" data-slider-max="16" data-slider-step="1" data-slider-value="10" style="width: 100%"/>
         
         <br />
       </div>
@@ -119,12 +122,14 @@
 
       blurredLocation.panMapToGeocodedLocation("placenameInput");
 
-      var slider = document.getElementById("myRange");
-
-      // Update the current slider value (each time you drag the slider handle)
-      slider.oninput = function() {
-          blurredLocation.setZoom(16 - this.value/10);
-      }       
+      // With JQuery
+      $('#ex1').slider({
+        formatter: function(value) {
+          if(value != 6) {
+            blurredLocation.setZoom(22 - value);
+          }
+        }
+      });
 
     </script>
   </body>
