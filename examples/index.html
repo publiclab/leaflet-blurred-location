@@ -95,7 +95,7 @@
       <div class="slidecontainer" style="border-bottom: 2px solid #ccc;">
         <p style="display: inline">Country</p>
         <p style="display: inline; float: right" >Building</p>
-        <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="6" data-slider-max="16" data-slider-step="1" data-slider-value="10" style="width: 100%"/>
+        <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="60" data-slider-max="160" data-slider-step="1" data-slider-value="100" style="width: 100%"/>
       </div>
 
       <div id="map" class="leaflet-map" style="width: 100%; height: 400px;"></div>
@@ -118,14 +118,26 @@
 
       blurredLocation.panMapToGeocodedLocation("placenameInput");
 
-      // With JQuery
-      $('#ex1').slider({
-        formatter: function(value) {
-          if(value != 6) {
-            blurredLocation.setZoom(22 - value);
-          }
-        }
-      });
+      var changeZoom = function() {
+        console.log(parseFloat(22 - parseFloat(slider.getValue()/10)));
+        blurredLocation.map.setZoom(parseFloat(22 - parseFloat(slider.getValue()/10)));
+        console.log("Done");
+      }
+
+      var slider = $('#ex1').slider()
+        .on('slide', changeZoom)
+        .data('slider');
+
+      // // With JQuery
+      // $('#ex1').slider({
+      //   formatter: function(value) {
+      //     if(value != 60) {
+      //       var zoom = 22 - parseFloat(value/10);
+      //       console.log(zoom);
+      //       blurredLocation.map.setZoom(zoom);
+      //     }
+      //   }
+      // });
 
     </script>
   </body>
