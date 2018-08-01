@@ -57,6 +57,14 @@ To set up the library first clone this repo to your local environment; then run 
 
 There is a simpler version as well which is a simple location entry namely `examples/simple.html`, you can view an online demo at https://mridulnagpal.github.io/leaflet-blurred-location/examples/simple.html
 
+To use slider for map zoom you need to include these CDNs to your html.
+
+```
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/bootstrap-slider.js" integrity="sha256-0w/fZPAdu72g2CGIv9Ha8Lp9qXAjls4R2QmMJ5B2Qb4=" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/css/bootstrap-slider.min.css" />
+``` 
+
 ## Creating a map object
 
 To create a new object just call the constructor 'BlurredLocation' as shown in the following example:
