@@ -119,9 +119,7 @@
       blurredLocation.panMapToGeocodedLocation("placenameInput");
 
       var changeZoom = function() {
-        console.log(parseFloat(22 - parseFloat(slider.getValue()/10)));
         blurredLocation.map.setZoom(parseFloat(22 - parseFloat(slider.getValue()/10)));
-        console.log("Done");
       }
 
       var slider = $('#ex1').slider()
