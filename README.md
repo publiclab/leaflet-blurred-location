@@ -44,7 +44,7 @@ We're open to variations on this if you have suggestions; please [open an issue]
 
 ## Human-readable blurring
 
-Leaflet.BlurredLocation also tries to return a human readable string description of location at a specificity which corresponds to the displayed precision of the location selected. 
+Leaflet.BlurredLocation also tries to return a human readable string description of location at a specificity which corresponds to the displayed precision of the location selected.It also specifies the scale in a human readable format for the grid on the map using the button 'Show scale in km'. 
 
 More coming soon on this, see https://github.com/publiclab/leaflet-blurred-location/issues/98
 
@@ -56,6 +56,14 @@ More coming soon on this, see https://github.com/publiclab/leaflet-blurred-locat
 To set up the library first clone this repo to your local environment; then run 'npm install' to install all the neccessary packages required. Open `examples/index.html` to look at the preview of the library.
 
 There is a simpler version as well which is a simple location entry namely `examples/simple.html`, you can view an online demo at https://mridulnagpal.github.io/leaflet-blurred-location/examples/simple.html
+
+To use slider for map zoom you need to include these CDNs to your html.
+
+```
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/bootstrap-slider.js" integrity="sha256-0w/fZPAdu72g2CGIv9Ha8Lp9qXAjls4R2QmMJ5B2Qb4=" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/css/bootstrap-slider.min.css" />
+``` 
 
 ## Creating a map object
 
@@ -98,6 +106,8 @@ We welcome contributions, and are especially interested in welcoming [first time
 |----------------|-----------------------------|---------|
 | latId          | the input to set latitude   | `'lat'` |
 | lngId          | the input to set longitude  | `'lng'` |
+| geocodeButtonId          | the division to wrapping "Get my location" for inserting spinner icons  | `'ldi-geocode-button'` |
+| scaleDisplay          | Element to display scale in km  | `'scale'` |
 
 ## API
 

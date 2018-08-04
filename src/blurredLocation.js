@@ -34,6 +34,7 @@ BlurredLocation = function BlurredLocation(options) {
   var GeocodingOptions = options.GeocodingOptions || {};
   GeocodingOptions.map = options.map;
   GeocodingOptions.goTo = goTo;
+  GeocodingOptions.geocodeButtonId = options.geocodeButtonId || "ldi-geocode-button";
 
   var gridSystem = options.gridSystem(gridSystemOptions);
   var Geocoding = options.Geocoding(GeocodingOptions);
@@ -45,6 +46,9 @@ BlurredLocation = function BlurredLocation(options) {
   InterfaceOptions.getLon = getLon;
   InterfaceOptions.map = options.map;
   InterfaceOptions.getPrecision = getPrecision;
+  InterfaceOptions.isBlurred = isBlurred;
+  InterfaceOptions.DEFAULT_PRECISION = DEFAULT_PRECISION;
+
 
   var Interface = options.Interface(InterfaceOptions);
 
@@ -54,6 +58,13 @@ BlurredLocation = function BlurredLocation(options) {
   options.map.options.touchZoom = "center";
 
   // options.map.setView([options.location.lat, options.location.lon], options.zoom);
+  options.scaleDisplay = options.scaleDisplay || "scale";
+  options.blurryScale = options.blurryScale || "scale_blurry"
+
+  options.blurryScaleNames = options.blurryScaleNames || {
+   "urban":["country", "state", "district", "neighborhood","block", "building"],
+   "rural":["country", "county", "town", "village", "house", "house"],
+ }
 
   function getLat() {
     if(isBlurred())
@@ -66,7 +77,7 @@ BlurredLocation = function BlurredLocation(options) {
     if(isBlurred())
       return parseFloat(truncateToPrecision(options.map.getCenter().lng, getPrecision()));
     else
-      return parseFloat(truncateToPrecision(options.map.getCenter().lng, DEFAULT_PRECISION));
+      return truncateToPrecision(options.map.getCenter().lng, DEFAULT_PRECISION);
   }
   function goTo(lat, lon, zoom) {
     options.map.setView([lat, lon], zoom);
@@ -212,19 +223,56 @@ BlurredLocation = function BlurredLocation(options) {
 
     updateRectangleOnPan();
 
-  // function geocodeWithBrowser(boolean) {
-  //   if ("geolocation" in navigator) {
-  //     navigator.geolocation.getCurrentPosition(function(position) {
-  //     goTo(position.coords.latitude, position.coords.longitude,options.zoom);
-  //     });
-  //   }
-  // }
-
   function displayLocation() {
     var lat = getLat();
     var lon = getLon();
     alert("Your current location is: " + lat +  ', ' + lon);
   }
+
+  function getDistanceMetrics() {
+    var haversine = require('haversine-distance');
+    
+    var add = Math.pow(10,-getPrecision())
+
+    var sw = { latitude: getLat(), longitude: getLon() }
+    var ne = { latitude: getLat() + add, longitude: getLon() + add }
+ 
+    distance = haversine(sw, ne)/1000;
+    return truncateToPrecision(distance, 2)
+  }
+
+  function addScaleToListener() {
+    $("#"+options.scaleDisplay).text("Each grid square is roughly "+getDistanceMetrics()+"km wide");
+  }
+
+  function getBlurryScale(region) {
+    var urban = options.blurryScaleNames["urban"]
+    var rural = options.blurryScaleNames["rural"]
+
+    if(region == "urban")
+      return urban[getPrecision()]
+
+    if(region == "rural")
+      return rural[getPrecision()]
+  }
+
+  function displayBlurryScale() {
+    $("#" + options.blurryScale).text("This corresponds roughly to a "+getBlurryScale("urban").toString()+" in an urban area, and "+getBlurryScale("rural").toString()+" in a rural area.");
+  }
+
+  function toggleScales(method, id, boolean) {
+    if(boolean) {
+      method();
+      options.map.on('move', method);
+    }
+    else {
+      $("#"+id).text("");
+      options.map.off('move', method);
+    }
+  }
+       
+  toggleScales(addScaleToListener, options.scaleDisplay, true);
+  toggleScales(displayBlurryScale, options.blurryScale, true);
 
   return {
     getLat: getLat,
@@ -254,6 +302,11 @@ BlurredLocation = function BlurredLocation(options) {
     geocodeStringAndPan: Geocoding.geocodeStringAndPan,
     geocodeWithBrowser: Geocoding.geocodeWithBrowser,
     displayLocation: displayLocation,
+    getDistanceMetrics: getDistanceMetrics,
+    getBlurryScale: getBlurryScale,
+    addScaleToListener: addScaleToListener,
+    displayBlurryScale: displayBlurryScale,
+    toggleScales: toggleScales,
   }
 }
 

@@ -80,15 +80,25 @@ module.exports = function Geocoding(options) {
 
   };
 
-  function geocodeWithBrowser(boolean) {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-      options.goTo(position.coords.latitude, position.coords.longitude,options.zoom);
-      },
-      function(error) {
-        console.log(error);
-      },
-      {timeout:10000});
+  function geocodeWithBrowser(success) {
+    if(success) {
+      var label = document.createElement("label");
+      label.classList.add("spinner");
+      var i = document.createElement("i");
+      i.classList.add("fa");
+      i.classList.add("fa-spinner");
+      i.classList.add("fa-spin");
+      label.appendChild(i);
+      var element = document.getElementById(options.geocodeButtonId);
+      element.appendChild(label);
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+        options.goTo(position.coords.latitude, position.coords.longitude,options.zoom);
+        $("i").remove(".fa");
+        }, function(error) {
+          console.log(error);
+        });
+      }
     }
   }
 
