@@ -1,7 +1,13 @@
+
+import {Bounds} from '../../geometry/Bounds';
+import {LatLng} from '../LatLng';
+import {LatLngBounds} from '../LatLngBounds';
+import * as Util from '../../core/Util';
+
 /*
- * @class CRS
- * @aka L.CRS
- * Abstract class that defines coordinate reference systems for projecting
+ * @namespace CRS
+ * @crs L.CRS.Base
+ * Object that defines coordinate reference systems for projecting
  * geographical points into pixel (screen) coordinates and back (and to
  * coordinates in other units for [WMS](https://en.wikipedia.org/wiki/Web_Map_Service) services). See
  * [spatial reference system](http://en.wikipedia.org/wiki/Coordinate_reference_system).
@@ -9,9 +15,13 @@
  * Leaflet defines the most usual CRSs by default. If you want to use a
  * CRS not defined by default, take a look at the
  * [Proj4Leaflet](https://github.com/kartena/Proj4Leaflet) plugin.
+ *
+ * Note that the CRS instances do not inherit from Leafet's `Class` object,
+ * and can't be instantiated. Also, new classes can't inherit from them,
+ * and methods can't be added to them with the `include` function.
  */
 
-L.CRS = {
+export var CRS = {
 	// @method latLngToPoint(latlng: LatLng, zoom: Number): Point
 	// Projects geographical coordinates into pixel coordinates for a given zoom.
 	latLngToPoint: function (latlng, zoom) {
@@ -70,7 +80,7 @@ L.CRS = {
 		    min = this.transformation.transform(b.min, s),
 		    max = this.transformation.transform(b.max, s);
 
-		return L.bounds(min, max);
+		return new Bounds(min, max);
 	},
 
 	// @method distance(latlng1: LatLng, latlng2: LatLng): Number
@@ -97,13 +107,12 @@ L.CRS = {
 	// @method wrapLatLng(latlng: LatLng): LatLng
 	// Returns a `LatLng` where lat and lng has been wrapped according to the
 	// CRS's `wrapLat` and `wrapLng` properties, if they are outside the CRS's bounds.
-	// Only accepts actual `L.LatLng` instances, not arrays.
 	wrapLatLng: function (latlng) {
-		var lng = this.wrapLng ? L.Util.wrapNum(latlng.lng, this.wrapLng, true) : latlng.lng,
-		    lat = this.wrapLat ? L.Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat,
+		var lng = this.wrapLng ? Util.wrapNum(latlng.lng, this.wrapLng, true) : latlng.lng,
+		    lat = this.wrapLat ? Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat,
 		    alt = latlng.alt;
 
-		return L.latLng(lat, lng, alt);
+		return new LatLng(lat, lng, alt);
 	},
 
 	// @method wrapLatLngBounds(bounds: LatLngBounds): LatLngBounds
@@ -122,9 +131,9 @@ L.CRS = {
 
 		var sw = bounds.getSouthWest(),
 		    ne = bounds.getNorthEast(),
-		    newSw = L.latLng({lat: sw.lat - latShift, lng: sw.lng - lngShift}),
-		    newNe = L.latLng({lat: ne.lat - latShift, lng: ne.lng - lngShift});
+		    newSw = new LatLng(sw.lat - latShift, sw.lng - lngShift),
+		    newNe = new LatLng(ne.lat - latShift, ne.lng - lngShift);
 
-		return new L.LatLngBounds(newSw, newNe);
+		return new LatLngBounds(newSw, newNe);
 	}
 };

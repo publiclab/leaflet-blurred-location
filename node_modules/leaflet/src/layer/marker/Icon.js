@@ -1,7 +1,11 @@
+import {Class} from '../../core/Class';
+import {setOptions} from '../../core/Util';
+import {toPoint as point} from '../../geometry/Point';
+import {retina} from '../../core/Browser';
+
 /*
  * @class Icon
  * @aka L.Icon
- * @inherits Layer
  *
  * Represents an icon to provide when creating a marker.
  *
@@ -27,7 +31,7 @@
  *
  */
 
-L.Icon = L.Class.extend({
+export var Icon = Class.extend({
 
 	/* @section
 	 * @aka Icon options
@@ -47,8 +51,11 @@ L.Icon = L.Class.extend({
 	 * will be aligned so that this point is at the marker's geographical location. Centered
 	 * by default if size is specified, also can be set in CSS with negative margins.
 	 *
-	 * @option popupAnchor: Point = null
+	 * @option popupAnchor: Point = [0, 0]
 	 * The coordinates of the point from which popups will "open", relative to the icon anchor.
+	 *
+	 * @option tooltipAnchor: Point = [0, 0]
+	 * The coordinates of the point from which tooltips will "open", relative to the icon anchor.
 	 *
 	 * @option shadowUrl: String = null
 	 * The URL to the icon shadow image. If not specified, no shadow image will be created.
@@ -66,8 +73,13 @@ L.Icon = L.Class.extend({
 	 * A custom class name to assign to both icon and shadow images. Empty by default.
 	 */
 
+	options: {
+		popupAnchor: [0, 0],
+		tooltipAnchor: [0, 0],
+	},
+
 	initialize: function (options) {
-		L.setOptions(this, options);
+		setOptions(this, options);
 	},
 
 	// @method createIcon(oldIcon?: HTMLElement): HTMLElement
@@ -107,8 +119,8 @@ L.Icon = L.Class.extend({
 			sizeOption = [sizeOption, sizeOption];
 		}
 
-		var size = L.point(sizeOption),
-		    anchor = L.point(name === 'shadow' && options.shadowAnchor || options.iconAnchor ||
+		var size = point(sizeOption),
+		    anchor = point(name === 'shadow' && options.shadowAnchor || options.iconAnchor ||
 		            size && size.divideBy(2, true));
 
 		img.className = 'leaflet-marker-' + name + ' ' + (options.className || '');
@@ -131,13 +143,13 @@ L.Icon = L.Class.extend({
 	},
 
 	_getIconUrl: function (name) {
-		return L.Browser.retina && this.options[name + 'RetinaUrl'] || this.options[name + 'Url'];
+		return retina && this.options[name + 'RetinaUrl'] || this.options[name + 'Url'];
 	}
 });
 
 
 // @factory L.icon(options: Icon options)
 // Creates an icon instance with the given options.
-L.icon = function (options) {
-	return new L.Icon(options);
-};
+export function icon(options) {
+	return new Icon(options);
+}
