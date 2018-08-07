@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
     <link href="../dist/Leaflet.BlurredLocation.css" rel="stylesheet">
+    <!-- https://github.com/seiyria/bootstrap-slider -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/bootstrap-slider.js" integrity="sha256-0w/fZPAdu72g2CGIv9Ha8Lp9qXAjls4R2QmMJ5B2Qb4=" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/css/bootstrap-slider.min.css" />
@@ -93,9 +94,9 @@
       <h4><b>Scale</h4></p>
 
       <div class="slidecontainer" style="border-bottom: 2px solid #ccc;">
-        <p style="display: inline">Building</p>
-        <p style="display: inline; float: right" >Country</p>
-        <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="60" data-slider-max="160" data-slider-step="1" data-slider-value="100" style="width: 100%"/>
+        <p style="display: inline">Country</p>
+        <p style="display: inline; float: right">Building</p>
+        <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="5" data-slider-max="18" data-slider-step="1" data-slider-value="6" style="width: 100%"/>
       </div>
 
       <div id="map" class="leaflet-map" style="width: 100%; height: 400px;"></div>
@@ -119,23 +120,13 @@
       blurredLocation.panMapToGeocodedLocation("placenameInput");
 
       var changeZoom = function() {
-        blurredLocation.map.setZoom(parseFloat(22 - parseFloat(slider.getValue()/10)));
+        var zoom = slider.getValue();
+        blurredLocation.map.setZoom(zoom);
       }
 
       var slider = $('#ex1').slider()
         .on('slide', changeZoom)
         .data('slider');
-
-      // // With JQuery
-      // $('#ex1').slider({
-      //   formatter: function(value) {
-      //     if(value != 60) {
-      //       var zoom = 22 - parseFloat(value/10);
-      //       console.log(zoom);
-      //       blurredLocation.map.setZoom(zoom);
-      //     }
-      //   }
-      // });
 
     </script>
   </body>
