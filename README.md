@@ -12,7 +12,7 @@ Try the demo here: https://publiclab.github.io/leaflet-blurred-location/examples
 
 When "blurring" is enabled (as by default), `leaflet-blurred-location` will truncate the latitude and longitude of the input location to the given `precision` -- which is set based on the zoom level of the displayed map.
 
-By comparison: "Did you know? Google Analytics rounds latitude and longitude to 4 digits, thus, providing a maximum precision of 11.1m." -- [radical-analytics.com](https://radical-analytics.com/case-study-accuracy-precision-of-google-analytics-geolocation-4264510612c0) `leaflet-blurred-location` provides a flexible means of truncating coordinates to different lengths through a visual interface. 
+By comparison: "Did you know? Google Analytics rounds latitude and longitude to 4 digits, thus, providing a maximum precision of 11.1m." (miles) -- [radical-analytics.com](https://radical-analytics.com/case-study-accuracy-precision-of-google-analytics-geolocation-4264510612c0) `leaflet-blurred-location` provides a flexible means of truncating coordinates to different lengths through a visual interface. 
 
 Note that a change in longitude precision (say, from 0.12 to 0.1) will translate to different real-world distances depending on the latitude north or south -- because the longitude grid is more compact near the Earth's poles, where it converges. One degree of longitude at the latitude of New York City is roughly 80km, while it's 111km at the equator. See this chart for longitude lengths at different latitudes:
 
