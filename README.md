@@ -12,9 +12,24 @@ Try the demo here: https://publiclab.github.io/leaflet-blurred-location/examples
 
 When "blurring" is enabled (as by default), `leaflet-blurred-location` will truncate the latitude and longitude of the input location to the given `precision` -- which is set based on the zoom level of the displayed map.
 
+By comparison: "Did you know? Google Analytics rounds latitude and longitude to 4 digits, thus, providing a maximum precision of 11.1m." (miles) -- [radical-analytics.com](https://radical-analytics.com/case-study-accuracy-precision-of-google-analytics-geolocation-4264510612c0) `leaflet-blurred-location` provides a flexible means of truncating coordinates to different lengths through a visual interface. 
+
+Note that a change in longitude precision (say, from 0.12 to 0.1) will translate to different real-world distances depending on the latitude north or south -- because the longitude grid is more compact near the Earth's poles, where it converges. One degree of longitude at the latitude of New York City is roughly 80km, while it's 111km at the equator. See this chart for longitude lengths at different latitudes:
+
+| latitude | longitude |
+|----------|-----------|
+| 0°       | 111.320 km |
+| 15°      | 107.551 km |
+| 30°      | 96.486 km |
+| 45°      | 78.847 km |
+| 60°      | 55.800 km |
+| 75°      | 28.902 km |
+| 90°      | 0.000 km  |
+
+
 ### Precision and zoom
 
-The precision is displayed as a grid overlay, where each grid cell is based on the latitude/longitude degree grid, but subdivided to `precision` number of decimal places.
+The precision of locations is displayed as a map with a grid overlay, where each grid cell is based on the latitude/longitude degree grid, but subdivided to `precision` number of decimal places.
 
 So for a `precision` of 2, the grid has `0.01` degree spacing. For `precision` of 5, it has `0.00001` degree spacing.
 
