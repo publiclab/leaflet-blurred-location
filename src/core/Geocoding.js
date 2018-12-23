@@ -103,6 +103,7 @@ module.exports = function Geocoding(options) {
   }
 
   function geocodeStringAndPan(string, onComplete) {
+    map.spin(true) ; 
     var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+");
     var Blurred = $.ajax({
         async: false,
@@ -113,6 +114,7 @@ module.exports = function Geocoding(options) {
       $("#lng").val(geometry.lng);
 
       map.setView([geometry.lat, geometry.lng], options.zoom);
+      map.spin(false) ; 
     }
     onComplete(Blurred.responseJSON.results[0].geometry.location);
   }
