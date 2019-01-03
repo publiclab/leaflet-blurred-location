@@ -70,6 +70,14 @@ More coming soon on this, see https://github.com/publiclab/leaflet-blurred-locat
 
 To set up the library first clone this repo to your local environment; then run 'npm install' to install all the necessary packages required. Open `examples/index.html` to look at the preview of the library.
 
+Compulsory add these for spinner to work : 
+
+```
+<script src="http://cdn.jsdelivr.net/gh/makinacorpus/Leaflet.Spin/example/spin/dist/spin.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/gh/makinacorpus/Leaflet.Spin/leaflet.spin.min.js"></script>
+```
+
 There is a simpler version as well which is a simple location entry namely `examples/simple.html`, you can view an online demo at https://mridulnagpal.github.io/leaflet-blurred-location/examples/simple.html
 
 To use slider for map zoom you need to include these CDNs to your html.
