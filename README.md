@@ -68,7 +68,15 @@ More coming soon on this, see https://github.com/publiclab/leaflet-blurred-locat
 
 ## Setting up leaflet-blurred-location
 
-To set up the library first clone this repo to your local environment; then run 'npm install' to install all the neccessary packages required. Open `examples/index.html` to look at the preview of the library.
+To set up the library first clone this repo to your local environment; then run 'npm install' to install all the necessary packages required. Open `examples/index.html` to look at the preview of the library.
+
+Compulsory add these for spinner to work : 
+
+```
+<script src="http://cdn.jsdelivr.net/gh/makinacorpus/Leaflet.Spin/example/spin/dist/spin.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/gh/makinacorpus/Leaflet.Spin/leaflet.spin.min.js"></script>
+```
 
 There is a simpler version as well which is a simple location entry namely `examples/simple.html`, you can view an online demo at https://mridulnagpal.github.io/leaflet-blurred-location/examples/simple.html
 
@@ -146,7 +154,7 @@ We welcome contributions, and are especially interested in welcoming [first time
 |-----------------|------------------------------------------------------------|
 | **'Blurred' location input** | Your exact location won't be posted, only the grid square it falls within will be shown. Zoom out to make it harder to tell exactly where your location is. Drag the map to change your location and the amount of blurring. |
 | **'Blurred' human-readable location** | Current location of the map will be reverse geocoded and the name of the location will be displayed. The extent of address depends on the precision level you currently are on. For instance for precision 0 only the country name will be provided as you zoom in precision will increase and so will the address details, such as state, city, etc. |
-| **Truncated co-ordinates** | You may enter co-ordinates in the input boxes, string search or pan the map to a certain location and the co-ordinate input boxes will be truncated with the current location of the map with appropiate precision as well. |
+| **Truncated co-ordinates** | You may enter co-ordinates in the input boxes, string search or pan the map to a certain location and the co-ordinate input boxes will be truncated with the current location of the map with appropriate precision as well. |
 | **Browser-based geolocation** | Uses the browser geolocation API to request location and pan the map there. |
 
 ## Testing
