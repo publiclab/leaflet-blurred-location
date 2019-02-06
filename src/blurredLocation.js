@@ -58,7 +58,10 @@ BlurredLocation = function BlurredLocation(options) {
   options.map.options.touchZoom = "center";
 
   // options.map.setView([options.location.lat, options.location.lon], options.zoom);
+  options.AddScaleDisplay = options.AddScaleDisplay || false ;
   options.scaleDisplay = options.scaleDisplay || "scale";
+
+  options.AddBlurryScale = options.AddBlurryScale || false ;
   options.blurryScale = options.blurryScale || "scale_blurry"
 
   options.blurryScaleNames = options.blurryScaleNames || {
@@ -271,8 +274,8 @@ BlurredLocation = function BlurredLocation(options) {
     }
   }
        
-  toggleScales(addScaleToListener, options.scaleDisplay, true);
-  toggleScales(displayBlurryScale, options.blurryScale, true);
+  toggleScales(addScaleToListener, options.scaleDisplay, options.AddScaleDisplay);
+  toggleScales(displayBlurryScale, options.blurryScale, options.AddBlurryScale);
 
   return {
     getLat: getLat,
