@@ -94,7 +94,9 @@ module.exports = function Geocoding(options) {
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(function(position) {
         options.goTo(position.coords.latitude, position.coords.longitude,options.zoom);
-        $("i").remove(".fa");
+        i.classList.remove("fa") ;
+        i.classList.remove("fa-spinner") ;
+        i.classList.remove("fa-spin") ;
         }, function(error) {
           console.log(error);
         });
