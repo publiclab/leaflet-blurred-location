@@ -934,23 +934,23 @@ module.exports = function Geocoding(options) {
   }
 
   function panMapToGeocodedLocation(selector) {
-    console.log(selector);
+    
     var input = document.getElementById(selector);
 
     var autocomplete = new google.maps.places.Autocomplete(input);
-    
+
     autocomplete.addListener('place_changed', function() {
       setTimeout(function () {
         var str = input.value;
         geocodeStringAndPan(str);
       }, 10);
     });
-    
+
     $("#"+selector).keypress(function(e) {
       setTimeout(function () {
         if(e.which == 13) {
           var str = input.value;
-          geocodeStringAndPan(str);          
+          geocodeStringAndPan(str);
         }
       }, 10);
     });
@@ -971,7 +971,9 @@ module.exports = function Geocoding(options) {
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(function(position) {
         options.goTo(position.coords.latitude, position.coords.longitude,options.zoom);
-        $("i").remove(".fa");
+        i.classList.remove("fa") ;
+        i.classList.remove("fa-spinner") ;
+        i.classList.remove("fa-spin") ;
         }, function(error) {
           console.log(error);
         });
@@ -981,7 +983,7 @@ module.exports = function Geocoding(options) {
 
   function geocodeStringAndPan(string, onComplete) {
     if(typeof map.spin == 'function'){
-      map.spin(true) ; 
+      map.spin(true) ;
     }
     var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+") + "&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE" ;
 
@@ -995,7 +997,7 @@ module.exports = function Geocoding(options) {
 
       map.setView([geometry.lat, geometry.lng], options.zoom);
       if(typeof map.spin == 'function'){
-        map.spin(false) ; 
+        map.spin(false) ;
       }
     }
     onComplete(Blurred.responseJSON.results[0].geometry.location);
