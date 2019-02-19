@@ -65,6 +65,16 @@ Leaflet.BlurredLocation also tries to return a human readable string description
 
 More coming soon on this, see https://github.com/publiclab/leaflet-blurred-location/issues/98
 
+Our (draft) table to correlate zoom level, precision, and human-readable scale (from "country" to "building") is as follows:
+
+Zoom level | Lat/lon coordinate precision | Human-readable placename
+--|----|---
+0 | `x0.0` | planet
+5 | `x0.0` | state, province, country
+6 | `x.0` | state, province, region
+10 | `0.x` | city, postal code
+13 | `0.0x` | neighborhood
+16 | `0.00x` | block
 
 ****
 
