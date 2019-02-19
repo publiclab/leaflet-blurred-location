@@ -49,7 +49,7 @@ module.exports = function(grunt) {
   });
 
   /* Default (development): Watch files and build on change. */
-  grunt.registerTask("default", ["watch"]);
+  grunt.registerTask("default", ["watch", "jasmine"]);
   grunt.registerTask("test", ["jshint", "jasmine"]);
   grunt.registerTask("build", ["browserify:dist"]);
   grunt.loadNpmTasks("grunt-contrib-jasmine");
