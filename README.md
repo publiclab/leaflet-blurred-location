@@ -8,6 +8,8 @@ A Leaflet-based HTML interface for selecting a "blurred" or low-resolution locat
 
 Try the demo here: https://publiclab.github.io/leaflet-blurred-location/examples/
 
+![screenshot](https://publiclab.org/system/images/photos/000/029/443/original/Screenshot_2019-02-18_at_6.52.33_PM.png)
+
 ## How it works
 
 When "blurring" is enabled (as by default), `leaflet-blurred-location` will truncate the latitude and longitude of the input location to the given `precision` -- which is set based on the zoom level of the displayed map.
