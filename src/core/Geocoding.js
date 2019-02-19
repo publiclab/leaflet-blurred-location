@@ -1,48 +1,62 @@
+var Ng = require("node-geocoder");
 module.exports = function Geocoding(options) {
   var map = options.map || document.getElementById("map") || L.map("map");
-
-  function getPlacenameFromCoordinates(lat, lng, precision, onResponse) {
-    $.ajax({
-      url:
-        "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
-        lat +
-        "," +
-        lng,
-      success: function(result) {
-        if (result.results[0]) {
+  var API_KEY = "AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE";
+  var geocoder = Ng({
+    provider: "google",
+    apiKey: API_KEY
+  });
+  function getPlacenameFromCoordinates(lat, lon, precision, send) {
+    geocoder
+      .reverse({ lat: lat, lon: lon })
+      .then(function(res) {
+        var result = res.raw;
+        if (result) {
           var country;
-          var fullAddress = result.results[0].formatted_address.split(","); // store levels of precision in decreasing order
-          for (i in result.results) {
-            if (result.results[i].types.indexOf("country") !== -1) { // check if precision is low enough to qualify as country
-              country = result.results[i].formatted_address;  //potential refactor opportunity -fto?
+          var addressArray = result.results[0].formatted_address.split(","); // closest match
+          // check if center grid (almost) encloses a country
+          for (x in result) {
+            // avoid map() array fn since that lies on the leaflet instance chain above
+            if (result.results[i].types.indexOf("country") !== -1) {
+              country = result.results[i].formatted_address;
             }
           }
-          if (!country) country = fullAddress[fullAddress.length - 1]; // last element is always a country, stores country in both cases
-
-          if (precision <= 0) onResponse(country);
-          else if (precision === 1) {
-            if (fullAddress.length >= 2) // town or more specific
-              onResponse(fullAddress[fullAddress.length - 2] + ", " + country); // state and country (remove everything else)
-            else onResponse(country);
+          country = !country ? addressArray[addressArray.length - 1] : country; // get country of current grid location
+          if (precision <= 0) {
+            send(country); // return least possible precise location
+          } else if (precision === 1) {
+            // something a bit more precise (eg., states)
+            if (addressArray.length >= 2) {
+              // remove unwanted corner cases
+              send(addressArray[addressArray.length - 2] + ", " + country); // store state and country only
+            } else {
+              send(country);
+            }
           } else if (precision >= 2) {
-            if (fullAddress.length >= 3)
-              onResponse(
-                fullAddress[fullAddress.length - 3] +
+            // everything else (eg., towns, parks, streets, etc.)
+            if (addressArray.length >= 3) {
+              // similar process
+              send(
+                addressArray[addressArray.length - 3] +
                   ", " +
-                  fullAddress[fullAddress.length - 2] +
+                  addressArray[addressArray.length - 2] +
                   ", " +
                   country
-              ); // last 3 locations
-            else if (fullAddress.length === 2) // state and country
-              onResponse(fullAddress[fullAddress.length - 2] + ", " + country); //redundant
-            else onResponse(country);
-          } else onResponse(result.results[0].formatted_address);
-        } else onResponse("Location unavailable");  //  way too many conditionals!!!
-      },
-      error: function(error) {
-        onResponse("Location unavailable");
-      }
-    });
+              ); // largest three from array
+            } else if (addressArray.length === 2) {
+              // state and country
+              send(addressArray[addressArray.length - 2] + ", " + country);
+            } else {
+              send(country);
+            }
+          } else {
+            send(result.results[0].formatted_address);
+          }
+        }
+      })
+      .catch(function(err) {
+        send(err);
+      });
   }
 
   function panMapByBrowserGeocode(checkbox) {
@@ -123,7 +137,7 @@ module.exports = function Geocoding(options) {
     var url =
       "https://maps.googleapis.com/maps/api/geocode/json?address=" +
       string.split(" ").join("+") +
-      "&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE";
+      API_KEY;
 
     var Blurred = $.ajax({
       async: false,
