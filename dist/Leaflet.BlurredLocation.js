@@ -721,6 +721,14 @@ BlurredLocation = function BlurredLocation(options) {
 
   var rectangle;
 
+  function getRectangle(){
+    return rectangle ;
+  }
+
+  function getTileLayer(){
+    return tileLayer ; 
+  }
+
   function drawCenterRectangle(bounds) {
     var precision = getPrecision();
     var interval = Math.pow(0.1, precision);
@@ -870,6 +878,8 @@ BlurredLocation = function BlurredLocation(options) {
     addScaleToListener: addScaleToListener,
     displayBlurryScale: displayBlurryScale,
     toggleScales: toggleScales,
+    getRectangle: getRectangle,
+    getTileLayer: getTileLayer
   }
 }
 
