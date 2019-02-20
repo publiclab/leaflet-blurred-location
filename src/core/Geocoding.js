@@ -17,8 +17,8 @@ module.exports = function Geocoding(options) {
           // check if center grid (almost) encloses a country
           for (x in result) {
             // avoid map() array fn since that lies on the leaflet instance chain above
-            if (result.results[i].types.indexOf("country") !== -1) {
-              country = result.results[i].formatted_address;
+            if (result.results[x].types.indexOf("country") !== -1) {
+              country = result.results[x].formatted_address;
             }
           }
           country = !country ? addressArray[addressArray.length - 1] : country; // get country of current grid location
