@@ -166,7 +166,7 @@ BlurredLocation = function BlurredLocation(options) {
     var interval = Math.pow(0.1, precision);
     if (!bounds[1][0] || !bounds[1][1]) {
       var ind = 0;
-      if (!bounds[1][1]) ind = 1;   
+      if (!bounds[1][1]) ind = 1;
       if (getFullLat() < 0) { bounds[0][ind] = -1*interval; bounds[1][ind] = 0; }
       else { bounds[1][ind] = 1*interval; }
     }
@@ -182,14 +182,14 @@ BlurredLocation = function BlurredLocation(options) {
     if(isBlurred()) {
         drawCenterRectangle(bounds);
         disableCenterMarker();
-        enableCenterShade() ; 
+        enableCenterShade() ;
     }
     else{
        enableCenterMarker();
        disableCenterShade();
     }
     $("#"+InterfaceOptions.latId).val(getLat()) ;
-    $("#"+InterfaceOptions.lngId).val(getLon()) ; 
+    $("#"+InterfaceOptions.lngId).val(getLon()) ;
   }
 
 
@@ -234,12 +234,12 @@ BlurredLocation = function BlurredLocation(options) {
 
   function getDistanceMetrics() {
     var haversine = require('haversine-distance');
-    
+
     var add = Math.pow(10,-getPrecision())
 
     var sw = { latitude: getLat(), longitude: getLon() }
     var ne = { latitude: getLat() + add, longitude: getLon() + add }
- 
+
     distance = haversine(sw, ne)/1000;
     return truncateToPrecision(distance, 2)
   }
@@ -273,7 +273,7 @@ BlurredLocation = function BlurredLocation(options) {
       options.map.off('move', method);
     }
   }
-       
+
   toggleScales(addScaleToListener, options.scaleDisplay, options.AddScaleDisplay);
   toggleScales(displayBlurryScale, options.blurryScale, options.AddBlurryScale);
 
