@@ -8,13 +8,30 @@ A Leaflet-based HTML interface for selecting a "blurred" or low-resolution locat
 
 Try the demo here: https://publiclab.github.io/leaflet-blurred-location/examples/
 
+![screenshot](https://publiclab.org/system/images/photos/000/029/443/original/Screenshot_2019-02-18_at_6.52.33_PM.png)
+
 ## How it works
 
 When "blurring" is enabled (as by default), `leaflet-blurred-location` will truncate the latitude and longitude of the input location to the given `precision` -- which is set based on the zoom level of the displayed map.
 
+By comparison: "Did you know? Google Analytics rounds latitude and longitude to 4 digits, thus, providing a maximum precision of 11.1m." (miles) -- [radical-analytics.com](https://radical-analytics.com/case-study-accuracy-precision-of-google-analytics-geolocation-4264510612c0) `leaflet-blurred-location` provides a flexible means of truncating coordinates to different lengths through a visual interface. 
+
+Note that a change in longitude precision (say, from 0.12 to 0.1) will translate to different real-world distances depending on the latitude north or south -- because the longitude grid is more compact near the Earth's poles, where it converges. One degree of longitude at the latitude of New York City is roughly 80km, while it's 111km at the equator. See this chart for longitude lengths at different latitudes:
+
+| latitude | longitude |
+|----------|-----------|
+| 0°       | 111.320 km |
+| 15°      | 107.551 km |
+| 30°      | 96.486 km |
+| 45°      | 78.847 km |
+| 60°      | 55.800 km |
+| 75°      | 28.902 km |
+| 90°      | 0.000 km  |
+
+
 ### Precision and zoom
 
-The precision is displayed as a grid overlay, where each grid cell is based on the latitude/longitude degree grid, but subdivided to `precision` number of decimal places.
+The precision of locations is displayed as a map with a grid overlay, where each grid cell is based on the latitude/longitude degree grid, but subdivided to `precision` number of decimal places.
 
 So for a `precision` of 2, the grid has `0.01` degree spacing. For `precision` of 5, it has `0.00001` degree spacing.
 
@@ -48,12 +65,30 @@ Leaflet.BlurredLocation also tries to return a human readable string description
 
 More coming soon on this, see https://github.com/publiclab/leaflet-blurred-location/issues/98
 
+Our (draft) table to correlate zoom level, precision, and human-readable scale (from "country" to "building") is as follows:
+
+Zoom level | Lat/lon coordinate precision | Human-readable placename
+--|----|---
+0 | `x0.0` | planet
+5 | `x0.0` | state, province, country
+6 | `x.0` | state, province, region
+10 | `0.x` | city, postal code
+13 | `0.0x` | neighborhood
+16 | `0.00x` | block
 
 ****
 
 ## Setting up leaflet-blurred-location
 
-To set up the library first clone this repo to your local environment; then run 'npm install' to install all the neccessary packages required. Open `examples/index.html` to look at the preview of the library.
+To set up the library first clone this repo to your local environment; then run 'npm install' to install all the necessary packages required. Open `examples/index.html` to look at the preview of the library.
+
+Compulsory add these for spinner to work : 
+
+```
+<script src="http://cdn.jsdelivr.net/gh/makinacorpus/Leaflet.Spin/example/spin/dist/spin.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/gh/makinacorpus/Leaflet.Spin/leaflet.spin.min.js"></script>
+```
 
 There is a simpler version as well which is a simple location entry namely `examples/simple.html`, you can view an online demo at https://mridulnagpal.github.io/leaflet-blurred-location/examples/simple.html
 
@@ -131,7 +166,7 @@ We welcome contributions, and are especially interested in welcoming [first time
 |-----------------|------------------------------------------------------------|
 | **'Blurred' location input** | Your exact location won't be posted, only the grid square it falls within will be shown. Zoom out to make it harder to tell exactly where your location is. Drag the map to change your location and the amount of blurring. |
 | **'Blurred' human-readable location** | Current location of the map will be reverse geocoded and the name of the location will be displayed. The extent of address depends on the precision level you currently are on. For instance for precision 0 only the country name will be provided as you zoom in precision will increase and so will the address details, such as state, city, etc. |
-| **Truncated co-ordinates** | You may enter co-ordinates in the input boxes, string search or pan the map to a certain location and the co-ordinate input boxes will be truncated with the current location of the map with appropiate precision as well. |
+| **Truncated co-ordinates** | You may enter co-ordinates in the input boxes, string search or pan the map to a certain location and the co-ordinate input boxes will be truncated with the current location of the map with appropriate precision as well. |
 | **Browser-based geolocation** | Uses the browser geolocation API to request location and pan the map there. |
 
 ## Testing
