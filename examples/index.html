@@ -59,12 +59,7 @@
 
       <hr />
 
-      <p>
-        <span id="scale"></span> 
-        <span id="scale_blurry"></span>
-      </p>
-
-      <h4>A. By auto-geocoding your location</h4>
+      <h3>A. By auto-geocoding your location</h3>
       <p>
         <label>
         <button class="btn btn-primary" onclick="blurredLocation.geocodeWithBrowser(true);">
@@ -75,10 +70,10 @@
       </label>
       </p>
 
-      <h4>B. By searching for a place name</b></h4>
+      <h3>B. By searching for a place name</b></h3>
       <p><input id="placenameInput" type="text" class="form-control" /></p>
 
-      <h4>C. By entering co-ordinates <small>- these will also update as you drag/zoom the map</small></h4>
+      <h3>C. By entering co-ordinates <small>- these will also update as you drag/zoom the map</small></h3>
 
       <p>
         <label>
@@ -91,9 +86,13 @@
         </label>
       </p>
 
-      <h4>D. By dragging the map</b></h4>
+      <h3>D. By dragging the map</b></h3>
 
-      <p><b>Scale</b></p>
+      <p>
+        <b>Scale</b> 
+        <span id="scale"></span> 
+        <span id="scale_blurry"></span>
+      </p>
 
       <div class="slidecontainer" style="border-bottom: 2px solid #ccc;">
         <p style="display: inline">Country</p>
