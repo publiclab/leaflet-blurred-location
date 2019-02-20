@@ -11,11 +11,12 @@ module.exports = function Geocoding(options) {
       .reverse({ lat: lat, lon: lon })
       .then(function(res) {
         var result = res.raw;
+        console.log(result);
         if (result) {
           var country;
           var addressArray = result.results[0].formatted_address.split(","); // closest match
           // check if center grid (almost) encloses a country
-          for (x in result) {
+          for (x = 0; x < result.results.length; x++) {
             // avoid map() array fn since that lies on the leaflet instance chain above
             if (result.results[x].types.indexOf("country") !== -1) {
               country = result.results[x].formatted_address;

@@ -31339,7 +31339,7 @@ module.exports={
   "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz",
   "_shasum": "c2d0b7776911b86722c632c3c06c60f2f819939a",
   "_spec": "elliptic@^6.0.0",
-  "_where": "/home/champagnepapi/Desktop/workspace/lbl/node_modules/browserify-sign",
+  "_where": "/home/champagnepapi/Desktop/lbl/node_modules/browserify-sign",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -60029,6 +60029,14 @@ exports.encode = exports.stringify = require('./encode');
 (function (process,global){
 'use strict'
 
+// limit of Crypto.getRandomValues()
+// https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues
+var MAX_BYTES = 65536
+
+// Node supports requesting up to this number of bytes
+// https://github.com/nodejs/node/blob/master/lib/internal/crypto/random.js#L48
+var MAX_UINT32 = 4294967295
+
 function oldBrowser () {
   throw new Error('Secure random number generation is not supported by this browser.\nUse Chrome, Firefox or Internet Explorer 11')
 }
@@ -60044,18 +60052,22 @@ if (crypto && crypto.getRandomValues) {
 
 function randomBytes (size, cb) {
   // phantomjs needs to throw
-  if (size > 65536) throw new Error('requested too many random bytes')
-  // in case browserify  isn't using the Uint8Array version
-  var rawBytes = new global.Uint8Array(size)
+  if (size > MAX_UINT32) throw new RangeError('requested too many random bytes')
 
-  // This will not work in older browsers.
-  // See https://developer.mozilla.org/en-US/docs/Web/API/window.crypto.getRandomValues
+  var bytes = Buffer.allocUnsafe(size)
+
   if (size > 0) {  // getRandomValues fails on IE if size == 0
-    crypto.getRandomValues(rawBytes)
+    if (size > MAX_BYTES) { // this is the max bytes crypto.getRandomValues
+      // can do at once see https://developer.mozilla.org/en-US/docs/Web/API/window.crypto.getRandomValues
+      for (var generated = 0; generated < size; generated += MAX_BYTES) {
+        // buffer.slice automatically checks if the end is past the end of
+        // the buffer so we don't have to here
+        crypto.getRandomValues(bytes.slice(generated, generated + MAX_BYTES))
+      }
+    } else {
+      crypto.getRandomValues(bytes)
+    }
   }
-
-  // XXX: phantomjs doesn't like a buffer being passed here
-  var bytes = Buffer.from(rawBytes.buffer)
 
   if (typeof cb === 'function') {
     return process.nextTick(function () {
@@ -76963,7 +76975,7 @@ module.exports={
   "_resolved": "https://registry.npmjs.org/tough-cookie/-/tough-cookie-2.4.3.tgz",
   "_shasum": "53f36da3f47783b0925afa06ff9f3b165280f781",
   "_spec": "tough-cookie@~2.4.3",
-  "_where": "/home/champagnepapi/Desktop/workspace/lbl/node_modules/request",
+  "_where": "/home/champagnepapi/Desktop/lbl/node_modules/request",
   "author": {
     "name": "Jeremy Stashewsky",
     "email": "jstash@gmail.com"
@@ -82941,14 +82953,15 @@ module.exports = function Geocoding(options) {
       .reverse({ lat: lat, lon: lon })
       .then(function(res) {
         var result = res.raw;
+        console.log(result);
         if (result) {
           var country;
           var addressArray = result.results[0].formatted_address.split(","); // closest match
           // check if center grid (almost) encloses a country
-          for (x in result) {
+          for (x=0;x<result.results.length;x++) {
             // avoid map() array fn since that lies on the leaflet instance chain above
-            if (result.results[i].types.indexOf("country") !== -1) {
-              country = result.results[i].formatted_address;
+            if (result.results[x].types.indexOf("country") !== -1) {
+              country = result.results[x].formatted_address;
             }
           }
           country = !country ? addressArray[addressArray.length - 1] : country; // get country of current grid location
