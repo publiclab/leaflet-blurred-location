@@ -4,7 +4,7 @@ module.exports = function Geocoding(options) {
 
   function getPlacenameFromCoordinates(lat, lng, precision, onResponse) {
       $.ajax({
-        url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
+        url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng + "&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE",
         success: function(result) {
           if(result.results[0]) {
             var country;
