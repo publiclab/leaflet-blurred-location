@@ -41,61 +41,58 @@
       <h3>Enter a location</h3>
 
       <label>
-        <p><button class="btn btn-primary" onclick="blurredLocation.geocodeWithBrowser(true);">
-          <div id="ldi-geocode-button">          
-            Get my location
-          </div>
-
-        </button></p>
-      </label>
-      <br/>
-
-      <label>
         <input id="obscureLocation" type="checkbox" checked onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
         Blur my location
       </label>
 
-      <label>
-        <input id="scaleDisplay" type="checkbox" checked onchange='blurredLocation.toggleScales(blurredLocation.addScaleToListener, "scale", document.getElementById("scaleDisplay").checked);' checked>
-        Show scale in km
-      </label>
+      <p>
+        <label>
+          <input id="scaleDisplay" type="checkbox" checked onchange='blurredLocation.toggleScales(blurredLocation.addScaleToListener, "scale", document.getElementById("scaleDisplay").checked);' checked>
+          Show scale in km
+        </label>
 
-      <label>
-        <input id="blurryScale" type="checkbox" checked onchange='blurredLocation.toggleScales(blurredLocation.displayBlurryScale, "blurry_scale", document.getElementById("blurryScale").checked);' checked>
-        Show estimated blurry scale
-      </label>
+        <label>
+          <input id="blurryScale" type="checkbox" checked onchange='blurredLocation.toggleScales(blurredLocation.displayBlurryScale, "blurry_scale", document.getElementById("blurryScale").checked);' checked>
+          Show estimated blurry scale
+        </label>
+      </p>
 
       <hr />
 
-      <p> 
-        <button class="btn btn-primary" onclick="blurredLocation.displayLocation();">Show Location</button>
+      <h3>A. By auto-geocoding your location</h3>
+      <p>
+        <label>
+        <button class="btn btn-primary" onclick="blurredLocation.geocodeWithBrowser(true);">
+          <div id="ldi-geocode-button">          
+            <i class="fa fa-crosshairs"></i> Find me
+          </div>
+        </button>
+      </label>
       </p>
-      <hr />
 
-      <p id="scale">
-      </p>
-
-      <p id="scale_blurry">
-      </p>
-
-      <h4><b>By place name</b></h4>
+      <h3>B. By searching for a place name</b></h3>
       <p><input id="placenameInput" type="text" class="form-control" /></p>
 
+      <h3>C. By entering co-ordinates <small>- these will also update as you drag/zoom the map</small></h3>
+
       <p>
-        <h4><b>By entering co-ordinates</b></h4>
-        <div class="row">
-          <div class="col-md-6">
-            <p><input id="lat" type="text" class="form-control" placeholder="Latitude"></p>
-          </div>
-          <div class="col-md-6">
-            <p><input id="lng" type="text" class="form-control" placeholder="Longitude"></p>
-          </div>
-        </div>
+        <label>
+          Latitude
+          <input id="lat" type="text" class="form-control form-control-inline" />
+        </label>
+        <label>
+          Latitude
+          <input id="lng" type="text" class="form-control form-control-inline" />
+        </label>
       </p>
 
-      <h4><b>By dragging the map</b></h4>
+      <h3>D. By dragging the map</b></h3>
 
-      <h4><b>Scale</h4></p>
+      <p>
+        <b>Scale</b> 
+        <span id="scale"></span> 
+        <span id="scale_blurry"></span>
+      </p>
 
       <div class="slidecontainer" style="border-bottom: 2px solid #ccc;">
         <p style="display: inline">Country</p>
@@ -106,7 +103,12 @@
       <div id="map" class="leaflet-map" style="width: 100%; height: 400px;"></div>
 
       <br />
-      <input editable="false" id="placenameDisplay" type="text" class="form-control" />
+      <p>
+        <label>
+          Placename
+          <input editable="false" id="placenameDisplay" type="text" class="form-control" />
+        </label>
+      </p>
 
     </div>
 
