@@ -259,12 +259,15 @@ BlurredLocation = function BlurredLocation(options) {
   function getBlurryScale(region) {
     var urban = options.blurryScaleNames["urban"]
     var rural = options.blurryScaleNames["rural"]
-
+    var precision = getPrecision() ;
+    if(precision<0 || precision>5){
+      precision = 0 ;
+    }
     if(region == "urban")
-      return urban[getPrecision()]
+      return urban[precision]
 
     if(region == "rural")
-      return rural[getPrecision()]
+      return rural[precision]
   }
 
   function displayBlurryScale() {
@@ -282,9 +285,6 @@ BlurredLocation = function BlurredLocation(options) {
     }
   }
        
-  toggleScales(addScaleToListener, options.scaleDisplay, options.AddScaleDisplay);
-  toggleScales(displayBlurryScale, options.blurryScale, options.AddBlurryScale);
-
   return {
     getLat: getLat,
     getLon: getLon,
