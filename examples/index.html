@@ -62,7 +62,7 @@
       <h3>A. By auto-geocoding your location</h3>
       <p>
         <label>
-        <button class="btn btn-primary" onclick="blurredLocation.geocodeWithBrowser(true);">
+        <button class="btn btn-primary" onclick="blurredLocation.getGeocoding().geocodeWithBrowser(true);">
           <div id="ldi-geocode-button">          
             <i class="fa fa-crosshairs"></i> Find me
           </div>
@@ -117,21 +117,21 @@
       var map123 = L.map('map').setView([23,77] , 3) ;
 
       var options = {
-        mapID: 'map',
-        map: map123,
+        //map: map123,
         InterfaceOptions: {
           latId: 'lat',
           lngId: 'lng'
         }
       } ;
 
-      var blurredLocation = new BlurredLocation(options);
+      var blurredLocation = new BlurredLocation(options) ;
+      blurredLocation.addTo(map123) ;
 
-      blurredLocation.panMapToGeocodedLocation("placenameInput");
+      blurredLocation.getGeocoding().panMapToGeocodedLocation("placenameInput");
 
       var changeZoom = function() {
         var zoom = slider.getValue();
-        blurredLocation.map.setZoom(zoom);
+        map123.setZoom(zoom);
       }
 
       var slider = $('#ex1').slider()

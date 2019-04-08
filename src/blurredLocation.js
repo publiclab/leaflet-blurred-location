@@ -13,10 +13,9 @@ BlurredLocation = function BlurredLocation(options) {
 
   options.zoom = options.zoom || 6;
 
-  options.mapID = options.mapID || 'map'
+  //options.mapID = options.mapID || 'map';
 
-  options.map = options.map || new L.Map(options.mapID,{})
-                                    .setView([options.location.lat, options.location.lon], options.zoom);
+  //options.map = options.map || new L.Map(options.mapID,{}).setView([options.location.lat, options.location.lon], options.zoom);
 
   options.pixels = options.pixels || 400;
 
@@ -27,36 +26,32 @@ BlurredLocation = function BlurredLocation(options) {
   options.Geocoding = options.Geocoding || require('./core/Geocoding.js')
 
   var gridSystemOptions = options.gridSystemOptions || {};
-  gridSystemOptions.map = options.map;
+  // gridSystemOptions.map = options.map;
   gridSystemOptions.gridWidthInPixels = gridWidthInPixels;
   gridSystemOptions.getMinimumGridWidth = getMinimumGridWidth;
 
   var GeocodingOptions = options.GeocodingOptions || {};
-  GeocodingOptions.map = options.map;
+  // GeocodingOptions.map = options.map;
   GeocodingOptions.goTo = goTo;
   GeocodingOptions.geocodeButtonId = options.geocodeButtonId || "ldi-geocode-button";
 
-  var gridSystem = options.gridSystem(gridSystemOptions);
-  var Geocoding = options.Geocoding(GeocodingOptions);
-
+  // var gridSystem = options.gridSystem(gridSystemOptions);
+  // var Geocoding = options.Geocoding(GeocodingOptions);
+  var gridSystem ;
+  var Geocoding ;
   var InterfaceOptions = options.InterfaceOptions || {};
   InterfaceOptions.panMap = panMap;
-  InterfaceOptions.getPlacenameFromCoordinates = Geocoding.getPlacenameFromCoordinates;
+  // InterfaceOptions.getPlacenameFromCoordinates = getGeocoding().getPlacenameFromCoordinates;
   InterfaceOptions.getLat = getLat;
   InterfaceOptions.getLon = getLon;
-  InterfaceOptions.map = options.map;
+  // InterfaceOptions.map = options.map;
   InterfaceOptions.getPrecision = getPrecision;
   InterfaceOptions.isBlurred = isBlurred;
   InterfaceOptions.DEFAULT_PRECISION = DEFAULT_PRECISION;
 
 
-  var Interface = options.Interface(InterfaceOptions);
-
-  var tileLayer = L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
-
-  options.map.options.scrollWheelZoom = "center";
-  options.map.options.touchZoom = "center";
-
+  //var Interface = options.Interface(InterfaceOptions);
+  var Interface ;
   // options.map.setView([options.location.lat, options.location.lon], options.zoom);
   options.AddScaleDisplay = options.AddScaleDisplay || false ;
   options.scaleDisplay = options.scaleDisplay || "scale";
@@ -68,6 +63,39 @@ BlurredLocation = function BlurredLocation(options) {
    "urban":["country", "state", "district", "neighborhood","block", "building"],
    "rural":["country", "county", "town", "village", "house", "house"],
  }
+
+  function addTo(map){
+    options.map = map ;
+    var tileLayer = L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map) ;
+    options.map.options.scrollWheelZoom = "center";
+    options.map.options.touchZoom = "center";
+
+
+    GeocodingOptions.map = options.map;
+    gridSystemOptions.map = options.map;
+
+    gridSystem = options.gridSystem(gridSystemOptions);
+    Geocoding = options.Geocoding(GeocodingOptions);
+
+    InterfaceOptions.map = options.map;
+    InterfaceOptions.getPlacenameFromCoordinates = getGeocoding().getPlacenameFromCoordinates;
+    Interface = options.Interface(InterfaceOptions) ;
+
+    marker = L.marker([getFullLat(), getFullLon()]);
+    updateRectangleOnPan() ;
+  }
+
+  function getInterface(){
+    return Interface ;
+  }
+
+  function getGridSystem(){
+    return gridSystem ;
+  }
+
+  function getGeocoding(){
+    return Geocoding ;
+  }
 
   function getLat() {
     if(isBlurred())
@@ -144,13 +172,13 @@ BlurredLocation = function BlurredLocation(options) {
   function setBlurred(boolean) {
 
       if(boolean && !blurred) {
-        gridSystem.addGrid();
+        getGridSystem().addGrid();
         blurred = true;
         enableCenterShade();
       }
       else if(!boolean) {
         blurred = false;
-        gridSystem.removeGrid();
+        getGridSystem().removeGrid();
       }
       updateRectangleOnPan();
   }
@@ -215,8 +243,8 @@ BlurredLocation = function BlurredLocation(options) {
     options.map.off('move',updateRectangleOnPan);
   }
 
-  var marker = L.marker([getFullLat(), getFullLon()]);
-
+  // var marker = L.marker([getFullLat(), getFullLon()]);
+  var marker ;
   function updateMarker() {
     if(marker) marker.remove();
     marker = L.marker([getFullLat(), getFullLon()]).addTo(options.map);
@@ -232,7 +260,7 @@ BlurredLocation = function BlurredLocation(options) {
     options.map.off('move',updateMarker);
   }
 
-    updateRectangleOnPan();
+    // updateRectangleOnPan();
 
   function displayLocation() {
     var lat = getLat();
@@ -290,16 +318,16 @@ BlurredLocation = function BlurredLocation(options) {
     getLon: getLon,
     goTo: goTo,
     getSize: getSize,
-    gridSystem: gridSystem,
-    panMapToGeocodedLocation: Geocoding.panMapToGeocodedLocation,
-    getPlacenameFromCoordinates: Geocoding.getPlacenameFromCoordinates,
+    getGridSystem: getGridSystem,
+    // panMapToGeocodedLocation: getGeocoding().panMapToGeocodedLocation,
+    // getPlacenameFromCoordinates: getGeocoding().getPlacenameFromCoordinates,
     panMap: panMap,
-    panMapByBrowserGeocode: Geocoding.panMapByBrowserGeocode,
+   // panMapByBrowserGeocode: getGeocoding().panMapByBrowserGeocode,
     getMinimumGridWidth: getMinimumGridWidth,
     gridWidthInPixels: gridWidthInPixels,
     getPrecision: getPrecision,
     setZoom: setZoom,
-    Interface: Interface,
+    getInterface: getInterface,
     getFullLon: getFullLon,
     getFullLat: getFullLat,
     isBlurred: isBlurred,
@@ -310,8 +338,8 @@ BlurredLocation = function BlurredLocation(options) {
     setZoomByPrecision: setZoomByPrecision,
     disableCenterShade: disableCenterShade,
     enableCenterShade: enableCenterShade,
-    geocodeStringAndPan: Geocoding.geocodeStringAndPan,
-    geocodeWithBrowser: Geocoding.geocodeWithBrowser,
+    // geocodeStringAndPan: getGeocoding().geocodeStringAndPan,
+    // geocodeWithBrowser: getGeocoding().geocodeWithBrowser,
     displayLocation: displayLocation,
     getDistanceMetrics: getDistanceMetrics,
     getBlurryScale: getBlurryScale,
@@ -319,7 +347,9 @@ BlurredLocation = function BlurredLocation(options) {
     displayBlurryScale: displayBlurryScale,
     toggleScales: toggleScales,
     getRectangle: getRectangle,
-    getTileLayer: getTileLayer
+    getTileLayer: getTileLayer,
+    getGeocoding: getGeocoding,
+    addTo: addTo
   }
 }
 
