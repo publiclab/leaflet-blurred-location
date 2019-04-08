@@ -657,6 +657,11 @@ BlurredLocation = function BlurredLocation(options) {
     return Geocoding ;
   }
 
+  function getmap()
+  {
+    return options.map ;
+  }
+
   function getLat() {
     if(isBlurred())
       return parseFloat(truncateToPrecision(options.map.getCenter().lat, getPrecision()));
@@ -893,7 +898,7 @@ BlurredLocation = function BlurredLocation(options) {
     isBlurred: isBlurred,
     setBlurred: setBlurred,
     truncateToPrecision: truncateToPrecision,
-    map: options.map,
+    map: getmap,
     updateRectangleOnPan: updateRectangleOnPan,
     setZoomByPrecision: setZoomByPrecision,
     disableCenterShade: disableCenterShade,
