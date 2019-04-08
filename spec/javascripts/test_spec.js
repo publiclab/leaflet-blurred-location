@@ -26,7 +26,7 @@ describe("Basic testing", function() {
   });
 
   it("Checks if blurredLocation has a property named gridSystem", function() {
-    expect(blurredLocation.hasOwnProperty("gridSystem")).toBe(true);
+    expect(blurredLocation.hasOwnProperty("getGridSystem")).toBe(true);
   });
 
   // it("Checks if cellSize changes with change in zoom", function() {
