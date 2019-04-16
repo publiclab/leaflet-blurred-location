@@ -41,18 +41,18 @@
       <h3>Enter a location</h3>
 
       <label>
-        <input id="obscureLocation" type="checkbox" checked onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
+        <input id="obscureLocation" type="checkbox"  onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);' checked>
         Blur my location
       </label>
 
       <p>
         <label>
-          <input id="scaleDisplay" type="checkbox" checked onchange='blurredLocation.toggleScales(blurredLocation.addScaleToListener, "scale", document.getElementById("scaleDisplay").checked);' checked>
+          <input id="scaleDisplay" type="checkbox"  onchange='blurredLocation.toggleScales(blurredLocation.addScaleToListener, "scale", document.getElementById("scaleDisplay").checked);' >
           Show scale in km
         </label>
 
         <label>
-          <input id="blurryScale" type="checkbox" checked onchange='blurredLocation.toggleScales(blurredLocation.displayBlurryScale, "blurry_scale", document.getElementById("blurryScale").checked);' checked>
+          <input id="blurryScale" type="checkbox"  onchange='blurredLocation.toggleScales(blurredLocation.displayBlurryScale, "scale_blurry", document.getElementById("blurryScale").checked);' >
           Show estimated blurry scale
         </label>
       </p>
@@ -62,7 +62,7 @@
       <h3>A. By auto-geocoding your location</h3>
       <p>
         <label>
-        <button class="btn btn-primary" onclick="blurredLocation.geocodeWithBrowser(true);">
+        <button class="btn btn-primary" onclick="blurredLocation.getGeocoding().geocodeWithBrowser(true);">
           <div id="ldi-geocode-button">          
             <i class="fa fa-crosshairs"></i> Find me
           </div>
@@ -91,6 +91,7 @@
       <p>
         <b>Scale</b> 
         <span id="scale"></span> 
+        <br>
         <span id="scale_blurry"></span>
       </p>
 
@@ -113,23 +114,24 @@
     </div>
 
     <script>
+      var map123 = L.map('map').setView([23,77] , 3) ;
 
       var options = {
+        //map: map123,
         InterfaceOptions: {
           latId: 'lat',
           lngId: 'lng'
-        },
-        AddScaleDisplay: true ,
-        AddBlurryScale: true
-      }
+        }
+      } ;
 
-      var blurredLocation = new BlurredLocation(options);
+      var blurredLocation = new BlurredLocation(options) ;
+      blurredLocation.addTo(map123) ;
 
-      blurredLocation.panMapToGeocodedLocation("placenameInput");
+      blurredLocation.getGeocoding().panMapToGeocodedLocation("placenameInput");
 
       var changeZoom = function() {
         var zoom = slider.getValue();
-        blurredLocation.map.setZoom(zoom);
+        map123.setZoom(zoom);
       }
 
       var slider = $('#ex1').slider()

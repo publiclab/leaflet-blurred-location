@@ -32,7 +32,7 @@ describe("UI testing", function() {
 
     var latEl = $("#lat");
     var lngEl = $("#lng");
-    blurredLocation.map.panTo(new L.LatLng(40.737, -73.923));
+    map123.panTo(new L.LatLng(40.737, -73.923));
     blurredLocation.setZoomByPrecision(2);
 
     expect(parseFloat(latEl.val())).toBe(40.73);
@@ -45,7 +45,7 @@ describe("UI testing", function() {
     var latEl = $("#lat");
     var lngEl = $("#lng");
     
-    blurredLocation.map.panTo(new L.LatLng(40.737232, -73.923232));
+    map123.panTo(new L.LatLng(40.737232, -73.923232));
     blurredLocation.setZoomByPrecision(2);    
     blurredLocation.setBlurred(false);
 

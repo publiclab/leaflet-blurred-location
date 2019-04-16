@@ -107,13 +107,11 @@ To create a new object just call the constructor 'BlurredLocation' as shown in t
 
 ```js
 // this "constructs" an instance of the library:
-var blurredLocation = new BlurredLocation({
-  lat: 41.01,
-  lon: -85.66
-});
+var blurredLocation = new BlurredLocation();
+blurredLocation.addTo(map) ;  // var map = L.map('map').setView([23,77] , 3) ;
 
-blurredLocation.getLat(); // should return 41.01
-blurredLocation.getLon(); // should return -85.66
+blurredLocation.getLat(); // should return center of map's latitude which is currently 23 .
+blurredLocation.getLon(); // should return center of map's longitude which is currently 77 .
 ```
 
 ****
@@ -132,7 +130,6 @@ We welcome contributions, and are especially interested in welcoming [first time
 |----------------|---------------------------------------|--------------------------|
 | blurredLocation| the initial co-ordinates of the map   | `{ lat: 1.0, lon: 1.0 }` |
 | zoom           | the initial zoom of the map           | 6                        |
-| mapID          | the ID of the map container           | `'map'`                  |
 | pixels         | the pixel size to calculate precision | `400`                    |
 
 ### Interface options
@@ -156,7 +153,7 @@ We welcome contributions, and are especially interested in welcoming [first time
 | `blurredLocation.getFullLat()`   | Returns non-truncated latitude of map center, regardless of precision | `location.getFullLat()` returns decimal |
 | `blurredLocation.getFullLon()` | Returns non-truncated longitude of map center, regardless of precision | `location.getFullLon()` returns decimal |
 | `blurredLocation.getPrecision()` | Returns precision of degrees -- represented by width or height of one grid cell. Returns an integer which represents the number of decimal places occupied by one cell. For instance, a precision of 1 will mean 0.1 degrees per cell, 2 will mean 0.01 degrees, and so on | `location.getPrecision()` This would return the precision of the map at the current zoom level. |
-| `blurredLocation.getPlacenameFromCoordinates()` | Returns human-readable location name of a specific latitude and longitude. This would take in 3 arguments namely latitude, longitude and a callback function which is called on success and would return address of the location pinpointed by those co-ordinates| `blurredLocation.getPlacenameFromCoordinates(43, 43, function(result) { console.log(result) }` This would return the output to the console |
+| `blurredLocation.getGeocoding().getPlacenameFromCoordinates()` | Returns human-readable location name of a specific latitude and longitude. This would take in 3 arguments namely latitude, longitude and a callback function which is called on success and would return address of the location pinpointed by those co-ordinates| `blurredLocation.getGeocoding().getPlacenameFromCoordinates(43, 43, function(result) { console.log(result) }` This would return the output to the console |
 | `blurredLocation.map` | Used to access the Leaflet object | |
 | `blurredLocation.setZoomByPrecision()` | Zooms map to the given precision. | `blurredLocation.setZoomByPrecision(2)` This would zoom the map so that the precision of map becomes 2, and each grid square is `0.01` degrees wide and tall. |
 
