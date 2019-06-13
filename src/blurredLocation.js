@@ -319,7 +319,8 @@ BlurredLocation = function BlurredLocation(options) {
     displayBlurryScale: displayBlurryScale,
     toggleScales: toggleScales,
     getRectangle: getRectangle,
-    getTileLayer: getTileLayer
+    getTileLayer: getTileLayer,
+    disableCenterMarker: disableCenterMarker
   }
 }
 
