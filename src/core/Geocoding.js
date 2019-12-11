@@ -115,6 +115,7 @@ module.exports = function Geocoding(options) {
         url: url
     });
     onComplete = onComplete || function onComplete(geometry) {
+      console.log(geometry);
       $("#lat").val(geometry.lat);
       $("#lng").val(geometry.lng);
 
@@ -123,7 +124,7 @@ module.exports = function Geocoding(options) {
         map.spin(false) ;
       }
     }
-    onComplete(Blurred.responseJSON.results[0].geometry.location);
+    onComplete(Blurred.responseJSON.result.geometry.location);
   }
 
   return {
