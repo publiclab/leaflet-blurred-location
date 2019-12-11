@@ -123,7 +123,7 @@ module.exports = function Geocoding(options) {
         map.spin(false) ;
       }
     }
-    onComplete(Blurred.responseJSON.results[0].geometry.location);
+    onComplete(Blurred.responseJSON.result.geometry.location);
   }
 
   return {
