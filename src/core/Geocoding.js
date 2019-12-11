@@ -4,7 +4,7 @@ module.exports = function Geocoding(options) {
 
   function getPlacenameFromCoordinates(lat, lng, precision, onResponse) {
       $.ajax({
-        url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng + "&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE",
+        url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
         success: function(result) {
           if(result.results[0]) {
             var country;
@@ -94,9 +94,7 @@ module.exports = function Geocoding(options) {
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(function(position) {
         options.goTo(position.coords.latitude, position.coords.longitude,options.zoom);
-        i.classList.remove("fa") ;
-        i.classList.remove("fa-spinner") ;
-        i.classList.remove("fa-spin") ;
+        $("i").remove(".fa");
         }, function(error) {
           console.log(error);
         });
@@ -114,18 +112,21 @@ module.exports = function Geocoding(options) {
         async: false,
         url: url
     });
-    console.log(Blurred.responseJSON.results)
-    onComplete = onComplete || function onComplete(geometry) {
-      console.log(geometry);
-      $("#lat").val(geometry.lat);
-      $("#lng").val(geometry.lng);
+    onComplete = onComplete || function onComplete(response) {
+      if(response.status === "OK") {
+        let geometry = response.results[0].geometry.location;
+        $("#lat").val(geometry.lat);
+        $("#lng").val(geometry.lng);
 
-      map.setView([geometry.lat, geometry.lng], options.zoom);
+        map.setView([geometry.lat, geometry.lng], options.zoom);
+      } else {
+        console.log("Error retrieving location: " + response.error_message);
+      }
       if(typeof map.spin == 'function'){
         map.spin(false) ;
       }
     }
-    onComplete(Blurred.responseJSON.results.geometry.location);
+    onComplete(Blurred.responseJSON);
   }
 
   return {
