@@ -116,11 +116,9 @@ module.exports = function Geocoding(options) {
     });
     onComplete = onComplete || function onComplete(response) {
       if(response.status === "OK") {
-        let geometry = response.results[0].geometry.location;
-        $("#lat").val(geometry.lat);
-        $("#lng").val(geometry.lng);
-
-        map.setView([geometry.lat, geometry.lng], options.zoom);
+        $("#lat").val(response.results[0].geometry.location.lat);
+        $("#lng").val(response.results[0].geometry.location.lng);
+        map.setView([response.results[0].geometry.location.lat, response.results[0].geometry.location.lng], options.zoom);
       } else {
         console.log("Error retrieving location: " + response.error_message);
         console.log("You may be rate limited. For more info please check https://github.com/publiclab/leaflet-blurred-location/issues/214");
