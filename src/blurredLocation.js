@@ -92,6 +92,32 @@ BlurredLocation = function BlurredLocation(options) {
 
   function getZoom() {
     return options.map.getZoom();
+    
+  function getZoomFromCoordinates(lat, lon) {
+    return getZoomByPrecision(getPrecisionFromCoordinates(lat, lon));
+  }
+
+  function getPrecisionFromCoordinates(lat, lon) {
+    let precisionArr = [getPrecisionFromNum(lat), getPrecisionFromNum(lon)];
+    return precisionArr.sort((a, b) => b-a)[0];
+  }
+
+  function getPrecisionFromNum(num) {
+    let numArr = num.toString().split('.');
+    let precision = 0;
+
+    if(numArr.length === 1) {
+      if(Math.floor(num/100) == num/100) {
+        precision = -2;
+      } else if (Math.floor(num/10) == num/10) {
+        precision = -1;
+      } else {
+        precision = 0;
+      }
+    } else {
+      precision = (numArr[1].length >= 3) ? 3 : numArr[1].length;
+    }
+    return precision;
   }
 
   function getSize() {
@@ -210,6 +236,11 @@ BlurredLocation = function BlurredLocation(options) {
     setZoom(precisionTable[precision]);
   }
 
+  function getZoomByPrecision(precision) {
+    var precisionTable = {'-2': 1, '-1': 3, '0':4, '1':10, '2':13, '3':16};
+    return precisionTable[precision];
+  }
+
   function enableCenterShade() {
     options.map.on('move', updateRectangleOnPan);
   }
@@ -304,6 +335,9 @@ BlurredLocation = function BlurredLocation(options) {
     getPrecision: getPrecision,
     setZoom: setZoom,
     getZoom: getZoom,
+    getZoomFromCoordinates: getZoomFromCoordinates,
+    getPrecisionFromCoordinates: getPrecisionFromCoordinates,
+    getPrecisionFromNum: getPrecisionFromNum,
     Interface: Interface,
     getFullLon: getFullLon,
     getFullLat: getFullLat,
@@ -313,6 +347,7 @@ BlurredLocation = function BlurredLocation(options) {
     map: options.map,
     updateRectangleOnPan: updateRectangleOnPan,
     setZoomByPrecision: setZoomByPrecision,
+    getZoomByPrecision: getZoomByPrecision,
     disableCenterShade: disableCenterShade,
     enableCenterShade: enableCenterShade,
     geocodeStringAndPan: Geocoding.geocodeStringAndPan,
