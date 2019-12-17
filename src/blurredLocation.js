@@ -4,6 +4,7 @@ BlurredLocation = function BlurredLocation(options) {
   var blurred = true;
   var DEFAULT_PRECISION = 6;
   require('leaflet-graticule');
+  var default_precision_table = {'-2': 2, '-1': 3, '0':6, '1':10, '2':13, '3':16};
 
   options = options || {};
   options.location = options.location || {
@@ -12,6 +13,8 @@ BlurredLocation = function BlurredLocation(options) {
   };
 
   options.zoom = options.zoom || 6;
+
+  options.precisionTable = options.precisionTable || default_precision_table;
 
   options.mapID = options.mapID || 'map'
 
@@ -67,7 +70,7 @@ BlurredLocation = function BlurredLocation(options) {
   options.blurryScaleNames = options.blurryScaleNames || {
    "urban":["country", "state", "district", "neighborhood","block", "building"],
    "rural":["country", "county", "town", "village", "house", "house"],
- }
+  }
 
   function getLat() {
     if(isBlurred())
@@ -232,13 +235,12 @@ BlurredLocation = function BlurredLocation(options) {
 
 
   function setZoomByPrecision(precision) {
-    var precisionTable = {'-2': 2, '-1': 3, '0':6, '1':10, '2':13, '3':16};
-    setZoom(precisionTable[precision]);
+    setZoom(options.precisionTable[precision]);
   }
 
   function getZoomByPrecision(precision) {
-    var precisionTable = {'-2': 1, '-1': 3, '0':4, '1':10, '2':13, '3':16};
-    return precisionTable[precision];
+    console.log(options.precisionTable);
+    return options.precisionTable[precision];
   }
 
   function enableCenterShade() {
