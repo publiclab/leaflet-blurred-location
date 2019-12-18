@@ -655,6 +655,8 @@ BlurredLocation = function BlurredLocation(options) {
 
   function getZoom() {
     return options.map.getZoom();
+  }
+    
   function getZoomFromCoordinates(lat, lon) {
     return getZoomByPrecision(getPrecisionFromCoordinates(lat, lon));
   }
