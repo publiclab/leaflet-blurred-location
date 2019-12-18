@@ -798,7 +798,6 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function getZoomByPrecision(precision) {
-    console.log(options.precisionTable);
     return options.precisionTable[precision];
   }
 
