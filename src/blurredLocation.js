@@ -90,6 +90,10 @@ BlurredLocation = function BlurredLocation(options) {
     options.map.setZoom(zoom);
   }
 
+  function getZoom() {
+    return options.map.getZoom();
+  }
+
   function getSize() {
     return options.map.getSize();
   }
@@ -299,6 +303,7 @@ BlurredLocation = function BlurredLocation(options) {
     gridWidthInPixels: gridWidthInPixels,
     getPrecision: getPrecision,
     setZoom: setZoom,
+    getZoom: getZoom,
     Interface: Interface,
     getFullLon: getFullLon,
     getFullLat: getFullLat,
