@@ -4,6 +4,7 @@ BlurredLocation = function BlurredLocation(options) {
   var blurred = true;
   var DEFAULT_PRECISION = 6;
   require('leaflet-graticule');
+  var default_precision_table = {'-2': 2, '-1': 3, '0':6, '1':10, '2':13, '3':16};
 
   options = options || {};
   options.location = options.location || {
@@ -12,6 +13,8 @@ BlurredLocation = function BlurredLocation(options) {
   };
 
   options.zoom = options.zoom || 6;
+
+  options.precisionTable = options.precisionTable || default_precision_table;
 
   options.mapID = options.mapID || 'map'
 
@@ -67,7 +70,7 @@ BlurredLocation = function BlurredLocation(options) {
   options.blurryScaleNames = options.blurryScaleNames || {
    "urban":["country", "state", "district", "neighborhood","block", "building"],
    "rural":["country", "county", "town", "village", "house", "house"],
- }
+  }
 
   function getLat() {
     if(isBlurred())
@@ -92,6 +95,34 @@ BlurredLocation = function BlurredLocation(options) {
 
   function getZoom() {
     return options.map.getZoom();
+  }
+    
+  function getZoomFromCoordinates(lat, lon) {
+    return getZoomByPrecision(getPrecisionFromCoordinates(lat, lon));
+  }
+
+  function getPrecisionFromCoordinates(lat, lon) {
+    var latPrecision = getPrecisionFromNum(lat);
+    var lonPrecision = getPrecisionFromNum(lon);
+    return latPrecision > lonPrecision ? latPrecision : lonPrecision;
+  }
+
+  function getPrecisionFromNum(num) {
+    var numArr = num.toString().split('.');
+    var precision = 0;
+
+    if(numArr.length === 1) {
+      if(Math.floor(num/100) == num/100) {
+        precision = -2;
+      } else if (Math.floor(num/10) == num/10) {
+        precision = -1;
+      } else {
+        precision = 0;
+      }
+    } else {
+      precision = (numArr[1].length >= 3) ? 3 : numArr[1].length;
+    }
+    return precision;
   }
 
   function getSize() {
@@ -204,10 +235,12 @@ BlurredLocation = function BlurredLocation(options) {
     $("#"+InterfaceOptions.lngId).val(getLon()) ; 
   }
 
-
   function setZoomByPrecision(precision) {
-    var precisionTable = {'-2': 2, '-1': 3, '0':6, '1':10, '2':13, '3':16};
-    setZoom(precisionTable[precision]);
+    setZoom(options.precisionTable[precision]);
+  }
+
+  function getZoomByPrecision(precision) {
+    return options.precisionTable[precision];
   }
 
   function enableCenterShade() {
@@ -304,6 +337,9 @@ BlurredLocation = function BlurredLocation(options) {
     getPrecision: getPrecision,
     setZoom: setZoom,
     getZoom: getZoom,
+    getZoomFromCoordinates: getZoomFromCoordinates,
+    getPrecisionFromCoordinates: getPrecisionFromCoordinates,
+    getPrecisionFromNum: getPrecisionFromNum,
     Interface: Interface,
     getFullLon: getFullLon,
     getFullLat: getFullLat,
@@ -313,6 +349,7 @@ BlurredLocation = function BlurredLocation(options) {
     map: options.map,
     updateRectangleOnPan: updateRectangleOnPan,
     setZoomByPrecision: setZoomByPrecision,
+    getZoomByPrecision: getZoomByPrecision,
     disableCenterShade: disableCenterShade,
     enableCenterShade: enableCenterShade,
     geocodeStringAndPan: Geocoding.geocodeStringAndPan,

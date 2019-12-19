@@ -86,11 +86,16 @@ describe("Basic testing", function() {
 
   it("Checks if setZoomByPrecision pans the map to correct zoom", function() {
     blurredLocation.setZoomByPrecision(2);
-    expect(blurredLocation.getPrecision()).toBe(2);
+    expect(blurredLocation.getZoom()).toBe(13);
     blurredLocation.setZoomByPrecision(1);
-    expect(blurredLocation.getPrecision()).toBe(1);
+    expect(blurredLocation.getZoom()).toBe(10);
   });
 
+  it("Checks if getZoomByPrecision returns the correct zoom", function() {
+    expect(blurredLocation.getZoomByPrecision(2)).toBe(13);
+    expect(blurredLocation.getZoomByPrecision(-1)).toBe(3);
+  });
+  
   it("Checks if getDistanceMetrics returns correct scale", function() {
     blurredLocation.setZoomByPrecision(2);
     expect(blurredLocation.getDistanceMetrics()).toBe(1.41);
@@ -103,5 +108,28 @@ describe("Basic testing", function() {
   //   expect(blurredLocation.getLat()).toBe(-34.6036844);
   //   expect(blurredLocation.getLon()).toBe(-58.3815591);
   // });
+
+  it("Checks if getZoom returns the correct zoom", function() {
+    blurredLocation.setZoom(5);
+    expect(blurredLocation.getZoom()).toBe(5);
+  });
+
+  it("Checks if getPrecisionFromNum returns the correct precision value", function() {
+    expect(blurredLocation.getPrecisionFromNum(5.321)).toBe(3);
+    expect(blurredLocation.getPrecisionFromNum(5)).toBe(0);
+    expect(blurredLocation.getPrecisionFromNum(60)).toBe(-1);
+  });
+
+  it("Checks if getPrecisionFromCoordinates returns the highest precision", function() {
+    expect(blurredLocation.getPrecisionFromCoordinates(5.321, 1.12)).toBe(3);
+    expect(blurredLocation.getPrecisionFromCoordinates(5.32, 10.1)).toBe(2);
+    expect(blurredLocation.getPrecisionFromCoordinates(50, 55)).toBe(0);
+  });
+  
+  it("Checks if getZoomFromCoordinates returns the correct zoom", function() {
+    expect(blurredLocation.getZoomFromCoordinates(5.321, 1.122)).toBe(16);
+    expect(blurredLocation.getZoomFromCoordinates(5.32, 10.15)).toBe(13);
+    expect(blurredLocation.getZoomFromCoordinates(51, 55)).toBe(6);
+  });
 
 });
