@@ -662,13 +662,14 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function getPrecisionFromCoordinates(lat, lon) {
-    let precisionArr = [getPrecisionFromNum(lat), getPrecisionFromNum(lon)];
-    return precisionArr.sort((a, b) => b-a)[0];
+    var latPrecision = getPrecisionFromNum(lat);
+    var lonPrecision = getPrecisionFromNum(lon);
+    return latPrecision > lonPrecision ? latPrecision : lonPrecision;
   }
 
   function getPrecisionFromNum(num) {
-    let numArr = num.toString().split('.');
-    let precision = 0;
+    var numArr = num.toString().split('.');
+    var precision = 0;
 
     if(numArr.length === 1) {
       if(Math.floor(num/100) == num/100) {
@@ -793,7 +794,6 @@ BlurredLocation = function BlurredLocation(options) {
     $("#"+InterfaceOptions.latId).val(getLat()) ;
     $("#"+InterfaceOptions.lngId).val(getLon()) ; 
   }
-
 
   function setZoomByPrecision(precision) {
     setZoom(options.precisionTable[precision]);
