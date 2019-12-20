@@ -1044,16 +1044,20 @@ module.exports = function Geocoding(options) {
         async: false,
         url: url
     });
-    onComplete = onComplete || function onComplete(geometry) {
-      $("#lat").val(geometry.lat);
-      $("#lng").val(geometry.lng);
-
-      map.setView([geometry.lat, geometry.lng], options.zoom);
+    onComplete = onComplete || function onComplete(response) {
+      if(response.status === "OK") {
+        $("#lat").val(response.results[0].geometry.location.lat);
+        $("#lng").val(response.results[0].geometry.location.lng);
+        map.setView([response.results[0].geometry.location.lat, response.results[0].geometry.location.lng], options.zoom);
+      } else {
+        console.log("Error retrieving location: " + response.error_message);
+        console.log("You may be rate limited. For more info please check https://github.com/publiclab/leaflet-blurred-location/issues/214");
+      }
       if(typeof map.spin == 'function'){
         map.spin(false) ;
       }
     }
-    onComplete(Blurred.responseJSON.results[0].geometry.location);
+    onComplete(Blurred.responseJSON);
   }
 
   return {
