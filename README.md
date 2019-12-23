@@ -159,6 +159,10 @@ We welcome contributions, and are especially interested in welcoming [first time
 | `blurredLocation.getPlacenameFromCoordinates()` | Returns human-readable location name of a specific latitude and longitude. This would take in 3 arguments namely latitude, longitude and a callback function which is called on success and would return address of the location pinpointed by those co-ordinates| `blurredLocation.getPlacenameFromCoordinates(43, 43, function(result) { console.log(result) }` This would return the output to the console |
 | `blurredLocation.map` | Used to access the Leaflet object | |
 | `blurredLocation.setZoomByPrecision()` | Zooms map to the given precision. | `blurredLocation.setZoomByPrecision(2)` This would zoom the map so that the precision of map becomes 2, and each grid square is `0.01` degrees wide and tall. |
+| `blurredLocation.getZoomByPrecision()` | Returns the correct zoom level for the given precision. | `blurredLocation.setZoomByPrecision(0)` would return 6 |
+| `blurredLocation.setZoom(zoom)` | Zooms the map to the given zoom value | |
+| `blurredLocation.getZoom()` | Returns the current zoom level | `blurredLocation.getZoom()` would return an integer |
+| `blurredLocation.getPrecisionFromNum(num)` | Calculates the precision value of a given float | `blurredLocation.getPrecisionFromNum(12.345)` would return 3 |
 
 ## Features
 
