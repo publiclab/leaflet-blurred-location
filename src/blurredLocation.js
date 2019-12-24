@@ -54,8 +54,11 @@ BlurredLocation = function BlurredLocation(options) {
 
 
   var Interface = options.Interface(InterfaceOptions);
+  //var token = "pk.eyJ1Ijoianl3YXJyZW4iLCJhIjoiVzVZcGg3NCJ9.BJ6ArUPuTs1JT9Ssu3K8ig";
+  //var layer_url = 'https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/{z}/{x}/{y}?access_token=' + token;
+  var layer_url = 'https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png'
 
-  var tileLayer = L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
+  var tileLayer = L.tileLayer(layer_url).addTo(options.map); 
 
   options.map.options.scrollWheelZoom = "center";
   options.map.options.touchZoom = "center";
