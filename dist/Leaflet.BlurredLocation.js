@@ -587,7 +587,9 @@ BlurredLocation = function BlurredLocation(options) {
 
   options.Interface = options.Interface || require('./ui/Interface.js');
 
-  options.Geocoding = options.Geocoding || require('./core/Geocoding.js')
+  options.Geocoding = options.Geocoding || require('./core/Geocoding.js');
+
+  options.tileLayerUrl = options.tileLayerUrl || 'https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png';
 
   var gridSystemOptions = options.gridSystemOptions || {};
   gridSystemOptions.map = options.map;
@@ -615,7 +617,7 @@ BlurredLocation = function BlurredLocation(options) {
 
   var Interface = options.Interface(InterfaceOptions);
 
-  var tileLayer = L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(options.map);
+  var tileLayer = L.tileLayer(options.tileLayerUrl).addTo(options.map);
 
   options.map.options.scrollWheelZoom = "center";
   options.map.options.touchZoom = "center";
@@ -656,7 +658,7 @@ BlurredLocation = function BlurredLocation(options) {
   function getZoom() {
     return options.map.getZoom();
   }
-    
+
   function getZoomFromCoordinates(lat, lon) {
     return getZoomByPrecision(getPrecisionFromCoordinates(lat, lon));
   }
@@ -761,7 +763,7 @@ BlurredLocation = function BlurredLocation(options) {
   }
 
   function getTileLayer(){
-    return tileLayer ; 
+    return tileLayer ;
   }
 
   function drawCenterRectangle(bounds) {
@@ -769,7 +771,7 @@ BlurredLocation = function BlurredLocation(options) {
     var interval = Math.pow(0.1, precision);
     if (!bounds[1][0] || !bounds[1][1]) {
       var ind = 0;
-      if (!bounds[1][1]) ind = 1;   
+      if (!bounds[1][1]) ind = 1;
       if (getFullLat() < 0) { bounds[0][ind] = -1*interval; bounds[1][ind] = 0; }
       else { bounds[1][ind] = 1*interval; }
     }
@@ -785,14 +787,14 @@ BlurredLocation = function BlurredLocation(options) {
     if(isBlurred()) {
         drawCenterRectangle(bounds);
         disableCenterMarker();
-        enableCenterShade() ; 
+        enableCenterShade() ;
     }
     else{
        enableCenterMarker();
        disableCenterShade();
     }
     $("#"+InterfaceOptions.latId).val(getLat()) ;
-    $("#"+InterfaceOptions.lngId).val(getLon()) ; 
+    $("#"+InterfaceOptions.lngId).val(getLon()) ;
   }
 
   function setZoomByPrecision(precision) {
@@ -839,12 +841,12 @@ BlurredLocation = function BlurredLocation(options) {
 
   function getDistanceMetrics() {
     var haversine = require('haversine-distance');
-    
+
     var add = Math.pow(10,-getPrecision())
 
     var sw = { latitude: getLat(), longitude: getLon() }
     var ne = { latitude: getLat() + add, longitude: getLon() + add }
- 
+
     distance = haversine(sw, ne)/1000;
     return truncateToPrecision(distance, 2)
   }
@@ -878,7 +880,7 @@ BlurredLocation = function BlurredLocation(options) {
       options.map.off('move', method);
     }
   }
-       
+
   toggleScales(addScaleToListener, options.scaleDisplay, options.AddScaleDisplay);
   toggleScales(displayBlurryScale, options.blurryScale, options.AddBlurryScale);
 
@@ -927,6 +929,7 @@ BlurredLocation = function BlurredLocation(options) {
 }
 
 exports.BlurredLocation = BlurredLocation;
+
 },{"./core/Geocoding.js":6,"./core/gridSystem.js":7,"./ui/Interface.js":8,"haversine-distance":1,"leaflet-graticule":3}],6:[function(require,module,exports){
 module.exports = function Geocoding(options) {
 
