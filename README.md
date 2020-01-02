@@ -134,6 +134,7 @@ We welcome contributions, and are especially interested in welcoming [first time
 | zoom           | the initial zoom of the map           | 6                        |
 | mapID          | the ID of the map container           | `'map'`                  |
 | pixels         | the pixel size to calculate precision | `400`                    |
+| precisionTable | the table of precision:zoom for calculating zoom levels | `{'-2': 2, '-1': 3, '0':6, '1':10, '2':13, '3':16}` |
 
 ### Interface options
 
@@ -158,7 +159,11 @@ We welcome contributions, and are especially interested in welcoming [first time
 | `blurredLocation.getPrecision()` | Returns precision of degrees -- represented by width or height of one grid cell. Returns an integer which represents the number of decimal places occupied by one cell. For instance, a precision of 1 will mean 0.1 degrees per cell, 2 will mean 0.01 degrees, and so on | `location.getPrecision()` This would return the precision of the map at the current zoom level. |
 | `blurredLocation.getPlacenameFromCoordinates()` | Returns human-readable location name of a specific latitude and longitude. This would take in 3 arguments namely latitude, longitude and a callback function which is called on success and would return address of the location pinpointed by those co-ordinates| `blurredLocation.getPlacenameFromCoordinates(43, 43, function(result) { console.log(result) }` This would return the output to the console |
 | `blurredLocation.map` | Used to access the Leaflet object | |
-| `blurredLocation.setZoomByPrecision()` | Zooms map to the given precision. | `blurredLocation.setZoomByPrecision(2)` This would zoom the map so that the precision of map becomes 2, and each grid square is `0.01` degrees wide and tall. |
+| `blurredLocation.setZoomByPrecision(precision)` | Zooms map to the correct zoom level for the given precision according to either the provided or default precisionTable, as set in the options. | `blurredLocation.setZoomByPrecision(2)` would zoom the map to the zoom value of 13 using the default precisionTable |
+| `blurredLocation.getZoomByPrecision(precision)` | Returns the correct zoom level for the given precision according to either the provided or default precisionTable, as set in the options. Does not change the map. | `blurredLocation.setZoomByPrecision(0)` would return 6 using the default precisionTable |
+| `blurredLocation.setZoom(zoom)` | Zooms the map to the given zoom value | |
+| `blurredLocation.getZoom()` | Returns the current zoom level | `blurredLocation.getZoom()` would return an integer |
+| `blurredLocation.getPrecisionFromNum(num)` | Calculates the precision value of a given float | `blurredLocation.getPrecisionFromNum(12.345)` would return 3 |
 
 ## Features
 

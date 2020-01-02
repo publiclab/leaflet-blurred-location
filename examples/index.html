@@ -137,6 +137,11 @@
         .on('slide', changeZoom)
         .data('slider');
 
+      blurredLocation.map.on('zoomend', function() {
+        let zoom = blurredLocation.map.getZoom();
+        $('#ex1').slider('setValue', zoom);
+      })
+
     </script>
   </body>
 </html>
