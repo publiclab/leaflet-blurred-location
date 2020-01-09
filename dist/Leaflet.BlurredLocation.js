@@ -940,7 +940,6 @@ module.exports = function Geocoding(options) {
       url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng + "&key=AIzaSyAOLUQngEmJv0_zcG1xkGq-CXIPpLQY8iQ",
       success: function(response) {
         if(response.status === "OK") {
-          console.log(response.results[0]);
 
           var country;
           var fullAddress = response.results[0].formatted_address.split(",");
@@ -968,11 +967,12 @@ module.exports = function Geocoding(options) {
           else onResponse(response.results[0].formatted_address);
         } else {
           console.log("Error retrieving location: " + response.error_message);
+          onResponse();
         }
       },
       error: function(error) {
         console.log(error);
-        onResponse("");
+        onResponse();
       }
     });
   }
@@ -1180,8 +1180,12 @@ module.exports = function Interface (options) {
 
     options.latId = options.latId || 'lat';
     options.lngId = options.lngId || 'lng';
-    options.placenameInputId = options.placenameInputId || 'placenameInput'; // the placename as input by the user
-    options.placenameDisplayId = options.placenameDisplayId || 'placenameDisplay'; // the placename as will be stored/displaye
+    options.placenameInputId = options.placenameInputId || 'placenameInput'; // the placename input box id
+    options.placenameDisplayId = options.placenameDisplayId || 'placenameDisplay'; // the placename display box id
+
+    // what will be shown in placenameDisplay when google api call has an error
+    // test if in because a blank string is a valid option
+    options.placenameDisplayOnError = ("placenameDisplayOnError" in options) ? options.placenameDisplayOnError : 'Location unavailable';
 
     function panMapWhenInputsChange() {
       var lat = document.getElementById(options.latId);
@@ -1201,7 +1205,7 @@ module.exports = function Interface (options) {
 
 
   options.onDrag = options.onDrag || function onDrag() {
-    function onPlacenameReturned(result) {
+    function onPlacenameReturned(result = options.placenameDisplayOnError) {
       $("#"+options.placenameDisplayId).val(result);
     }
 

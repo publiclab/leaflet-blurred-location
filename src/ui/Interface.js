@@ -2,8 +2,12 @@ module.exports = function Interface (options) {
 
     options.latId = options.latId || 'lat';
     options.lngId = options.lngId || 'lng';
-    options.placenameInputId = options.placenameInputId || 'placenameInput'; // the placename as input by the user
-    options.placenameDisplayId = options.placenameDisplayId || 'placenameDisplay'; // the placename as will be stored/displaye
+    options.placenameInputId = options.placenameInputId || 'placenameInput'; // the placename input box id
+    options.placenameDisplayId = options.placenameDisplayId || 'placenameDisplay'; // the placename display box id
+
+    // what will be shown in placenameDisplay when google api call has an error
+    // test this way because a blank string is a valid option
+    options.placenameDisplayOnError = ("placenameDisplayOnError" in options) ? options.placenameDisplayOnError : 'Location unavailable';
 
     function panMapWhenInputsChange() {
       var lat = document.getElementById(options.latId);
@@ -23,7 +27,7 @@ module.exports = function Interface (options) {
 
 
   options.onDrag = options.onDrag || function onDrag() {
-    function onPlacenameReturned(result) {
+    function onPlacenameReturned(result = options.placenameDisplayOnError) {
       $("#"+options.placenameDisplayId).val(result);
     }
 

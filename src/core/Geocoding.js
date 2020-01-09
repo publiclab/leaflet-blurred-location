@@ -7,7 +7,6 @@ module.exports = function Geocoding(options) {
       url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng + "&key=AIzaSyAOLUQngEmJv0_zcG1xkGq-CXIPpLQY8iQ",
       success: function(response) {
         if(response.status === "OK") {
-          console.log(response.results[0]);
 
           var country;
           var fullAddress = response.results[0].formatted_address.split(",");
@@ -35,11 +34,12 @@ module.exports = function Geocoding(options) {
           else onResponse(response.results[0].formatted_address);
         } else {
           console.log("Error retrieving location: " + response.error_message);
+          onResponse();
         }
       },
       error: function(error) {
         console.log(error);
-        onResponse("");
+        onResponse();
       }
     });
   }
