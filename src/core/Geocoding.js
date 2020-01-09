@@ -4,7 +4,7 @@ module.exports = function Geocoding(options) {
 
   function getPlacenameFromCoordinates(lat, lng, precision, onResponse) {
     $.ajax({
-      url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng + "&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE",
+      url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng + "&key=AIzaSyAOLUQngEmJv0_zcG1xkGq-CXIPpLQY8iQ",
       success: function(response) {
         if(response.status === "OK") {
           console.log(response.results[0]);
@@ -109,7 +109,7 @@ module.exports = function Geocoding(options) {
     if(typeof map.spin == 'function'){
       map.spin(true) ;
     }
-    var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+") + "&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE" ;
+    var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+") + "&key=AIzaSyAOLUQngEmJv0_zcG1xkGq-CXIPpLQY8iQ" ;
 
     var Blurred = $.ajax({
         async: false,
