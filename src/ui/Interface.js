@@ -34,9 +34,9 @@ module.exports = function Interface (options) {
       options.getPlacenameFromCoordinates(options.getLat(), options.getLon(), options.getPrecision(), onPlacenameReturned);
   }
 
-
-  options.map.on('move', options.onDrag);
-  options.map.on('zoom', options.onDrag);
+  options.onDrag(); // trigger on load
+  options.map.on('moveend', options.onDrag);
+  options.map.on('zoomend', options.onDrag);
 
   function updateLatLngInputListeners() {
     if (options.isBlurred()){

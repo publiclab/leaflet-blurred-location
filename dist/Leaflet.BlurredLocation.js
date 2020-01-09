@@ -1184,7 +1184,7 @@ module.exports = function Interface (options) {
     options.placenameDisplayId = options.placenameDisplayId || 'placenameDisplay'; // the placename display box id
 
     // what will be shown in placenameDisplay when google api call has an error
-    // test if in because a blank string is a valid option
+    // test this way because a blank string is a valid option
     options.placenameDisplayOnError = ("placenameDisplayOnError" in options) ? options.placenameDisplayOnError : 'Location unavailable';
 
     function panMapWhenInputsChange() {
@@ -1212,9 +1212,9 @@ module.exports = function Interface (options) {
       options.getPlacenameFromCoordinates(options.getLat(), options.getLon(), options.getPrecision(), onPlacenameReturned);
   }
 
-
-  options.map.on('move', options.onDrag);
-  options.map.on('zoom', options.onDrag);
+  options.onDrag();
+  options.map.on('moveend', options.onDrag);
+  options.map.on('zoomend', options.onDrag);
 
   function updateLatLngInputListeners() {
     if (options.isBlurred()){
