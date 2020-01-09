@@ -27,7 +27,8 @@ module.exports = function Interface (options) {
 
 
   options.onDrag = options.onDrag || function onDrag() {
-    function onPlacenameReturned(result = options.placenameDisplayOnError) {
+    function onPlacenameReturned(result) {
+      result = (result) ? result : options.placenameDisplayOnError; // this makes jasmine pass, other formats don't
       $("#"+options.placenameDisplayId).val(result);
     }
 
