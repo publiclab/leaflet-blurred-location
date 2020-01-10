@@ -117,10 +117,12 @@
       var options = {
         InterfaceOptions: {
           latId: 'lat',
-          lngId: 'lng'
+          lngId: 'lng',
+          placenameDisplayOnError: 'Location error'
         },
         AddScaleDisplay: true ,
-        AddBlurryScale: true
+        AddBlurryScale: true,
+        precisionTable: {'-2': 2, '-1': 3, '0': 6, '1': 10, '2': 13, '3': 16}
       }
 
       var blurredLocation = new BlurredLocation(options);
@@ -135,6 +137,11 @@
       var slider = $('#ex1').slider()
         .on('slide', changeZoom)
         .data('slider');
+
+      blurredLocation.map.on('zoomend', function() {
+        let zoom = blurredLocation.map.getZoom();
+        $('#ex1').slider('setValue', zoom);
+      })
 
     </script>
   </body>

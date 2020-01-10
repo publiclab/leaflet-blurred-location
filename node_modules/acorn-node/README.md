@@ -29,6 +29,7 @@ var acorn = require('acorn-node')
 
 The API is the same as [acorn](https://github.com/acornjs/acorn), but the following syntax features are enabled by default:
 
+ - Bigint syntax (via [acorn-bigint](https://github.com/acornjs/acorn-bigint]))
  - Dynamic `import()` (via [acorn-dynamic-import](https://github.com/kesne/acorn-dynamic-import))
  - The `import.meta` property (via [acorn-import-meta](https://github.com/acornjs/acorn-import-meta))
 

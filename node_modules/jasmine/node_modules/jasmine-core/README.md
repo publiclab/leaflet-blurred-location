@@ -1,17 +1,17 @@
 <a name="README">[<img src="https://rawgithub.com/jasmine/jasmine/master/images/jasmine-horizontal.svg" width="400px" />](http://jasmine.github.io)</a>
 
 [![Build Status](https://travis-ci.org/jasmine/jasmine.svg?branch=master)](https://travis-ci.org/jasmine/jasmine)
+[![Open Source Helpers](https://www.codetriage.com/jasmine/jasmine/badges/users.svg)](https://www.codetriage.com/jasmine/jasmine)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjasmine%2Fjasmine.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjasmine%2Fjasmine?ref=badge_shield)
 
-=======
-
-**A JavaScript Testing Framework**
+# A JavaScript Testing Framework
 
 Jasmine is a Behavior Driven Development testing framework for JavaScript. It does not rely on browsers, DOM, or any JavaScript framework. Thus it's suited for websites, [Node.js](http://nodejs.org) projects, or anywhere that JavaScript can run.
 
 Documentation & guides live here: [http://jasmine.github.io](http://jasmine.github.io/)
-For a quick start guide of Jasmine 2.x, see the beginning of [http://jasmine.github.io/edge/introduction.html](http://jasmine.github.io/edge/introduction.html)
+For a quick start guide of Jasmine, see the beginning of [http://jasmine.github.io/edge/introduction.html](http://jasmine.github.io/edge/introduction.html)
 
-Upgrading from Jasmine 1.x? Check out the [2.0 release notes](https://github.com/jasmine/jasmine/blob/v2.0.0/release_notes/20.md) for a list of what's new (including breaking interface changes). You can also read the [upgrade guide](http://jasmine.github.io/2.0/upgrading.html).
+Upgrading from Jasmine 2.x? Check out the [3.0 release notes](https://github.com/jasmine/jasmine/blob/v3.0.0/release_notes/3.0.md) for a list of what's new (including breaking changes).
 
 ## Contributing
 
@@ -52,7 +52,7 @@ Add the following to your HTML file:
 
 ## Supported environments
 
-Jasmine tests itself across many browsers (Safari, Chrome, Firefox, PhantomJS, and new Internet Explorer) as well as node. To see the exact version tests are run against look at our [.travis.yml](https://github.com/jasmine/jasmine/blob/master/.travis.yml)
+Jasmine tests itself across many browsers (Safari, Chrome, Firefox, PhantomJS, Microsoft Edge, and new Internet Explorer) as well as nodejs. To see the exact version tests are run against look at our [.travis.yml](https://github.com/jasmine/jasmine/blob/master/.travis.yml)
 
 
 ## Support
@@ -75,4 +75,8 @@ Jasmine tests itself across many browsers (Safari, Chrome, Firefox, PhantomJS, a
 * [Christian Williams](mailto:antixian666@gmail.com), Cloud Foundry
 * Sheel Choksi
 
-Copyright (c) 2008-2017 Pivotal Labs. This software is licensed under the MIT License.
+Copyright (c) 2008-2018 Pivotal Labs. This software is licensed under the MIT License.
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjasmine%2Fjasmine.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjasmine%2Fjasmine?ref=badge_large)
