@@ -1037,7 +1037,9 @@ module.exports = function Geocoding(options) {
       map.spin(true) ;
     }
 
-    geocoder.geocode( { 'address': string.split(" ").join("+")}, function(results, status) {
+    geocoder.geocode( { 'address': string.split(" ").join("+")}, onComplete);
+
+    onComplete = onComplete || function onComplete(results, status) {
       if(status === "OK") {
         $("#lat").val(results[0].geometry.location.lat);
         $("#lng").val(results[0].geometry.location.lng);
@@ -1048,7 +1050,8 @@ module.exports = function Geocoding(options) {
       if(typeof map.spin == 'function'){
         map.spin(false) ;
       }
-    });
+    }
+
   }
 
   return {
