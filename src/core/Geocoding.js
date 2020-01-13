@@ -104,13 +104,14 @@ module.exports = function Geocoding(options) {
       map.spin(true) ;
     }
 
-    geocoder.geocode( { 'address': string.split(" ").join("+")}, onComplete);
-
-    onComplete = onComplete || function onComplete(results, status) {
+    onComplete = onComplete || function(results, status) {
       if(status === "OK") {
-        $("#lat").val(results[0].geometry.location.lat);
-        $("#lng").val(results[0].geometry.location.lng);
-        map.setView([results[0].geometry.location.lat, results[0].geometry.location.lng], options.zoom);
+        console.log(results);
+        var lat = results[0].geometry.location.lat();
+        var lng = results[0].geometry.location.lng();
+        $("#lat").val(lat);
+        $("#lng").val(lng);
+        map.setView([lat, lng], options.zoom);
       } else {
         console.log("Geocode not successful: " + status);
       }
@@ -119,6 +120,7 @@ module.exports = function Geocoding(options) {
       }
     }
 
+    geocoder.geocode( { 'address': string }, onComplete);
   }
 
   return {
