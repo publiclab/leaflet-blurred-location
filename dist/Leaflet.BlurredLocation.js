@@ -1040,18 +1040,31 @@ module.exports = function Geocoding(options) {
       map.spin(true) ;
     }
 
+<<<<<<< HEAD
     geocoder.geocode( { 'address': string.split(" ").join("+")}, function(results, status) {
+=======
+    onComplete = onComplete || function(results, status) {
+>>>>>>> 26395d0... test to fix geocode error
       if(status === "OK") {
-        $("#lat").val(results[0].geometry.location.lat);
-        $("#lng").val(results[0].geometry.location.lng);
-        map.setView([results[0].geometry.location.lat, results[0].geometry.location.lng], options.zoom);
+        console.log(results);
+        var lat = results[0].geometry.location.lat();
+        var lng = results[0].geometry.location.lng();
+        $("#lat").val(lat);
+        $("#lng").val(lng);
+        map.setView([lat, lng], options.zoom);
       } else {
         console.log("Geocode not successful: " + status);
       }
       if(typeof map.spin == 'function'){
         map.spin(false) ;
       }
+<<<<<<< HEAD
     });
+=======
+    }
+
+    geocoder.geocode( { 'address': string }, onComplete);
+>>>>>>> 26395d0... test to fix geocode error
   }
 
   return {
