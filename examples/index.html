@@ -5,7 +5,9 @@
     <title>Leaflet.BlurredLocation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyAOLUQngEmJv0_zcG1xkGq-CXIPpLQY8iQ"></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyAv0_6AnKE_ErHfDAGh91CfMaYsMXGrIBI"></script> -->
+
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="../node_modules/leaflet/dist/leaflet.css" rel="stylesheet">
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
@@ -112,37 +114,39 @@
 
     </div>
 
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAv0_6AnKE_ErHfDAGh91CfMaYsMXGrIBI&libraries=places"></script>
     <script>
 
-      var options = {
-        InterfaceOptions: {
-          latId: 'lat',
-          lngId: 'lng',
-          placenameDisplayOnError: 'Location error'
-        },
-        AddScaleDisplay: true ,
-        AddBlurryScale: true,
-        precisionTable: {'-2': 2, '-1': 3, '0': 6, '1': 10, '2': 13, '3': 16}
-      }
+        var options = {
+          InterfaceOptions: {
+            latId: 'lat',
+            lngId: 'lng',
+            placenameDisplayOnError: 'Location error'
+          },
+          AddScaleDisplay: true ,
+          AddBlurryScale: true,
+          precisionTable: {'-2': 2, '-1': 3, '0': 6, '1': 10, '2': 13, '3': 16}
+        }
 
-      var blurredLocation = new BlurredLocation(options);
+        var blurredLocation = new BlurredLocation(options);
 
-      blurredLocation.panMapToGeocodedLocation("placenameInput");
+        blurredLocation.panMapToGeocodedLocation("placenameInput");
 
-      var changeZoom = function() {
-        var zoom = slider.getValue();
-        blurredLocation.map.setZoom(zoom);
-      }
+        var changeZoom = function() {
+          var zoom = slider.getValue();
+          blurredLocation.map.setZoom(zoom);
+        }
 
-      var slider = $('#ex1').slider()
-        .on('slide', changeZoom)
-        .data('slider');
+        var slider = $('#ex1').slider()
+          .on('slide', changeZoom)
+          .data('slider');
 
-      blurredLocation.map.on('zoomend', function() {
-        let zoom = blurredLocation.map.getZoom();
-        $('#ex1').slider('setValue', zoom);
-      })
-
+        blurredLocation.map.on('zoomend', function() {
+          let zoom = blurredLocation.map.getZoom();
+          $('#ex1').slider('setValue', zoom);
+        })
+        
     </script>
   </body>
 </html>

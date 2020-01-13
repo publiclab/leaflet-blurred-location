@@ -1,19 +1,18 @@
 module.exports = function Geocoding(options) {
 
   var map = options.map || document.getElementById("map") || L.map('map');
+  var geocoder = new google.maps.Geocoder();
 
   function getPlacenameFromCoordinates(lat, lng, precision, onResponse) {
-    $.ajax({
-      url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng + "&key=AIzaSyAOLUQngEmJv0_zcG1xkGq-CXIPpLQY8iQ",
-      success: function(response) {
-        if(response.status === "OK") {
+    geocoder.geocode( { 'location': {lat: lat, lng: lng}}, function(results, status) {
+        if(status === "OK") {
 
           var country;
-          var fullAddress = response.results[0].formatted_address.split(",");
-          for (i in response.results) {
-            if(response.results[i].types.indexOf("country") != -1) {
+          var fullAddress = results[0].formatted_address.split(",");
+          for (i in results) {
+            if(results[i].types.indexOf("country") != -1) {
               //If the type of location is a country assign it to the input box value
-              country = response.results[i].formatted_address;
+              country = results[i].formatted_address;
             }
           }
           if (!country) country = fullAddress[fullAddress.length - 1];
@@ -31,16 +30,12 @@ module.exports = function Geocoding(options) {
             else onResponse(country);
           }
 
-          else onResponse(response.results[0].formatted_address);
+          else onResponse(results[0].formatted_address);
         } else {
-          console.log("Error retrieving location: " + response.error_message);
+          console.log("Geocode not successful: " + status);
+          console.log(status);
           onResponse();
         }
-      },
-      error: function(error) {
-        // console.log(error);
-        onResponse();
-      }
     });
   }
 
@@ -109,26 +104,19 @@ module.exports = function Geocoding(options) {
     if(typeof map.spin == 'function'){
       map.spin(true) ;
     }
-    var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+") + "&key=AIzaSyAOLUQngEmJv0_zcG1xkGq-CXIPpLQY8iQ" ;
 
-    var Blurred = $.ajax({
-        async: false,
-        url: url
-    });
-    onComplete = onComplete || function onComplete(response) {
-      if(response.status === "OK") {
-        $("#lat").val(response.results[0].geometry.location.lat);
-        $("#lng").val(response.results[0].geometry.location.lng);
-        map.setView([response.results[0].geometry.location.lat, response.results[0].geometry.location.lng], options.zoom);
+    geocoder.geocode( { 'address': string.split(" ").join("+")}, function(results, status) {
+      if(status === "OK") {
+        $("#lat").val(results[0].geometry.location.lat);
+        $("#lng").val(results[0].geometry.location.lng);
+        map.setView([results[0].geometry.location.lat, results[0].geometry.location.lng], options.zoom);
       } else {
-        console.log("Error retrieving location: " + response.error_message);
-        console.log("You may be rate limited. For more info please check https://github.com/publiclab/leaflet-blurred-location/issues/214");
+        console.log("Geocode not successful: " + status);
       }
       if(typeof map.spin == 'function'){
         map.spin(false) ;
       }
-    }
-    onComplete(Blurred.responseJSON);
+    });
   }
 
   return {
