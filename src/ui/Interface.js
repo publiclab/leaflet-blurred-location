@@ -32,7 +32,10 @@ module.exports = function Interface (options) {
       $("#"+options.placenameDisplayId).val(result);
     }
 
+    var preventOverwrite = $("#"+options.placenameDisplayId).attr('data-preventOverwrite') || "false";
+    if(preventOverwrite.toLowerCase() !== ("true" || "1")) {
       options.getPlacenameFromCoordinates(options.getLat(), options.getLon(), options.getPrecision(), onPlacenameReturned);
+    }
   }
 
   options.onDrag(); // trigger on load
