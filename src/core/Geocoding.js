@@ -33,7 +33,6 @@ module.exports = function Geocoding(options) {
           else onResponse(results[0].formatted_address);
         } else {
           console.log("Geocode not successful: " + status);
-          console.log(status);
           onResponse();
         }
     });
