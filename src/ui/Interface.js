@@ -2,8 +2,12 @@ module.exports = function Interface (options) {
 
     options.latId = options.latId || 'lat';
     options.lngId = options.lngId || 'lng';
-    options.placenameInputId = options.placenameInputId || 'placenameInput'; // the placename as input by the user
-    options.placenameDisplayId = options.placenameDisplayId || 'placenameDisplay'; // the placename as will be stored/displaye
+    options.placenameInputId = options.placenameInputId || 'placenameInput'; // the placename input box id
+    options.placenameDisplayId = options.placenameDisplayId || 'placenameDisplay'; // the placename display box id
+
+    // what will be shown in placenameDisplay when google api call has an error
+    // test this way because a blank string is a valid option
+    options.placenameDisplayOnError = ("placenameDisplayOnError" in options) ? options.placenameDisplayOnError : 'Location unavailable';
 
     function panMapWhenInputsChange() {
       var lat = document.getElementById(options.latId);
@@ -24,15 +28,19 @@ module.exports = function Interface (options) {
 
   options.onDrag = options.onDrag || function onDrag() {
     function onPlacenameReturned(result) {
+      result = (result) ? result : options.placenameDisplayOnError; // this makes jasmine pass, other formats don't
       $("#"+options.placenameDisplayId).val(result);
     }
 
+    var preventOverwrite = $("#"+options.placenameDisplayId).attr('data-preventOverwrite') || "false";
+    if(preventOverwrite.toLowerCase() !== ("true" || "1")) {
       options.getPlacenameFromCoordinates(options.getLat(), options.getLon(), options.getPrecision(), onPlacenameReturned);
+    }
   }
 
-
-  options.map.on('move', options.onDrag);
-  options.map.on('zoom', options.onDrag);
+  options.onDrag(); // trigger on load
+  options.map.on('moveend', options.onDrag);
+  options.map.on('zoomend', options.onDrag);
 
   function updateLatLngInputListeners() {
     if (options.isBlurred()){

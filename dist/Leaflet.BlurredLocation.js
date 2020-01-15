@@ -934,43 +934,40 @@ exports.BlurredLocation = BlurredLocation;
 module.exports = function Geocoding(options) {
 
   var map = options.map || document.getElementById("map") || L.map('map');
+  var geocoder = new google.maps.Geocoder();
 
   function getPlacenameFromCoordinates(lat, lng, precision, onResponse) {
-      $.ajax({
-        url:"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng + "&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE",
-        success: function(result) {
-          if(result.results[0]) {
-            var country;
-            var fullAddress = result.results[0].formatted_address.split(",");
-            for (i in result.results) {
-              if(result.results[i].types.indexOf("country") != -1) {
-                //If the type of location is a country assign it to thr input box value
-                country = result.results[i].formatted_address;
-              }
+    geocoder.geocode( { 'location': {lat: lat, lng: lng}}, function(results, status) {
+        if(status === "OK") {
+
+          var country;
+          var fullAddress = results[0].formatted_address.split(",");
+          for (i in results) {
+            if(results[i].types.indexOf("country") != -1) {
+              //If the type of location is a country assign it to the input box value
+              country = results[i].formatted_address;
             }
-            if (!country) country = fullAddress[fullAddress.length - 1];
+          }
+          if (!country) country = fullAddress[fullAddress.length - 1];
 
-            if(precision <= 0) onResponse(country);
+          if(precision <= 0) onResponse(country);
 
-            else if(precision == 1) {
-              if (fullAddress.length>=2) onResponse(fullAddress[fullAddress.length - 2] + ", " + country);
-              else onResponse(country);
-            }
+          else if(precision == 1) {
+            if (fullAddress.length>=2) onResponse(fullAddress[fullAddress.length - 2] + ", " + country);
+            else onResponse(country);
+          }
 
-            else if(precision >= 2) {
-              if (fullAddress.length >= 3) onResponse(fullAddress[fullAddress.length - 3] + ", " + fullAddress[fullAddress.length - 2] + ", " + country);
-              else if (fullAddress.length == 2) onResponse(fullAddress[fullAddress.length - 2] + ", " + country);
-              else onResponse(country);
-            }
+          else if(precision >= 2) {
+            if (fullAddress.length >= 3) onResponse(fullAddress[fullAddress.length - 3] + ", " + fullAddress[fullAddress.length - 2] + ", " + country);
+            else if (fullAddress.length == 2) onResponse(fullAddress[fullAddress.length - 2] + ", " + country);
+            else onResponse(country);
+          }
 
-            else onResponse(result.results[0].formatted_address);
-
+          else onResponse(results[0].formatted_address);
+        } else {
+          console.log("Geocode not successful: " + status);
+          onResponse();
         }
-        else onResponse("Location unavailable");
-      },
-      error: function(error) {
-        onResponse("Location unavailable");
-      }
     });
   }
 
@@ -1041,26 +1038,24 @@ module.exports = function Geocoding(options) {
     if(typeof map.spin == 'function'){
       map.spin(true) ;
     }
-    var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+") + "&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE" ;
 
-    var Blurred = $.ajax({
-        async: false,
-        url: url
-    });
-    onComplete = onComplete || function onComplete(response) {
-      if(response.status === "OK") {
-        $("#lat").val(response.results[0].geometry.location.lat);
-        $("#lng").val(response.results[0].geometry.location.lng);
-        map.setView([response.results[0].geometry.location.lat, response.results[0].geometry.location.lng], options.zoom);
+    onComplete = onComplete || function(results, status) {
+      if(status === "OK") {
+        console.log(results);
+        var lat = results[0].geometry.location.lat();
+        var lng = results[0].geometry.location.lng();
+        $("#lat").val(lat);
+        $("#lng").val(lng);
+        map.setView([lat, lng], options.zoom);
       } else {
-        console.log("Error retrieving location: " + response.error_message);
-        console.log("You may be rate limited. For more info please check https://github.com/publiclab/leaflet-blurred-location/issues/214");
+        console.log("Geocode not successful: " + status);
       }
       if(typeof map.spin == 'function'){
         map.spin(false) ;
       }
     }
-    onComplete(Blurred.responseJSON);
+
+    geocoder.geocode( { 'address': string }, onComplete);
   }
 
   return {
@@ -1177,8 +1172,12 @@ module.exports = function Interface (options) {
 
     options.latId = options.latId || 'lat';
     options.lngId = options.lngId || 'lng';
-    options.placenameInputId = options.placenameInputId || 'placenameInput'; // the placename as input by the user
-    options.placenameDisplayId = options.placenameDisplayId || 'placenameDisplay'; // the placename as will be stored/displaye
+    options.placenameInputId = options.placenameInputId || 'placenameInput'; // the placename input box id
+    options.placenameDisplayId = options.placenameDisplayId || 'placenameDisplay'; // the placename display box id
+
+    // what will be shown in placenameDisplay when google api call has an error
+    // test this way because a blank string is a valid option
+    options.placenameDisplayOnError = ("placenameDisplayOnError" in options) ? options.placenameDisplayOnError : 'Location unavailable';
 
     function panMapWhenInputsChange() {
       var lat = document.getElementById(options.latId);
@@ -1199,15 +1198,19 @@ module.exports = function Interface (options) {
 
   options.onDrag = options.onDrag || function onDrag() {
     function onPlacenameReturned(result) {
+      result = (result) ? result : options.placenameDisplayOnError; // this makes jasmine pass, other formats don't
       $("#"+options.placenameDisplayId).val(result);
     }
 
+    var preventOverwrite = $("#"+options.placenameDisplayId).attr('data-preventOverwrite') || "false";
+    if(preventOverwrite.toLowerCase() !== ("true" || "1")) {
       options.getPlacenameFromCoordinates(options.getLat(), options.getLon(), options.getPrecision(), onPlacenameReturned);
+    }
   }
 
-
-  options.map.on('move', options.onDrag);
-  options.map.on('zoom', options.onDrag);
+  options.onDrag(); // trigger on load
+  options.map.on('moveend', options.onDrag);
+  options.map.on('zoomend', options.onDrag);
 
   function updateLatLngInputListeners() {
     if (options.isBlurred()){
