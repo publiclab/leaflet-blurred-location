@@ -1,6 +1,7 @@
 module.exports = function Geocoding(options) {
 
   var map = options.map || document.getElementById("map") || L.map('map');
+  console.info("load geocoder");
   var geocoder = new google.maps.Geocoder();
 
   function getPlacenameFromCoordinates(lat, lng, precision, onResponse) {
