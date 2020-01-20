@@ -1,9 +1,20 @@
 describe("UI testing", function() {
   "use strict";
 
-  it("Checks if input listeners change maps position to the entered latitude and longitude", function() {
-    var fixture = loadFixtures('index.html');
+  var geocoderSpy;
+  var geocoder;
 
+  beforeAll(function() {
+    geocoderSpy = spyOn(google.maps, 'Geocoder');
+    geocoder = jasmine.createSpyObj('Geocoder', ['geocode']);
+    geocoderSpy.and.returnValue(geocoder);
+  });
+
+  beforeEach(function() {
+    var fixture = loadFixtures('index.html');
+  });
+
+  it("Checks if input listeners change maps position to the entered latitude and longitude", function() {
     var latEl = $("#lat");
     var lngEl = $("#lng");
 
@@ -28,8 +39,6 @@ describe("UI testing", function() {
   });
 
   it("Checks if panning map changes fields in the UI section", function() {
-    var fixture = loadFixtures('index.html');
-
     var latEl = $("#lat");
     var lngEl = $("#lng");
     blurredLocation.map.panTo(new L.LatLng(40.737, -73.923));
@@ -40,8 +49,6 @@ describe("UI testing", function() {
   });
 
   it("Checks if precision changes when location is unblurred or blurred", function() {
-    var fixture = loadFixtures('index.html');
-
     var latEl = $("#lat");
     var lngEl = $("#lng");
     
@@ -59,8 +66,6 @@ describe("UI testing", function() {
   });
 
   it("Checks scale listener output the correct scale of the boxes", function() {
-    var fixture = loadFixtures('index.html');
-
     blurredLocation.setZoomByPrecision(2);
     var scale = blurredLocation.getDistanceMetrics()
 
@@ -73,8 +78,6 @@ describe("UI testing", function() {
   });
 
   it("Checks blurry scale listener output the correct scale of the boxes", function() {
-    var fixture = loadFixtures('index.html');
-
     blurredLocation.setZoomByPrecision(2);
     var rural = blurredLocation.getBlurryScale("rural")
     var urban = blurredLocation.getBlurryScale("urban")
