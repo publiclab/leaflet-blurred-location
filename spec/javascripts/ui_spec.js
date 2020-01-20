@@ -1,13 +1,8 @@
 describe("UI testing", function() {
   "use strict";
 
-  var geocoderSpy;
-  var geocoder;
-
   beforeAll(function() {
-    geocoderSpy = spyOn(google.maps, 'Geocoder');
-    geocoder = jasmine.createSpyObj('Geocoder', ['geocode']);
-    geocoderSpy.and.returnValue(geocoder);
+    createGeocoder();
   });
 
   beforeEach(function() {

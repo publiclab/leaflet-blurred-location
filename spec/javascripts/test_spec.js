@@ -3,18 +3,9 @@ describe("Basic testing", function() {
 
   var fixture;
 
-  var geocoderSpy;
-  var geocoder;
-
   beforeAll(function() {
-    geocoderSpy = spyOn(google.maps, 'Geocoder');
-    geocoder = jasmine.createSpyObj('Geocoder', ['geocode']);
-    geocoderSpy.and.returnValue(geocoder);
+    createGeocoder();
     fixture = loadFixtures('index.html');
-  });
-
-  beforeEach(function() {
-    
   });
 
   it("Checks if getLat returns the correct latitude with correct precision", function () {
