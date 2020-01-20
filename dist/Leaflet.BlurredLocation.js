@@ -953,13 +953,13 @@ module.exports = function Geocoding(options) {
           if(precision <= 0) onResponse(country);
 
           else if(precision == 1) {
-            if (fullAddress.length>=2) onResponse(fullAddress[fullAddress.length - 2] + ", " + country);
+            if (fullAddress.length>=2) onResponse(fullAddress[fullAddress.length - 2] + "," + country);
             else onResponse(country);
           }
 
           else if(precision >= 2) {
-            if (fullAddress.length >= 3) onResponse(fullAddress[fullAddress.length - 3] + ", " + fullAddress[fullAddress.length - 2] + ", " + country);
-            else if (fullAddress.length == 2) onResponse(fullAddress[fullAddress.length - 2] + ", " + country);
+            if (fullAddress.length >= 3) onResponse(fullAddress[fullAddress.length - 3] + "," + fullAddress[fullAddress.length - 2] + "," + country);
+            else if (fullAddress.length == 2) onResponse(fullAddress[fullAddress.length - 2] + "," + country);
             else onResponse(country);
           }
 
@@ -1041,7 +1041,6 @@ module.exports = function Geocoding(options) {
 
     onComplete = onComplete || function(results, status) {
       if(status === "OK") {
-        console.log(results);
         var lat = results[0].geometry.location.lat();
         var lng = results[0].geometry.location.lng();
         $("#lat").val(lat);
@@ -1199,7 +1198,7 @@ module.exports = function Interface (options) {
   options.onDrag = options.onDrag || function onDrag() {
     function onPlacenameReturned(result) {
       result = (result) ? result : options.placenameDisplayOnError; // this makes jasmine pass, other formats don't
-      $("#"+options.placenameDisplayId).val(result);
+      $("#"+options.placenameDisplayId).val(result.trim());
     }
 
     var preventOverwrite = $("#"+options.placenameDisplayId).attr('data-preventOverwrite') || "false";

@@ -1,7 +1,6 @@
 module.exports = function Geocoding(options) {
 
   var map = options.map || document.getElementById("map") || L.map('map');
-  console.info("load geocoder");
   var geocoder = new google.maps.Geocoder();
 
   function getPlacenameFromCoordinates(lat, lng, precision, onResponse) {
@@ -21,13 +20,13 @@ module.exports = function Geocoding(options) {
           if(precision <= 0) onResponse(country);
 
           else if(precision == 1) {
-            if (fullAddress.length>=2) onResponse(fullAddress[fullAddress.length - 2] + ", " + country);
+            if (fullAddress.length>=2) onResponse(fullAddress[fullAddress.length - 2] + "," + country);
             else onResponse(country);
           }
 
           else if(precision >= 2) {
-            if (fullAddress.length >= 3) onResponse(fullAddress[fullAddress.length - 3] + ", " + fullAddress[fullAddress.length - 2] + ", " + country);
-            else if (fullAddress.length == 2) onResponse(fullAddress[fullAddress.length - 2] + ", " + country);
+            if (fullAddress.length >= 3) onResponse(fullAddress[fullAddress.length - 3] + "," + fullAddress[fullAddress.length - 2] + "," + country);
+            else if (fullAddress.length == 2) onResponse(fullAddress[fullAddress.length - 2] + "," + country);
             else onResponse(country);
           }
 
@@ -109,7 +108,6 @@ module.exports = function Geocoding(options) {
 
     onComplete = onComplete || function(results, status) {
       if(status === "OK") {
-        console.log(results);
         var lat = results[0].geometry.location.lat();
         var lng = results[0].geometry.location.lng();
         $("#lat").val(lat);
