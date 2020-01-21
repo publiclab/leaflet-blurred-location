@@ -91,16 +91,16 @@ module.exports = function Geocoding(options) {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(function (position) {
         options.goTo(position.coords.latitude, position.coords.longitude, options.zoom);
-        removeSpinner(options.geocodeButtonId, 300);
+        removeSpinner(options.geocodeButtonId);
       }, function (error) {
         console.log(error);
-        removeSpinner(options.geocodeButtonId, 300);
+        removeSpinner(options.geocodeButtonId);
       });
     }
   }
 
   function isSpinnerPresent(elementID) {
-    var spinner = document.querySelector('#' + elementID + ' .spinner');
+    var spinner = document.querySelector("#" + elementID + " .spinner");
 
     if (spinner) return true;
     return false;
@@ -120,16 +120,8 @@ module.exports = function Geocoding(options) {
     element.appendChild(label);
   }
 
-  function removeSpinner(elementID, delay) {
-    var spinner = document.querySelector('#' + elementID + ' .spinner');
-
-    if (delay && typeof delay === "number") {
-      setTimeout(function() {
-        spinner.remove();
-      }, delay);
-      return;
-    }
-
+  function removeSpinner(elementID) {
+    var spinner = document.querySelector("#" + elementID + " .spinner");
     spinner.remove();
   }
 

@@ -1,31 +1,33 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-var atan2 = Math.atan2
-var cos = Math.cos
-var sin = Math.sin
-var sqrt = Math.sqrt
-var PI = Math.PI
 
- // (mean) radius of Earth (meters)
-var R = 6378137
+//  const atan2 = Math.atan2
+const asin = Math.asin
+const cos = Math.cos
+const sin = Math.sin
+const sqrt = Math.sqrt
+const PI = Math.PI
+
+// equatorial mean radius of Earth (in meters)
+const R = 6378137
 
 function squared (x) { return x * x }
 function toRad (x) { return x * PI / 180.0 }
-
-// https://stackoverflow.com/questions/1502590/calculate-distance-between-two-points-in-google-maps-v3
-module.exports = function haversineDistance (a, b) {
-  var aLat = a.latitude || a.lat
-  var bLat = b.latitude || b.lat
-  var aLng = a.longitude || a.lng || a.lon
-  var bLng = b.longitude || b.lng || b.lon
-
-  var dLat = toRad(bLat - aLat)
-  var dLon = toRad(bLng - aLng)
-
-  var f = squared(sin(dLat / 2.0)) + cos(toRad(aLat)) * cos(toRad(bLat)) * squared(sin(dLon / 2.0))
-  var c = 2 * atan2(sqrt(f), sqrt(1 - f))
-
-  return R * c
+function hav (x) {
+  return squared(sin(x / 2))
 }
+
+// hav(theta) = hav(bLat - aLat) + cos(aLat) * cos(bLat) * hav(bLon - aLon)
+function haversineDistance (a, b) {
+  const aLat = toRad(a.latitude || a.lat)
+  const bLat = toRad(b.latitude || b.lat)
+  const aLng = toRad(a.longitude || a.lng || a.lon)
+  const bLng = toRad(b.longitude || b.lng || b.lon)
+
+  const ht = hav(bLat - aLat) + cos(aLat) * cos(bLat) * hav(bLng - aLng)
+  return 2 * R * asin(sqrt(ht))
+}
+
+module.exports = haversineDistance
 
 },{}],2:[function(require,module,exports){
 /*! jQuery v3.4.0 | (c) JS Foundation and other contributors | jquery.org/license */
@@ -1024,16 +1026,16 @@ module.exports = function Geocoding(options) {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(function (position) {
         options.goTo(position.coords.latitude, position.coords.longitude, options.zoom);
-        removeSpinner(options.geocodeButtonId, 300);
+        removeSpinner(options.geocodeButtonId);
       }, function (error) {
         console.log(error);
-        removeSpinner(options.geocodeButtonId, 300);
+        removeSpinner(options.geocodeButtonId);
       });
     }
   }
 
   function isSpinnerPresent(elementID) {
-    var spinner = document.querySelector('#' + elementID + ' .spinner');
+    var spinner = document.querySelector("#" + elementID + " .spinner");
 
     if (spinner) return true;
     return false;
@@ -1053,16 +1055,8 @@ module.exports = function Geocoding(options) {
     element.appendChild(label);
   }
 
-  function removeSpinner(elementID, delay) {
-    var spinner = document.querySelector('#' + elementID + ' .spinner');
-
-    if (delay && typeof delay === "number") {
-      setTimeout(function() {
-        spinner.remove();
-      }, delay);
-      return;
-    }
-
+  function removeSpinner(elementID) {
+    var spinner = document.querySelector("#" + elementID + " .spinner");
     spinner.remove();
   }
 
