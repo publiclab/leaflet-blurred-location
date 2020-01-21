@@ -1,7 +1,8 @@
 describe("Geocoding testing", function() {
   "use strict";
-
+  
   beforeAll(function() {
+    setUpGoogleMock();
     createGeocoder();
   });
 

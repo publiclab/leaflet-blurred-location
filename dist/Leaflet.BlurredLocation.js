@@ -934,41 +934,46 @@ exports.BlurredLocation = BlurredLocation;
 module.exports = function Geocoding(options) {
 
   var map = options.map || document.getElementById("map") || L.map('map');
-  var geocoder = new google.maps.Geocoder();
+  var google = window.google || undefined;
+  var geocoder = google ? new google.maps.Geocoder() : undefined;
 
   function getPlacenameFromCoordinates(lat, lng, precision, onResponse) {
-    geocoder.geocode( { 'location': {lat: lat, lng: lng}}, function(results, status) {
-        if(status === "OK") {
+    if(geocoder) {
+      geocoder.geocode( { 'location': {lat: lat, lng: lng}}, function(results, status) {
+          if(status === "OK") {
 
-          var country;
-          var fullAddress = results[0].formatted_address.split(",");
-          for (i in results) {
-            if(results[i].types.indexOf("country") != -1) {
-              //If the type of location is a country assign it to the input box value
-              country = results[i].formatted_address;
+            var country;
+            var fullAddress = results[0].formatted_address.split(",");
+            for (i in results) {
+              if(results[i].types.indexOf("country") != -1) {
+                //If the type of location is a country assign it to the input box value
+                country = results[i].formatted_address;
+              }
             }
+            if (!country) country = fullAddress[fullAddress.length - 1];
+
+            if(precision <= 0) onResponse(country);
+
+            else if(precision == 1) {
+              if (fullAddress.length>=2) onResponse(fullAddress[fullAddress.length - 2] + "," + country);
+              else onResponse(country);
+            }
+
+            else if(precision >= 2) {
+              if (fullAddress.length >= 3) onResponse(fullAddress[fullAddress.length - 3] + "," + fullAddress[fullAddress.length - 2] + "," + country);
+              else if (fullAddress.length == 2) onResponse(fullAddress[fullAddress.length - 2] + "," + country);
+              else onResponse(country);
+            }
+
+            else onResponse(results[0].formatted_address);
+          } else {
+            console.log("Geocode not successful: " + status);
+            onResponse();
           }
-          if (!country) country = fullAddress[fullAddress.length - 1];
-
-          if(precision <= 0) onResponse(country);
-
-          else if(precision == 1) {
-            if (fullAddress.length>=2) onResponse(fullAddress[fullAddress.length - 2] + "," + country);
-            else onResponse(country);
-          }
-
-          else if(precision >= 2) {
-            if (fullAddress.length >= 3) onResponse(fullAddress[fullAddress.length - 3] + "," + fullAddress[fullAddress.length - 2] + "," + country);
-            else if (fullAddress.length == 2) onResponse(fullAddress[fullAddress.length - 2] + "," + country);
-            else onResponse(country);
-          }
-
-          else onResponse(results[0].formatted_address);
-        } else {
-          console.log("Geocode not successful: " + status);
-          onResponse();
-        }
-    });
+      });
+    } else {
+      onResponse();
+    }
   }
 
   function panMapByBrowserGeocode(checkbox) {
@@ -1035,26 +1040,30 @@ module.exports = function Geocoding(options) {
   }
 
   function geocodeStringAndPan(string, onComplete) {
-    if(typeof map.spin == 'function'){
-      map.spin(true) ;
-    }
-
-    onComplete = onComplete || function(results, status) {
-      if(status === "OK") {
-        var lat = results[0].geometry.location.lat();
-        var lng = results[0].geometry.location.lng();
-        $("#lat").val(lat);
-        $("#lng").val(lng);
-        map.setView([lat, lng], options.zoom);
-      } else {
-        console.log("Geocode not successful: " + status);
-      }
+    if(geocoder) {
       if(typeof map.spin == 'function'){
-        map.spin(false) ;
+        map.spin(true) ;
       }
-    }
 
-    geocoder.geocode( { 'address': string }, onComplete);
+      onComplete = onComplete || function(results, status) {
+        if(status === "OK") {
+          var lat = results[0].geometry.location.lat();
+          var lng = results[0].geometry.location.lng();
+          $("#lat").val(lat);
+          $("#lng").val(lng);
+          map.setView([lat, lng], options.zoom);
+        } else {
+          console.log("Geocode not successful: " + status);
+        }
+        if(typeof map.spin == 'function'){
+          map.spin(false) ;
+        }
+      }
+
+      geocoder.geocode( { 'address': string }, onComplete);
+    } else {
+      onResponse();
+    }
   }
 
   return {
