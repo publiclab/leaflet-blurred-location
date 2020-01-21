@@ -2,7 +2,7 @@ describe("UI testing", function() {
   "use strict";
 
   beforeAll(function() {
-    createGeocoder();
+    window.google = undefined; // reset back to undefined after using mock in geocoding_spec
   });
 
   beforeEach(function() {

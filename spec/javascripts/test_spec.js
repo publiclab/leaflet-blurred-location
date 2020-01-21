@@ -4,7 +4,7 @@ describe("Basic testing", function() {
   var fixture;
 
   beforeAll(function() {
-    createGeocoder();
+    window.google = undefined; // reset back to undefined after using mock in geocoding_spec
     fixture = loadFixtures('index.html');
   });
 
