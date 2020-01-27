@@ -32,6 +32,7 @@ module.exports = function(grunt) {
       src: "src/client/js/*.js",
       options: {
         specs: "spec/javascripts/*spec.js",
+        helpers: "spec/helpers/*.js",
         vendor: [
           "node_modules/jquery/dist/jquery.js",
           "dist/Leaflet.BlurredLocation.js",

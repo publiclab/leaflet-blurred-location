@@ -1,10 +1,14 @@
 describe("Basic testing", function() {
   "use strict";
 
-  var fixture = loadFixtures('index.html');
+  var fixture;
+
+  beforeAll(function() {
+    window.google = undefined; // reset back to undefined after using mock in geocoding_spec
+    fixture = loadFixtures('index.html');
+  });
 
   it("Checks if getLat returns the correct latitude with correct precision", function () {
-    var fixture = loadFixtures('index.html');
     blurredLocation.setZoom(13);
     expect(blurredLocation.getLat()).toBe(1.0);
     blurredLocation.setZoom(10);
