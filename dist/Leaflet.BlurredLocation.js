@@ -1,6 +1,4 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-
-//  const atan2 = Math.atan2
 const asin = Math.asin
 const cos = Math.cos
 const sin = Math.sin
@@ -18,10 +16,10 @@ function hav (x) {
 
 // hav(theta) = hav(bLat - aLat) + cos(aLat) * cos(bLat) * hav(bLon - aLon)
 function haversineDistance (a, b) {
-  const aLat = toRad(a.latitude || a.lat)
-  const bLat = toRad(b.latitude || b.lat)
-  const aLng = toRad(a.longitude || a.lng || a.lon)
-  const bLng = toRad(b.longitude || b.lng || b.lon)
+  const aLat = toRad(Array.isArray(a) ? a[1] : a.latitude || a.lat)
+  const bLat = toRad(Array.isArray(b) ? b[1] : b.latitude || b.lat)
+  const aLng = toRad(Array.isArray(a) ? a[0] : a.longitude || a.lng || a.lon)
+  const bLng = toRad(Array.isArray(b) ? b[0] : b.longitude || b.lng || b.lon)
 
   const ht = hav(bLat - aLat) + cos(aLat) * cos(bLat) * hav(bLng - aLng)
   return 2 * R * asin(sqrt(ht))
@@ -591,7 +589,7 @@ BlurredLocation = function BlurredLocation(options) {
 
   options.Geocoding = options.Geocoding || require('./core/Geocoding.js');
 
-  options.tileLayerUrl = options.tileLayerUrl || 'https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png';
+  options.tileLayerUrl = options.tileLayerUrl || 'https://api.mapbox.com/styles/v1/jywarren/ckj06ujnc1nmi19nuelh46pr9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoianl3YXJyZW4iLCJhIjoiVzVZcGg3NCJ9.BJ6ArUPuTs1JT9Ssu3K8ig';
 
   var gridSystemOptions = options.gridSystemOptions || {};
   gridSystemOptions.map = options.map;
@@ -619,7 +617,11 @@ BlurredLocation = function BlurredLocation(options) {
 
   var Interface = options.Interface(InterfaceOptions);
 
-  var tileLayer = L.tileLayer(options.tileLayerUrl).addTo(options.map);
+  var tileLayer = L.tileLayer(options.tileLayerUrl, {
+      tileSize: 512,
+      zoomOffset: -1,
+      attribution: '© <a href="https://apps.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(options.map);
 
   options.map.options.scrollWheelZoom = "center";
   options.map.options.touchZoom = "center";

@@ -57,7 +57,7 @@ BlurredLocation = function BlurredLocation(options) {
 
   var Interface = options.Interface(InterfaceOptions);
 
-  var tileLayer = L.tileLayer(options.tileLayerUrl, , {
+  var tileLayer = L.tileLayer(options.tileLayerUrl, {
       tileSize: 512,
       zoomOffset: -1,
       attribution: '© <a href="https://apps.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
