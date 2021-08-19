@@ -47,7 +47,7 @@ describe("UI testing", function() {
     var latEl = $("#lat");
     var lngEl = $("#lng");
     
-    blurredLocation.map.panTo(new L.LatLng(40.737232, -73.923232));
+    blurredLocation.map.panTo(new L.LatLng(80.737232, -73.923232));
     blurredLocation.setZoomByPrecision(2);    
     blurredLocation.setBlurred(false);
 
