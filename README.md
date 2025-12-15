@@ -199,3 +199,8 @@ Help improve Public Lab software!
 ## First Time?
 
 New to open source/free software? Here is a selection of issues we've made especially for first-timers. We're here to help, so just ask if one looks interesting : https://github.com/publiclab/leaflet-blurred-location/labels/first-timers-only
+
+## Contributing
+
+Contributions are welcome!  
+If you’d like to improve documentation, fix bugs, or suggest enhancements, feel free to open an issue or submit a pull request.
